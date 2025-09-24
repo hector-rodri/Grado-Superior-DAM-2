@@ -4,21 +4,32 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        //var
         Scanner sc = new Scanner(System.in);
-        String fileName;
-
 
         System.out.println("Hello!");
-        System.out.println("Dime el nombre de tu archivo");
-        fileName = sc.nextLine();
-        
+        System.out.print("Enter the source file path:");
+        String sourcePath = sc.nextLine();
+        System.out.print("Enter the destination file path:");
+        String destPath = sc.nextLine();
+
+        File sourceFile = new File(sourcePath);
+        File destFile = new File(destPath);
+
         try {
-            FileWriter fileWriter = new FileWriter(fileName + ".xml");
+            FileReader fileReader = new FileReader(sourceFile);
+            FileWriter fileWriter = new FileWriter(destFile);
+            
 
         } catch (Exception e) {
             // TODO: handle exception
         }
 
+        try {
+            FileInputStream fileInputStream = new FileInputStream(sourceFile);
+            FileOutputStream fileOutputStream = new FileOutputStream(destFile);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        sc.close();
     }
 }
