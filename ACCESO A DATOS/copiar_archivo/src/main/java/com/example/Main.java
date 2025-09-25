@@ -1,4 +1,5 @@
 package com.example;
+
 import java.io.*;
 import java.util.Scanner;
 
@@ -15,21 +16,27 @@ public class Main {
         File sourceFile = new File(sourcePath);
         File destFile = new File(destPath);
 
-        try {
-            FileReader fileReader = new FileReader(sourceFile);
-            FileWriter fileWriter = new FileWriter(destFile);
-            
-
-        } catch (Exception e) {
-            // TODO: handle exception
+        if (sourcePath.endsWith(".txt") || sourcePath.endsWith(".xml")) {
+            copyFile(sourceFile, destFile);
+        } else {
         }
 
-        try {
-            FileInputStream fileInputStream = new FileInputStream(sourceFile);
-            FileOutputStream fileOutputStream = new FileOutputStream(destFile);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
         sc.close();
+    }
+
+    public static void copyFile(File sourceFile, File destFile) {
+        try (FileReader fileReader = new FileReader(sourceFile);
+             FileWriter fileWriter = new FileWriter(destFile)) {
+
+            int character;
+            while ((character = fileReader.read()) != -1) {
+                fileWriter.write(character);
+            }
+
+            System.out.println("Sucessful");
+
+        } catch (IOException e) {
+            System.err.println("Error");
+        }
     }
 }
