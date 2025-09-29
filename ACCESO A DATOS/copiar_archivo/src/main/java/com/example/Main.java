@@ -20,21 +20,18 @@ public class Main {
             copyFile(sourceFile, destFile);
         } else {
         }
-
         sc.close();
     }
 
     public static void copyFile(File sourceFile, File destFile) {
-        try (FileReader fileReader = new FileReader(sourceFile);
-             FileWriter fileWriter = new FileWriter(destFile)) {
-
+        try {
+            FileReader reader = new FileReader(sourceFile);
+            FileWriter writer = new FileWriter(destFile);
             int character;
-            while ((character = fileReader.read()) != -1) {
-                fileWriter.write(character);
+            while ((character = reader.read()) != -1) {
+                writer.write(character);
             }
-
             System.out.println("Sucessful");
-
         } catch (IOException e) {
             System.err.println("Error");
         }
