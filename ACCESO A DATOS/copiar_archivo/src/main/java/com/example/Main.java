@@ -19,8 +19,23 @@ public class Main {
         if (sourcePath.endsWith(".txt") || sourcePath.endsWith(".xml")) {
             copyFile(sourceFile, destFile);
         } else {
+            copyBinariFile(sourceFile, destFile);
         }
         sc.close();
+    }
+
+    public static void copyBinariFile(File sourceFile, File destFile) {
+        try {
+            FileInputStream input = new FileInputStream(sourceFile);
+            FileOutputStream output = new FileOutputStream(destFile);
+            byte [] data = input.readAllBytes();
+            output.write(data);
+            System.out.println("Succesful");
+            input.close();
+            output.close();
+        } catch (IOException e) {
+            System.out.println("Error");
+        }
     }
 
     public static void copyFile(File sourceFile, File destFile) {
@@ -32,6 +47,8 @@ public class Main {
                 writer.write(character);
             }
             System.out.println("Sucessful");
+            reader.close();
+            writer.close();
         } catch (IOException e) {
             System.err.println("Error");
         }
