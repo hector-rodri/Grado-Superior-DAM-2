@@ -2,7 +2,6 @@ package com.example;
 
 import java.io.*;//Import all libraries
 import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);//Scanner object to read inputs
