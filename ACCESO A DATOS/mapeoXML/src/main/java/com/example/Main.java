@@ -7,10 +7,10 @@ import org.w3c.dom.*;
 public class Main {
     public static void main(String[] args) {
         File file = new File("players.xml");
-        abrir_XML_DOM(file);
+        open_XML_DOM(file);
     }
 
-    public static int abrir_XML_DOM(File fichero) {
+    public static int open_XML_DOM(File file) {
         Document doc = null;
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -18,9 +18,9 @@ public class Main {
             factory.setIgnoringElementContentWhitespace(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
 
-            doc = builder.parse(fichero);
-            String salida = recorrerDOMyMostrar(doc);
-            System.out.println(salida);
+            doc = builder.parse(file);
+            String exit = processDOM(doc);
+            System.out.println(exit);
             return 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -28,42 +28,40 @@ public class Main {
         }
     }
 
-    public static String[] procesarLibro(Node nodo) {
-        String[] datos = new String[20];
+    public static String[] processPlayer(Node nodo) {
+        String[] data = new String[20];
         Node temp = null;
-        int contador = 0;
+        int count = 0;
 
-        // No hay atributos en <Player>, así que no usamos getAttributes()
-
-        NodeList nodos = nodo.getChildNodes(); // hijos de <Player>
+        NodeList nodos = nodo.getChildNodes(); 
         for (int i = 0; i < nodos.getLength(); i++) {
             temp = nodos.item(i);
             if (temp.getNodeType() == Node.ELEMENT_NODE) {
-                datos[contador] = temp.getTextContent(); // guarda el texto de <Name>, <Position>, etc.
-                contador++;
+                data[count] = temp.getTextContent(); 
+                count++;
             }
         }
-        return datos;
+        return data;
     }
 
-    public static String recorrerDOMyMostrar(Document doc) {
-        String[] datos_nodo;
-        String salida = "";
+    public static String processDOM(Document doc) {
+        String[] node_data;
+        String exit = "";
 
-        Node raiz = doc.getDocumentElement(); // <FootballPlayers>
-        NodeList nodos = raiz.getChildNodes(); // lista de <Player>
+        Node raiz = doc.getDocumentElement(); 
+        NodeList nodos = raiz.getChildNodes();
 
         for (int i = 0; i < nodos.getLength(); i++) {
             Node node = nodos.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                datos_nodo = procesarLibro(node); // procesa cada <Player>
-                salida += "\nNombre: " + datos_nodo[0];
-                salida += "\nPosición: " + datos_nodo[1];
-                salida += "\nNacionalidad: " + datos_nodo[2];
-                salida += "\nClub: " + datos_nodo[3];
-                salida += "\n-------------------------";
+                node_data = processPlayer(node);
+                exit += "\nName: " + node_data[0];
+                exit += "\nPosition: " + node_data[1];
+                exit += "\nNationality: " + node_data[2];
+                exit += "\nClub: " + node_data[3];
+                exit += "\n-------------------------";
             }
         }
-        return salida;
+        return exit;
     }
 }
