@@ -17,58 +17,53 @@ public class Main {
             factory.setIgnoringComments(true);
             factory.setIgnoringElementContentWhitespace(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
-            
+
             doc = builder.parse(fichero);
             String salida = recorrerDOMyMostrar(doc);
-                        System.out.println(salida);
+            System.out.println(salida);
             return 0;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
     }
-    
-    protected static String[] procesarLibro(Node nodo) {
-        String datos[] = new String[20];
+
+    public static String[] procesarLibro(Node nodo) {
+        String[] datos = new String[20];
         Node temp = null;
         int contador = 0;
-        // Obtiene el primer atributo del nodo (en este caso el atributo id)
-        NamedNodeMap atributos = nodo.getAttributes();
-        datos[0] = atributos.item(0).getNodeValue();
-        // Obtiene la lista de nodos hijos del nodo libro
-        NodeList nodos = nodo.getChildNodes();
+
+        // No hay atributos en <Player>, así que no usamos getAttributes()
+
+        NodeList nodos = nodo.getChildNodes(); // hijos de <Player>
         for (int i = 0; i < nodos.getLength(); i++) {
             temp = nodos.item(i);
             if (temp.getNodeType() == Node.ELEMENT_NODE) {
-                // IMPORTANTE: para obtener el texto con el título y autor se accede al nodo
-                // hijo temp y se
-                // usa su valor.
-                datos[contador] = temp.getFirstChild().getNodeValue();
+                datos[contador] = temp.getTextContent(); // guarda el texto de <Name>, <Position>, etc.
                 contador++;
             }
         }
         return datos;
     }
-    
+
     public static String recorrerDOMyMostrar(Document doc) {
-        String datos_nodo[];
+        String[] datos_nodo;
         String salida = "";
-        // Obtiene el primer nodo del DOM (primer hijo)
-        Node raiz = doc.getFirstChild();
-        // Obtiene una lista de todos los nodos hijos del nodo raíz.
-        NodeList nodos = raiz.getChildNodes();
-        // Procesa los nodos hijos
+
+        Node raiz = doc.getDocumentElement(); // <FootballPlayers>
+        NodeList nodos = raiz.getChildNodes(); // lista de <Player>
+
         for (int i = 0; i < nodos.getLength(); i++) {
             Node node = nodos.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                // Es un nodo libro
-                datos_nodo = procesarLibro(node);
-                salida += "\n Titulo: " + datos_nodo[1];
-                salida += "\n Autor: " + datos_nodo[2];
-                salida += "\n Año: " + datos_nodo[3];
+                datos_nodo = procesarLibro(node); // procesa cada <Player>
+                salida += "\nNombre: " + datos_nodo[0];
+                salida += "\nPosición: " + datos_nodo[1];
+                salida += "\nNacionalidad: " + datos_nodo[2];
+                salida += "\nClub: " + datos_nodo[3];
+                salida += "\n-------------------------";
             }
         }
         return salida;
     }
 }
-
