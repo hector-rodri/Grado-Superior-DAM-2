@@ -21,30 +21,39 @@ public class Main {
             String exit = processDOM(doc);//Call method to read the doc and get a text
             System.out.println(exit);
             return 0;//Success
-        } catch (Exception e) { 
+        } catch (Exception e) {
             e.printStackTrace();//Error details
             return -1;//Error
         }
     }
 
-    public static String processDOM(Document doc) {//Method to process the doc and return content
-        String[] node_data; //Declare an array to store data
-        String exit = ""; 
-        Node root = doc.getDocumentElement();//Get the root element of the xml <players>
-        NodeList nodos = root.getChildNodes();//Get all child nodes of the root player elements
+    public static String processDOM(Document doc) {//Method to process the doc, return content and create files
+        Node root = doc.getDocumentElement();//Get the root element of the xml players
+        NodeList nodos = root.getChildNodes();//Get child nodes of the root player elements
+        String exit = "";//String to store all players info for console output
 
-        for (int i = 0; i < nodos.getLength(); i++) {//Loop over players nodes 
-            Node node = nodos.item(i);//Get the player node at index 
-            if (node.getNodeType() == Node.ELEMENT_NODE) {//If the node is an element node
-                node_data = processPlayer(node);//Process this player and get the info of the player
-                exit += "\nName: " + node_data[0]; 
-                exit += "\nPosition: " + node_data[1];
-                exit += "\nNationality: " + node_data[2];
-                exit += "\nClub: " + node_data[3];
-                exit += "\n";
+        for (int i = 0; i < nodos.getLength(); i++) { //Loop over players nodes
+            Node node = nodos.item(i);//Get the player node at index
+            if (node.getNodeType() == Node.ELEMENT_NODE) { //If the node is an element node
+                String[] playerInfo = processPlayer(node); //Process this player and get the info of the player
+                String playerText = "";//String to store info of one player
+                playerText += "Name: " + playerInfo[0] + "\n";
+                playerText += "Position: " + playerInfo[1] + "\n";
+                playerText += "Nationality: " + playerInfo[2] + "\n";
+                playerText += "Club: " + playerInfo[3] + "\n";
+                exit += playerText + "\n";//Append the player info to the exit string for console out
+
+                File file = new File(playerInfo[0] + ".txt");//Create a file object for txt with player name
+                try {
+                    FileWriter writer = new FileWriter(file);
+                    writer.write(playerText);//Write the player info in the file
+                    writer.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-        return exit;//Return the info of all players
+        return exit;//Return all players info
     }
 
     public static String[] processPlayer(Node node) {//Method to read one player node and return content
