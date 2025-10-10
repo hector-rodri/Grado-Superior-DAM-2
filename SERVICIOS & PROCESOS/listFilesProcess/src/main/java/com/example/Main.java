@@ -5,7 +5,8 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) {
         try {
-            Process process = Runtime.getRuntime().exec("ls -l");
+            ProcessBuilder pb = new ProcessBuilder("ls", "-l");
+            Process process = pb.start();
             InputStreamReader inputReader = new InputStreamReader(process.getInputStream());
             BufferedReader reader = new BufferedReader(inputReader);
             String line;
