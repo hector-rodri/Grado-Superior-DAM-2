@@ -1,0 +1,20 @@
+{
+  "name": "grado-superior-dam-2",
+  "version": "1.0.0",
+  "description": "Este es mi espacio para todo lo que voy creando y aprendiendo en el **segundo y último año** del Grado Superior DAM.   Aquí está mi arsenal: apuntes, prácticas, ejercicios y proyectos organizados por asignaturas.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hector-rodri/Grado-Superior-DAM-2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hector-rodri/Grado-Superior-DAM-2/issues"
+  },
+  "homepage": "https://github.com/hector-rodri/Grado-Superior-DAM-2#readme"
+}
