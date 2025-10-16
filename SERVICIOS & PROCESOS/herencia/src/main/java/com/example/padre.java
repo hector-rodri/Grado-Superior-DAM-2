@@ -4,9 +4,9 @@ import java.io.*;
 import java.util.concurrent.TimeUnit;
 
 public class padre {
-    public static void main(String[] args) throws Exception {
-        System.out.println("Padre PID: " + ProcessHandle.current().pid());
-        ProcessBuilder pb = new ProcessBuilder("java", "fill");
+    public static void main(String[] args) throws IOException, InterruptedException {
+        System.out.println("Soy el padre y mi PID es " + ProcessHandle.current().pid());
+        ProcessBuilder pb = new ProcessBuilder("java", "-cp", ".", "hijo.java");
         pb.redirectErrorStream(true);
         Process child = pb.start();
 
@@ -31,9 +31,9 @@ public class padre {
             System.out.println("El hijo no ha acabado, se le enviará kill");
             child.destroyForcibly();
             child.waitFor();
-            System.out.println("El hijo ha sido destruido:" + child.exitValue());
+            System.out.println("El hijo ha sido destruido: " + child.exitValue());
         }
         reader.join();
-        System.out.println("Padre finalizado.");
+        System.out.println("Padre finalizado");
     }
 }
