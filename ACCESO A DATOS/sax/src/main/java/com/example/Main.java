@@ -14,7 +14,7 @@ public class Main {
             SAXParser parser = factory.newSAXParser();
 
             Libro handler = new Libro();
-            parser.parse("libros.xml", handler);
+            parser.parse("recursos/libros.xml", handler);
 
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             System.out.println(ex.getMessage());
