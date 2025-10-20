@@ -7,7 +7,7 @@ import java.io.*;
 public class Player extends DefaultHandler {
 
     private StringBuilder value;
-    private String playerText;
+    private String playerText = "";
     private int counter = 0;
 
     public Player() {
