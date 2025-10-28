@@ -1,16 +1,16 @@
 package com.jaxb;
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElement;//Import libraries
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Player")
-public class Player {
-    private String Name;
+public class Player {//This class represents one <Player> element in the XML
+    private String Name;//Attributes of the player element
     private String Position;
     private String Nationality;
     private String Club;
 
-    @XmlElement(name = "Name")
+    @XmlElement(name = "Name")//Getters and setters for each attribute
     public String getName() {
         return Name;
     }
@@ -19,7 +19,7 @@ public class Player {
         this.Name = nameValue;
     }
 
-    @XmlElement(name = "Position")
+    @XmlElement(name = "Position")//Getters and setters for each attribute
     public String getPosition() {
         return Position;
     }
@@ -28,7 +28,7 @@ public class Player {
         this.Position = positionValue;
     }
 
-    @XmlElement(name = "Nationality")
+    @XmlElement(name = "Nationality")//Getters and setters for each attribute
     public String getNationality() {
         return Nationality;
     }
@@ -37,7 +37,7 @@ public class Player {
         this.Nationality = nationalityValue;
     }
 
-    @XmlElement(name = "Club")
+    @XmlElement(name = "Club")//Getters and setters for each attribute
     public String getClub() {
         return Club;
     }
