@@ -1,23 +1,40 @@
 package com.jaxb;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
+import java.io.*;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         try {
             File file = new File("recursos/players.xml");
-            JAXBContext jaxbContext = JAXBContext.newInstance(Catalog.class);
+            JAXBContext context = JAXBContext.newInstance(FootballPlayers.class);
+            Unmarshaller unmarshall = context.createUnmarshaller();
+            FootballPlayers players = (FootballPlayers) unmarshall.unmarshal(file);
 
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            Catalog catalog = (Catalog) jaxbUnmarshaller.unmarshal(file);
-
-            for (Player player : catalog.getPlayer()) {
+            List<Player> playersList = players.getPlayer();
+            for (int i = 0; i < playersList.size(); i++) {
+                Player player = playersList.get(i);
                 System.out.println(player);
+
+                try {
+                    String playerText = "";
+                    File filePlayer = new File(player.getName() + ".txt");
+                    FileWriter writer = new FileWriter(filePlayer);
+                    playerText += "Name: " + player.getName() + "\n";
+                    playerText += "Position: " + player.getPosition() + "\n";
+                    playerText += "Nationality: " + player.getNationality() + "\n";
+                    playerText += "Club: " + player.getClub() + "\n";
+                    writer.write(playerText);
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
-        } catch (Exception e) {
+        } catch (JAXBException e) {
             e.printStackTrace();
         }
     }

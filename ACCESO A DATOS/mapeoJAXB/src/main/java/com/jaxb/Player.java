@@ -11,20 +11,40 @@ public class Player {
     private String Club;
 
     @XmlElement(name = "Name")
-    public String getName() { return Name; }
-    public void setName(String name) { this.Name = name; }
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String nameValue) {
+        this.Name = nameValue;
+    }
 
     @XmlElement(name = "Position")
-    public String getPosition() { return Position; }
-    public void setPosition(String position) { this.Position = position; }
+    public String getPosition() {
+        return Position;
+    }
+
+    public void setPosition(String positionValue) {
+        this.Position = positionValue;
+    }
 
     @XmlElement(name = "Nationality")
-    public String getNationality() { return Nationality; }
-    public void setNationality(String nationality) { this.Nationality = nationality; }
+    public String getNationality() {
+        return Nationality;
+    }
+
+    public void setNationality(String nationalityValue) {
+        this.Nationality = nationalityValue;
+    }
 
     @XmlElement(name = "Club")
-    public String getClub() { return Club; }
-    public void setClub(String club) { this.Club = club; }
+    public String getClub() {
+        return Club;
+    }
+
+    public void setClub(String clubValue) {
+        this.Club = clubValue;
+    }
 
     @Override
     public String toString() {
