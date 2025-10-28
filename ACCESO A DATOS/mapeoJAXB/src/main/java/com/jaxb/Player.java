@@ -45,9 +45,4 @@ public class Player {
     public void setClub(String clubValue) {
         this.Club = clubValue;
     }
-
-    @Override
-    public String toString() {
-        return "Name: " + Name + "\nPosition: " + Position + "\nNationality: " + Nationality + "\nClub: " + Club + "\n";
-    }
 }

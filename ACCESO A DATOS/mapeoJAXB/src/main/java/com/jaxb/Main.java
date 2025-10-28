@@ -17,10 +17,8 @@ public class Main {
             List<Player> playersList = players.getPlayer();
             for (int i = 0; i < playersList.size(); i++) {
                 Player player = playersList.get(i);
-                System.out.println(player);
-
+                String playerText = "";
                 try {
-                    String playerText = "";
                     File filePlayer = new File(player.getName() + ".txt");
                     FileWriter writer = new FileWriter(filePlayer);
                     playerText += "Name: " + player.getName() + "\n";
@@ -32,6 +30,7 @@ public class Main {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                System.out.println(playerText);
             }
 
         } catch (JAXBException e) {
