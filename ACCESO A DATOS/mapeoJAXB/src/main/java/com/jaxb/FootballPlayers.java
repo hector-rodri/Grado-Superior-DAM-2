@@ -13,7 +13,7 @@ public class FootballPlayers {
         return player;
     }
 
-    public void setPlayer(List<Player> book) {
-        this.player = book;
+    public void setPlayer(List<Player> player) {
+        this.player = player;
     }
 }
