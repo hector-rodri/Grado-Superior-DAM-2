@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         openWindow.setOnClickListener {
-
+            val intent = Intent(this, MainActivity2::class.java)
+            startActivity(intent)
         }
 
     }
@@ -59,5 +60,15 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy llamado")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d(TAG, "onSaveInstanceState llamado")
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        Log.d(TAG, "onRestoreInstanceState llamado")
     }
 }
