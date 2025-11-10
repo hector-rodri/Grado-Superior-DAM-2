@@ -1,0 +1,28 @@
+CREATE TABLE Chef (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL,
+    especialidad TEXT
+);
+
+CREATE TABLE Curso (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL,
+    chef_id INTEGER,
+    duracion INTEGER,
+    FOREIGN KEY (chef_id) REFERENCES Chef(id)
+);
+
+CREATE TABLE Receta (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    curso_id INTEGER,
+    nombre TEXT NOT NULL,
+    dificultad TEXT,
+    FOREIGN KEY (curso_id) REFERENCES Curso(id)
+);
+
+CREATE TABLE Alumno (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL,
+    curso_id INTEGER,
+    FOREIGN KEY (curso_id) REFERENCES Curso(id)
+);
