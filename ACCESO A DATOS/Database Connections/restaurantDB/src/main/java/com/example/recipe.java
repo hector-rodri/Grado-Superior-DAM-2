@@ -1,5 +1,9 @@
 package com.example;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class recipe {
     private int id;
     private String name;
@@ -8,8 +12,22 @@ public class recipe {
     private int time;
     private int courseId; //Foreign key to Course
 
-    public recipe() {
+    public recipe(String name, String description, int difficulty, int time, int courseId) {
+        this.name = name;
+        this.description = description;
+        this.difficulty = difficulty;
+        this.time = time;
+        this.courseId = courseId;
 
+    }
+
+    public recipe(int id, String name, String description, int difficulty, int time, int courseId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.difficulty = difficulty;
+        this.time = time;
+        this.courseId = courseId;
     }
 
     public int getId() {
@@ -59,4 +77,76 @@ public class recipe {
     public void setCourseId(int courseIdValue) {
         this.courseId = courseIdValue;
     }
+
+    public void insertRecipe(recipe recipe) {
+        String insert = "INSERT INTO Receta(curso_id, nombre, dificultad) VALUES (?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
+             PreparedStatement pstmt = connection.prepareStatement(insert)) {
+
+            pstmt.setInt(1, recipe.getCourseId());
+            pstmt.setString(2, recipe.getName());
+            pstmt.setInt(3, recipe.getDifficulty());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public List<recipe> getAllRecipes() {
+        List<recipe> recipes = new ArrayList<>();
+        String query = "SELECT * FROM Receta";
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                recipe r = new recipe(
+                        rs.getInt("id"),
+                        rs.getString("nombre"),
+                        rs.getString("descripcion"),
+                        rs.getInt("dificultad"),
+                        rs.getInt("tiempo"),
+                        rs.getInt("curso_id")
+                );
+                recipes.add(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return recipes;
+    }
+
+    public void updateRecipe(recipe recipe) {
+        String update = "UPDATE Receta SET curso_id = ?, nombre = ?, dificultad = ? WHERE id = ?";
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
+             PreparedStatement pstmt = connection.prepareStatement(update)) {
+
+            pstmt.setInt(1, recipe.getCourseId());
+            pstmt.setString(2, recipe.getName());
+            pstmt.setInt(3, recipe.getDifficulty());
+            pstmt.setInt(4, recipe.getId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteRecipe(int recipeId) {
+        String delete = "DELETE FROM Receta WHERE id = ?";
+
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
+             PreparedStatement pstmt = connection.prepareStatement(delete)) {
+
+            pstmt.setInt(1, recipeId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }
