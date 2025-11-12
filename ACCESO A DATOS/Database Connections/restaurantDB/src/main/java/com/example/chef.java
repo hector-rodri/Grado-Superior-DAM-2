@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class chef {
-    private int id;//PK
+    private int id;
     private String name;
     private String speciality;
 
@@ -14,7 +14,7 @@ public class chef {
         this.speciality = speciality;
     }
 
-    public chef(int id,String name, String speciality) {
+    public chef(int id, String name, String speciality) {
         this.id = id;
         this.name = name;
         this.speciality = speciality;
@@ -47,51 +47,48 @@ public class chef {
     public void insertChef(chef chef) {
         String insert = "INSERT INTO Chef(nombre, especialidad) VALUES (?, ?)";
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-            PreparedStatement pstmt = connection.prepareStatement(insert)) {
+        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
+                PreparedStatement ps = connect.prepareStatement(insert)) {
 
-            pstmt.setString(1, chef.getName());
-            pstmt.setString(2, chef.getSpeciality());
-            pstmt.executeUpdate();
+            ps.setString(1, chef.getName());
+            ps.setString(2, chef.getSpeciality());
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     public List<chef> getAllChefs() {
         List<chef> chefs = new ArrayList<>();
         String query = "SELECT * FROM Chef";
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-             Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
+                Statement stmt = connect.createStatement();
+                ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
                 chef chef = new chef(
                         rs.getInt("id"),
                         rs.getString("nombre"),
-                        rs.getString("especialidad")
-                );
+                        rs.getString("especialidad"));
                 chefs.add(chef);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return chefs;
     }
 
     public void updateChef(chef chef) {
         String update = "UPDATE Chef SET nombre = ?, especialidad = ? WHERE id = ?";
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-             PreparedStatement pstmt = connection.prepareStatement(update)) {
+        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
+                PreparedStatement ps = connect.prepareStatement(update)) {
 
-            pstmt.setString(1, chef.getName());
-            pstmt.setString(2, chef.getSpeciality());
-            pstmt.setInt(3, chef.getId());
-            pstmt.executeUpdate();
+            ps.setString(1, chef.getName());
+            ps.setString(2, chef.getSpeciality());
+            ps.setInt(3, chef.getId());
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -100,11 +97,11 @@ public class chef {
     public void deleteChef(int chefId) {
         String delete = "DELETE FROM Chef WHERE id = ?";
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-             PreparedStatement pstmt = connection.prepareStatement(delete)) {
+        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
+                PreparedStatement ps = connect.prepareStatement(delete)) {
 
-            pstmt.setInt(1, chefId);
-            pstmt.executeUpdate();
+            ps.setInt(1, chefId);
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
