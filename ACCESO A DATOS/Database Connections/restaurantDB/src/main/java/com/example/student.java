@@ -65,7 +65,7 @@ public class student {
             ps.setInt(3, student.getCourseId());
             ps.executeUpdate();//Execute the query
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error inserting student: " + e.getMessage());
         }
     }
 
@@ -86,7 +86,7 @@ public class student {
                 students.add(s);//Add the student to the list
             }
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error retrieving students: " + e.getMessage());
         }
         return students;//Return the list of students
     }
@@ -107,7 +107,7 @@ public class student {
             }
             return true;//Return true if the update was successful
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error updating student: " + e.getMessage());
             return false;
         }
     }
@@ -125,7 +125,7 @@ public class student {
             }
             return true;//Return true if the deletion was successful
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error deleting student: " + e.getMessage());
             return false;
         }
     }

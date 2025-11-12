@@ -77,7 +77,7 @@ public class course {
             ps.setInt(4, course.getChefId());
             ps.executeUpdate();//Execute the query
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error inserting course: " + e.getMessage());
         }
     }
 
@@ -99,7 +99,7 @@ public class course {
                 courses.add(c);//Add the course to the list
             }
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error retrieving courses: " + e.getMessage());
         }
         return courses;//Return the list of courses
     }
@@ -120,7 +120,7 @@ public class course {
             }
             return true;//Return true if successful
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error updating course: " + e.getMessage());
             return false;
         }
     }
@@ -138,7 +138,7 @@ public class course {
             }
             return true;//Return true if successful
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error deleting course: " + e.getMessage());
             return false;
         }
     }

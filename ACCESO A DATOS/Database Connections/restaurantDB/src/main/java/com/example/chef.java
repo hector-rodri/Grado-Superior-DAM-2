@@ -53,7 +53,7 @@ public class chef {
             ps.setString(2, chef.getSpeciality());
             ps.executeUpdate();//Execute the query
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error inserting chef: " + e.getMessage());
         }
     }
 
@@ -73,7 +73,7 @@ public class chef {
                 chefs.add(chef);//Add the chef to the list
             }
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error retrieving chefs: " + e.getMessage());
         }
         return chefs;//Return the list of chefs
     }
@@ -93,7 +93,7 @@ public class chef {
             }
             return true;//Return true if successful
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error updating chef: " + e.getMessage());
             return false;
         }
     }
@@ -111,7 +111,7 @@ public class chef {
             }
             return true;//Return true if successful
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error deleting chef: " + e.getMessage());
             return false;
         }
     }

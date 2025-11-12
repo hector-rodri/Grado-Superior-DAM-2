@@ -88,7 +88,7 @@ public class recipe {
             ps.setInt(3, recipe.getDifficulty());
             ps.executeUpdate();//Execute the query
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error inserting recipe: " + e.getMessage());
         }
     }
 
@@ -111,7 +111,7 @@ public class recipe {
                 recipes.add(r);//Add the recipe to the list
             }
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error retrieving recipes: " + e.getMessage());
         }
         return recipes;//Return the list of recipes
     }
@@ -133,7 +133,7 @@ public class recipe {
 
             return true;//Return true if the update was successful
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error updating recipe: " + e.getMessage());
             return false;
         }
     }
@@ -151,7 +151,7 @@ public class recipe {
             }
             return true;//Return true if the deletion was successful
         } catch (SQLException e) {//Catch any SQL exception
-            e.printStackTrace();
+            System.out.println("Error deleting recipe: " + e.getMessage());
             return false;
         }
     }

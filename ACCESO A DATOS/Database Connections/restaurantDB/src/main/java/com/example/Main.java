@@ -1,11 +1,10 @@
-package com.example;//Package name
+package com.example;
 
 import java.sql.*;//Import all libraries
 import java.util.*;
 
 public class Main {
     private static final Scanner sc = new Scanner(System.in);//Scanner for user input
-
     public static void main(String[] args) {
         Main m = new Main();
         m.createTables();//Create database tables if they don't exist
@@ -18,7 +17,7 @@ public class Main {
             System.out.println("3 - Manage students");
             System.out.println("4 - Manage recipes");
             System.out.println("5 - Exit");
-            int choice = sc.nextInt();//Read user choice
+            int choice = validateInput();//Read user choice
 
             switch (choice) {//Switch case for menu options
                 case 1:
@@ -38,6 +37,19 @@ public class Main {
                     return;//Exit the program
                 default:
                     System.out.println("Invalid option");//If user enters invalid option
+            }
+        }
+    }
+
+    public static int validateInput() {//Method to read user option
+        int option;
+        while(true) {//Loop until valid input
+            String input = sc.nextLine();//Read user input
+            try {
+                option = Integer.parseInt(input);//Convert input to integer
+                return option;//Return the valid option
+            } catch(NumberFormatException e) {//Catch conversion exception
+                System.out.println("Error, please enter a number");
             }
         }
     }
@@ -80,11 +92,10 @@ public class Main {
             System.out.println("3 - Update chef");
             System.out.println("4 - Delete chef");
             System.out.println("5 - Back");
-            int choice = sc.nextInt();//Read user choice
+            int choice = validateInput();//Read user choice
 
             switch (choice) {//Switch case for chef menu
                 case 1://Add a new chef
-                    sc.nextLine();
                     System.out.print("Name: ");
                     String name = sc.nextLine();//Get chef name
                     System.out.print("Speciality: ");
@@ -106,8 +117,7 @@ public class Main {
                     break;
                 case 3://Update chef
                     System.out.print("ID to update: ");
-                    int id = sc.nextInt();//Get chef ID
-                    sc.nextLine();
+                    int id = validateInput();//Get chef ID
                     System.out.print("New name: ");
                     String newName = sc.nextLine();//Get new name
                     System.out.print("New speciality: ");
@@ -122,7 +132,7 @@ public class Main {
                     break;
                 case 4://Delete chef
                     System.out.print("ID to delete: ");
-                    int deleteId = sc.nextInt();//Get ID to delete
+                    int deleteId = validateInput();//Get ID to delete
                     boolean deleted = chef.deleteChef(deleteId);//Delete from database
                     if (!deleted) {//If not found
                         System.out.println("No records found");
@@ -147,19 +157,18 @@ public class Main {
             System.out.println("3 - Update Course");
             System.out.println("4 - Delete Course");
             System.out.println("5 - Back");
-            int choice = sc.nextInt();//Read user choice
+            int choice = validateInput();//Read user choice
 
             switch (choice) {//Switch case for course menu
                 case 1://Add new course
-                    sc.nextLine();
                     System.out.print("Name: ");
                     String name = sc.nextLine();//Get course name
                     System.out.print("Description: ");
                     String description = sc.nextLine();//Get description
                     System.out.print("Duration: ");
-                    int duration = sc.nextInt();//Get duration
+                    int duration = validateInput();//Get duration
                     System.out.print("Chef ID: ");
-                    int chefId = sc.nextInt();//Get chef ID
+                    int chefId = validateInput();//Get chef ID
                     course newCourse = new course(name, description, duration, chefId);//Create new course
                     course.insertCourse(newCourse);//Insert into database
                     System.out.println("Course added");
@@ -178,16 +187,15 @@ public class Main {
                     break;
                 case 3://Update course
                     System.out.print("ID to update: ");
-                    int id = sc.nextInt();//Get course ID
-                    sc.nextLine();
+                    int id = validateInput();//Get ID
                     System.out.print("New name: ");
                     String newName = sc.nextLine();//Get new name
                     System.out.print("New description: ");
                     String newDesc = sc.nextLine();//Get new description
                     System.out.print("New duration: ");
-                    int newDuration = sc.nextInt();//Get new duration
+                    int newDuration = validateInput();//Get new duration
                     System.out.print("New Chef ID: ");
-                    int newChefId = sc.nextInt();//Get new chef ID
+                    int newChefId = validateInput();//Get new chef ID
                     course updatedCourse = new course(id, newName, newDesc, newDuration, newChefId);//Create updated course
                     boolean updated = course.updateCourse(updatedCourse);//Update in database
                     if (!updated){//If no record found
@@ -198,7 +206,7 @@ public class Main {
                     break;
                 case 4://Delete course
                     System.out.print("ID to delete: ");
-                    int deleteId = sc.nextInt();//Get ID to delete
+                    int deleteId = validateInput();//Get ID
                     boolean deleted = course.deleteCourse(deleteId);//Delete from database
                     if (!deleted) {//If not found
                         System.out.println("No records found");
@@ -223,17 +231,16 @@ public class Main {
             System.out.println("3 - Update Student");
             System.out.println("4 - Delete Student");
             System.out.println("5 - Back");
-            int choice = sc.nextInt();//Read user choice
+            int choice = validateInput();//Read user choice
 
             switch (choice) {//Switch case for student menu
                 case 1://Add student
-                    sc.nextLine();
                     System.out.print("Name: ");
                     String name = sc.nextLine();//Get name
                     System.out.print("Surname: ");
                     String surname = sc.nextLine();//Get surname
                     System.out.print("Course ID: ");
-                    int courseId = sc.nextInt();//Get course ID
+                    int courseId = validateInput();//Get course ID
                     student newStudent = new student(name, surname, courseId);//Create new student
                     student.insertStudent(newStudent);//Insert into database
                     System.out.println("Student added");
@@ -251,14 +258,13 @@ public class Main {
                     break;
                 case 3://Update student
                     System.out.print("ID to update: ");
-                    int id = sc.nextInt();//Get ID
-                    sc.nextLine();
+                    int id = validateInput();//Get ID
                     System.out.print("New name: ");
                     String newName = sc.nextLine();//Get new name
                     System.out.print("New surname: ");
                     String newSurname = sc.nextLine();//Get new surname
                     System.out.print("New course ID: ");
-                    int newCourseId = sc.nextInt();//Get new course ID
+                    int newCourseId = validateInput();//Get new course ID
                     student updatedStudent = new student(id, newName, newSurname, newCourseId);//Create updated student
                     boolean updated = student.updateStudent(updatedStudent);//Update in database
                     if (!updated){//If no record found
@@ -269,7 +275,7 @@ public class Main {
                     break;
                 case 4://Delete student
                     System.out.print("ID to delete: ");
-                    int deleteId = sc.nextInt();//Get ID
+                    int deleteId = validateInput();//Get ID
                     boolean deleted = student.deleteStudent(deleteId);//Delete from database
                     if (!deleted){//If not found
                         System.out.println("No records found");
@@ -294,21 +300,20 @@ public class Main {
             System.out.println("3 - Update Recipe");
             System.out.println("4 - Delete Recipe");
             System.out.println("5 - Back");
-            int choice = sc.nextInt();//Read user choice
+            int choice = validateInput();//Read user choice
 
             switch (choice) {//Switch case for recipe menu
                 case 1://Add recipe
-                    sc.nextLine();
                     System.out.print("Name: ");
                     String name = sc.nextLine();//Get recipe name
                     System.out.print("Description: ");
                     String desc = sc.nextLine();//Get description
                     System.out.print("Difficulty (1-5): ");
-                    int difficulty = sc.nextInt();//Get difficulty
+                    int difficulty = validateInput();//Get difficulty
                     System.out.print("Time: ");
-                    int time = sc.nextInt();//Get time
+                    int time = validateInput();//Get time
                     System.out.print("Course ID: ");
-                    int courseId = sc.nextInt();//Get course ID
+                    int courseId = validateInput();//Get course ID
                     recipe newRecipe = new recipe(name, desc, difficulty, time, courseId);//Create new recipe
                     recipe.insertRecipe(newRecipe);//Insert into database
                     System.out.println("Recipe added");//Confirm message
@@ -327,18 +332,17 @@ public class Main {
                     break;
                 case 3://Update recipe
                     System.out.print("ID to update: ");
-                    int id = sc.nextInt();//Get ID
-                    sc.nextLine();
+                    int id = validateInput();//Get ID
                     System.out.print("New name: ");
                     String newName = sc.nextLine();//Get new name
                     System.out.print("New description: ");
                     String newDesc = sc.nextLine();//Get new description
                     System.out.print("New difficulty: ");
-                    int newDifficulty = sc.nextInt();//Get new difficulty
+                    int newDifficulty = validateInput();//Get new difficulty
                     System.out.print("New time: ");
-                    int newTime = sc.nextInt();//Get new time
+                    int newTime = validateInput();//Get new time
                     System.out.print("New course ID: ");
-                    int newCourseId = sc.nextInt();//Get new course ID
+                    int newCourseId = validateInput();//Get new course ID
                     recipe updatedRecipe = new recipe(id, newName, newDesc, newDifficulty, newTime, newCourseId);//Create updated recipe
                     boolean updated = recipe.updateRecipe(updatedRecipe);//Update in database
                     if (!updated){//If no record found
@@ -350,7 +354,7 @@ public class Main {
                     break;
                 case 4://Delete recipe
                     System.out.print("ID to delete: ");
-                    int deleteId = sc.nextInt();//Get ID
+                    int deleteId = validateInput();//Get ID
                     boolean deleted = recipe.deleteRecipe(deleteId);//Delete from database
                     if (!deleted){//If not found
                         System.out.println("No records found");
