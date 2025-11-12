@@ -1,32 +1,31 @@
-package com.example;
+package com.example;//Package name
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;//Import all libraries
+import java.util.*;
 
 public class course {
-    private int id;
+    private int id;//Variables to store course attributes
     private String name;
     private String description;
     private int duration;
     private int chefId;
 
-    public course(String name, String description, int duration, int chefId) {
+    public course(String name, String description, int duration, int chefId) {//Constructor without ID
+        this.name = name;//Set the attributes
+        this.description = description;
+        this.duration = duration;
+        this.chefId = chefId;
+    }
+
+    public course(int id, String name, String description, int duration, int chefId) {//Constructor with ID
+        this.id = id;//Set the attributes
         this.name = name;
         this.description = description;
         this.duration = duration;
         this.chefId = chefId;
     }
 
-    public course(int id, String name, String description, int duration, int chefId) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.duration = duration;
-        this.chefId = chefId;
-    }
-
-    public int getId() {
+    public int getId() {//Getter methods
         return id;
     }
 
@@ -46,7 +45,7 @@ public class course {
         return chefId;
     }
 
-    public void setId(int idValue) {
+    public void setId(int idValue) {//Setter methods
         this.id = idValue;
     }
 
@@ -66,79 +65,79 @@ public class course {
         this.chefId = chefIdValue;
     }
 
-    public void insertCourse(course course) {
-        String insert = "INSERT INTO Curso(nombre, descripcion, duracion, chef_id) VALUES (?, ?, ?, ?)";
+    public void insertCourse(course course) {//Method to insert a course into the database
+        String insert = "INSERT INTO Curso(nombre, descripcion, duracion, chef_id) VALUES (?, ?, ?, ?)";//SQL query to insert a course
 
-        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-                PreparedStatement ps = connect.prepareStatement(insert)) {
+        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");//Connect to the database
+                PreparedStatement ps = connect.prepareStatement(insert)) {//Prepare the query
 
-            ps.setString(1, course.getName());
+            ps.setString(1, course.getName());//Set query parameters
             ps.setString(2, course.getDescription());
             ps.setInt(3, course.getDuration());
             ps.setInt(4, course.getChefId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
+            ps.executeUpdate();//Execute the query
+        } catch (SQLException e) {//Catch any SQL exception
             e.printStackTrace();
         }
     }
 
-    public List<course> getAllCourses() {
-        List<course> courses = new ArrayList<>();
-        String query = "SELECT * FROM Curso";
+    public List<course> getAllCourses() {//Method to get all courses from the database
+        List<course> courses = new ArrayList<>();//List to store the courses
+        String query = "SELECT * FROM Curso";//SQL query to get all courses
 
-        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-                Statement stmt = connect.createStatement();
-                ResultSet rs = stmt.executeQuery(query)) {
+        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");//Connect to the database
+                Statement stmt = connect.createStatement();//Create a statement for the query
+                ResultSet rs = stmt.executeQuery(query)) {//Execute the query and get results
 
-            while (rs.next()) {
-                course c = new course(
+            while (rs.next()) {//Iterate through results
+                course c = new course(//Create a new course object with data from the result set
                         rs.getInt("id"),
                         rs.getString("nombre"),
                         rs.getString("descripcion"),
                         rs.getInt("duracion"),
                         rs.getInt("chef_id"));
-                courses.add(c);
+                courses.add(c);//Add the course to the list
             }
-        } catch (SQLException e) {
+        } catch (SQLException e) {//Catch any SQL exception
             e.printStackTrace();
         }
-        return courses;
+        return courses;//Return the list of courses
     }
 
-    public boolean updateCourse(course course) {
-        String update = "UPDATE Curso SET nombre = ?, descripcion = ?, duracion = ?, chef_id = ? WHERE id = ?";
-        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-                PreparedStatement ps = connect.prepareStatement(update)) {
+    public boolean updateCourse(course course) {//Method to update a course in the database
+        String update = "UPDATE Curso SET nombre = ?, descripcion = ?, duracion = ?, chef_id = ? WHERE id = ?";//SQL query to update a course
+        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");//Connect to the database
+                PreparedStatement ps = connect.prepareStatement(update)) {//Prepare the query
 
-            ps.setString(1, course.getName());
+            ps.setString(1, course.getName());//Set query parameters
             ps.setString(2, course.getDescription());
             ps.setInt(3, course.getDuration());
             ps.setInt(4, course.getChefId());
             ps.setInt(5, course.getId());
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected == 0) {
+            int rowsAffected = ps.executeUpdate();//Execute the query
+            if (rowsAffected == 0) {//If no rows affected, return false
                 return false;
             }
-            return true;
-        } catch (SQLException e) {
+            return true;//Return true if successful
+        } catch (SQLException e) {//Catch any SQL exception
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean deleteCourse(int courseId) {
-        String delete = "DELETE FROM Curso WHERE id = ?";
+    public boolean deleteCourse(int courseId) {//Method to delete a course from the database
+        String delete = "DELETE FROM Curso WHERE id = ?";//SQL query to delete a course
 
-        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-                PreparedStatement ps = connect.prepareStatement(delete)) {
+        try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");//Connect to the database
+                PreparedStatement ps = connect.prepareStatement(delete)) {//Prepare the query
 
-            ps.setInt(1, courseId);
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected == 0) {
+            ps.setInt(1, courseId);//Set query parameter
+            int rowsAffected = ps.executeUpdate();//Execute the query
+            if (rowsAffected == 0) {//If no rows affected, return false
                 return false;
             }
-            return true;
-        } catch (SQLException e) {
+            return true;//Return true if successful
+        } catch (SQLException e) {//Catch any SQL exception
             e.printStackTrace();
             return false;
         }
