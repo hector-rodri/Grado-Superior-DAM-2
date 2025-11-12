@@ -2,6 +2,7 @@ package com.example;
 
 import java.sql.*;
 import java.util.*;
+
 public class Main {
     private static final Scanner sc = new Scanner(System.in);
 
@@ -83,6 +84,7 @@ public class Main {
 
             switch (choice) {
                 case 1:
+                    sc.nextLine();
                     System.out.print("Name: ");
                     String name = sc.nextLine();
                     System.out.print("Speciality: ");
@@ -99,8 +101,10 @@ public class Main {
                     }
                     break;
                 case 3:
+                    sc.nextLine();
                     System.out.print("ID to update: ");
                     int id = sc.nextInt();
+                    sc.nextLine();
                     System.out.print("New name: ");
                     String newName = sc.nextLine();
                     System.out.print("New speciality: ");
@@ -110,9 +114,9 @@ public class Main {
                     System.out.println("Chef updated");
                     break;
                 case 4:
+                    sc.nextLine();
                     System.out.print("ID to delete: ");
                     int deleteId = sc.nextInt();
-                    sc.nextLine();
                     chef.deleteChef(deleteId);
                     System.out.println("Chef deleted");
                     break;
@@ -137,6 +141,7 @@ public class Main {
 
             switch (choice) {
                 case 1:
+                    sc.nextLine();
                     System.out.print("Name: ");
                     String name = sc.nextLine();
                     System.out.print("Description: ");
@@ -157,6 +162,7 @@ public class Main {
                     }
                     break;
                 case 3:
+                    sc.nextLine();
                     System.out.print("ID to update: ");
                     int id = sc.nextInt();
                     System.out.print("New name: ");
@@ -168,10 +174,15 @@ public class Main {
                     System.out.print("New Chef ID: ");
                     int newChefId = sc.nextInt();
                     course updatedCourse = new course(id, newName, newDesc, newDuration, newChefId);
-                    course.updateCourse(updatedCourse);
-                    System.out.println("Course updated");
+                    boolean updated = course.updateCourse(updatedCourse);
+                    if(updated = false){
+                        System.out.println("The record does not exist");
+                    }else{
+                        System.out.println("Course updated");
+                    }
                     break;
                 case 4:
+                    sc.nextLine();
                     System.out.print("ID to delete: ");
                     int deleteId = sc.nextInt();
                     sc.nextLine();
@@ -199,6 +210,7 @@ public class Main {
 
             switch (choice) {
                 case 1:
+                    sc.nextLine();
                     System.out.print("Name: ");
                     String name = sc.nextLine();
                     System.out.print("Surname: ");
@@ -217,6 +229,7 @@ public class Main {
                     }
                     break;
                 case 3:
+                    sc.nextLine();
                     System.out.print("ID to update: ");
                     int id = sc.nextInt();
                     System.out.print("New name: ");
@@ -230,6 +243,7 @@ public class Main {
                     System.out.println("Student updated");
                     break;
                 case 4:
+                    sc.nextLine();
                     System.out.print("ID to delete: ");
                     int deleteId = sc.nextInt();
                     student.deleteStudent(deleteId);
@@ -256,6 +270,7 @@ public class Main {
 
             switch (choice) {
                 case 1:
+                    sc.nextLine();
                     System.out.print("Name: ");
                     String name = sc.nextLine();
                     System.out.print("Description: ");
@@ -279,6 +294,7 @@ public class Main {
                     }
                     break;
                 case 3:
+                    sc.nextLine();
                     System.out.print("ID to update: ");
                     int id = sc.nextInt();
                     System.out.print("New name: ");
@@ -296,6 +312,7 @@ public class Main {
                     System.out.println("Recipe updated");
                     break;
                 case 4:
+                    sc.nextLine();
                     System.out.print("ID to delete: ");
                     int deleteId = sc.nextInt();
                     recipe.deleteRecipe(deleteId);
