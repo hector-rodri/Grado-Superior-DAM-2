@@ -59,8 +59,8 @@ public class student {
         String insert = "INSERT INTO Student(name, surname, course_id) VALUES (?, ?, ?)";
 
         try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-             PreparedStatement ps = connect.prepareStatement(insert)) {
-                
+                PreparedStatement ps = connect.prepareStatement(insert)) {
+
             ps.setString(1, student.getName());
             ps.setString(2, student.getSurname());
             ps.setInt(3, student.getCourseId());
@@ -75,16 +75,15 @@ public class student {
         String query = "SELECT * FROM Student";
 
         try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-             Statement stmt = connect.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+                Statement stmt = connect.createStatement();
+                ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
                 student s = new student(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("surname"),
-                        rs.getInt("course_id")
-                );
+                        rs.getInt("course_id"));
                 students.add(s);
             }
         } catch (SQLException e) {
@@ -93,32 +92,42 @@ public class student {
         return students;
     }
 
-    public void updateStudent(student student) {
+    public boolean updateStudent(student student) {
         String update = "UPDATE Student SET name = ?, surname = ?, course_id = ? WHERE id = ?";
 
         try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-             PreparedStatement ps = connect.prepareStatement(update)) {
+                PreparedStatement ps = connect.prepareStatement(update)) {
 
             ps.setString(1, student.getName());
             ps.setString(2, student.getSurname());
             ps.setInt(3, student.getCourseId());
             ps.setInt(4, student.getId());
-            ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                return false;
+            }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
-    public void deleteStudent(int studentId) {
+    public boolean deleteStudent(int studentId) {
         String delete = "DELETE FROM Student WHERE id = ?";
 
         try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
-             PreparedStatement ps = connect.prepareStatement(delete)) {
+                PreparedStatement ps = connect.prepareStatement(delete)) {
 
             ps.setInt(1, studentId);
-            ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                return false;
+            }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

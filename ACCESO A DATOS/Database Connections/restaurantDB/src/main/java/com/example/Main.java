@@ -95,13 +95,16 @@ public class Main {
                     break;
                 case 2:
                     List<chef> listChefs = chef.getAllChefs();
-                    for (chef c : listChefs) {
-                        System.out.println(
-                                "ID: " + c.getId() + ", Name: " + c.getName() + ", Speciality: " + c.getSpeciality());
+                    if (listChefs.isEmpty()) {
+                        System.out.println("No records found");
+                    } else {
+                        for (chef c : listChefs) {
+                            System.out.println("ID: " + c.getId() + ", Name: " + c.getName() +
+                                    ", Speciality: " + c.getSpeciality());
+                        }
                     }
                     break;
                 case 3:
-                    sc.nextLine();
                     System.out.print("ID to update: ");
                     int id = sc.nextInt();
                     sc.nextLine();
@@ -110,15 +113,20 @@ public class Main {
                     System.out.print("New speciality: ");
                     String newSpeciality = sc.nextLine();
                     chef updatedChef = new chef(id, newName, newSpeciality);
-                    updatedChef.updateChef(updatedChef);
-                    System.out.println("Chef updated");
+                    boolean updated = chef.updateChef(updatedChef);
+                    if (!updated)
+                        System.out.println("No records found");
+                    else
+                        System.out.println("Chef updated");
                     break;
                 case 4:
-                    sc.nextLine();
                     System.out.print("ID to delete: ");
                     int deleteId = sc.nextInt();
-                    chef.deleteChef(deleteId);
-                    System.out.println("Chef deleted");
+                    boolean deleted = chef.deleteChef(deleteId);
+                    if (!deleted)
+                        System.out.println("No records found");
+                    else
+                        System.out.println("Chef deleted");
                     break;
                 case 5:
                     return;
@@ -145,26 +153,30 @@ public class Main {
                     System.out.print("Name: ");
                     String name = sc.nextLine();
                     System.out.print("Description: ");
-                    String desc = sc.nextLine();
+                    String description = sc.nextLine();
                     System.out.print("Duration: ");
                     int duration = sc.nextInt();
                     System.out.print("Chef ID: ");
                     int chefId = sc.nextInt();
-                    course newCourse = new course(name, desc, duration, chefId);
+                    course newCourse = new course(name, description, duration, chefId);
                     course.insertCourse(newCourse);
                     break;
                 case 2:
                     List<course> coursesList = course.getAllCourses();
-                    for (course c : coursesList) {
-                        System.out.println("ID: " + c.getId() + ", Name: " + c.getName() +
-                                ", Desc: " + c.getDescription() + ", Duration: " + c.getDuration() +
-                                ", Chef ID: " + c.getChefId());
+                    if (coursesList.isEmpty()) {
+                        System.out.println("No records found");
+                    } else {
+                        for (course c : coursesList) {
+                            System.out.println("ID: " + c.getId() + ", Name: " + c.getName() +
+                                    ", Description: " + c.getDescription() + ", Duration: " + c.getDuration() +
+                                    ", Chef ID: " + c.getChefId());
+                        }
                     }
                     break;
                 case 3:
-                    sc.nextLine();
                     System.out.print("ID to update: ");
                     int id = sc.nextInt();
+                    sc.nextLine();
                     System.out.print("New name: ");
                     String newName = sc.nextLine();
                     System.out.print("New description: ");
@@ -175,19 +187,20 @@ public class Main {
                     int newChefId = sc.nextInt();
                     course updatedCourse = new course(id, newName, newDesc, newDuration, newChefId);
                     boolean updated = course.updateCourse(updatedCourse);
-                    if(updated = false){
-                        System.out.println("The record does not exist");
-                    }else{
+                    if (!updated)
+                        System.out.println("No records found");
+                    else
                         System.out.println("Course updated");
-                    }
                     break;
                 case 4:
-                    sc.nextLine();
                     System.out.print("ID to delete: ");
                     int deleteId = sc.nextInt();
-                    sc.nextLine();
-                    course.deleteCourse(deleteId);
-                    System.out.println("Course deleted");
+                    boolean deleted = course.deleteCourse(deleteId);
+                    if (!deleted) {
+                        System.out.println("No records found");
+                    } else {
+                        System.out.println("Course deleted");
+                    }
                     break;
                 case 5:
                     return;
@@ -223,15 +236,19 @@ public class Main {
                     break;
                 case 2:
                     List<student> studentsList = student.getAllStudents();
-                    for (student s : studentsList) {
-                        System.out.println("ID: " + s.getId() + ", Name: " + s.getName() +
-                                ", Surname: " + s.getSurname() + ", Course ID: " + s.getCourseId());
+                    if (studentsList.isEmpty()) {
+                        System.out.println("No records found");
+                    } else {
+                        for (student s : studentsList) {
+                            System.out.println("ID: " + s.getId() + ", Name: " + s.getName() +
+                                    ", Surname: " + s.getSurname() + ", Course ID: " + s.getCourseId());
+                        }
                     }
                     break;
                 case 3:
-                    sc.nextLine();
                     System.out.print("ID to update: ");
                     int id = sc.nextInt();
+                    sc.nextLine();
                     System.out.print("New name: ");
                     String newName = sc.nextLine();
                     System.out.print("New surname: ");
@@ -239,15 +256,19 @@ public class Main {
                     System.out.print("New course ID: ");
                     int newCourseId = sc.nextInt();
                     student updatedStudent = new student(id, newName, newSurname, newCourseId);
-                    student.updateStudent(updatedStudent);
-                    System.out.println("Student updated");
-                    break;
+                    boolean updated = student.updateStudent(updatedStudent);
+                    if (!updated)
+                        System.out.println("No records found");
+                    else
+                        System.out.println("Student updated");
                 case 4:
-                    sc.nextLine();
                     System.out.print("ID to delete: ");
                     int deleteId = sc.nextInt();
-                    student.deleteStudent(deleteId);
-                    System.out.println("Student deleted");
+                    boolean deleted = student.deleteStudent(deleteId);
+                    if (!deleted)
+                        System.out.println("No records found");
+                    else
+                        System.out.println("Student deleted");
                     break;
                 case 5:
                     return;
@@ -277,7 +298,7 @@ public class Main {
                     String desc = sc.nextLine();
                     System.out.print("Difficulty (1-5): ");
                     int difficulty = sc.nextInt();
-                    System.out.print("Time (minutes): ");
+                    System.out.print("Time: ");
                     int time = sc.nextInt();
                     System.out.print("Course ID: ");
                     int courseId = sc.nextInt();
@@ -287,16 +308,20 @@ public class Main {
                     break;
                 case 2:
                     List<recipe> recipesList = recipe.getAllRecipes();
-                    for (recipe r : recipesList) {
-                        System.out.println("ID: " + r.getId() + ", Name: " + r.getName() +
-                                ", Desc: " + r.getDescription() + ", Difficulty: " + r.getDifficulty() +
-                                ", Time: " + r.getTime() + ", Course ID: " + r.getCourseId());
+                    if (recipesList.isEmpty()) {
+                        System.out.println("No recipes found.");
+                    } else {
+                        for (recipe r : recipesList) {
+                            System.out.println("ID: " + r.getId() + ", Name: " + r.getName() +
+                                    ", Description: " + r.getDescription() + ", Difficulty: " + r.getDifficulty() +
+                                    ", Time: " + r.getTime() + ", Course ID: " + r.getCourseId());
+                        }
                     }
                     break;
                 case 3:
-                    sc.nextLine();
                     System.out.print("ID to update: ");
                     int id = sc.nextInt();
+                    sc.nextLine();
                     System.out.print("New name: ");
                     String newName = sc.nextLine();
                     System.out.print("New description: ");
@@ -308,15 +333,20 @@ public class Main {
                     System.out.print("New course ID: ");
                     int newCourseId = sc.nextInt();
                     recipe updatedRecipe = new recipe(id, newName, newDesc, newDifficulty, newTime, newCourseId);
-                    recipe.updateRecipe(updatedRecipe);
-                    System.out.println("Recipe updated");
+                    boolean updated = recipe.updateRecipe(updatedRecipe);
+                    if (!updated)
+                        System.out.println("No records found");
+                    else
+                        System.out.println("Recipe updated");
                     break;
                 case 4:
-                    sc.nextLine();
                     System.out.print("ID to delete: ");
                     int deleteId = sc.nextInt();
-                    recipe.deleteRecipe(deleteId);
-                    System.out.println("Recipe deleted");
+                    boolean deleted = recipe.deleteRecipe(deleteId);
+                    if (!deleted)
+                        System.out.println("No records found");
+                    else
+                        System.out.println("Recipe deleted");
                     break;
                 case 5:
                     return;

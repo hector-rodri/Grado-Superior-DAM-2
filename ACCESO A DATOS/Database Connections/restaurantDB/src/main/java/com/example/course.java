@@ -107,7 +107,6 @@ public class course {
 
     public boolean updateCourse(course course) {
         String update = "UPDATE Curso SET nombre = ?, descripcion = ?, duracion = ?, chef_id = ? WHERE id = ?";
-        int updated = 0;
         try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
                 PreparedStatement ps = connect.prepareStatement(update)) {
 
@@ -116,28 +115,32 @@ public class course {
             ps.setInt(3, course.getDuration());
             ps.setInt(4, course.getChefId());
             ps.setInt(5, course.getId());
-            updated = ps.executeUpdate();
-
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                return false;
+            }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        if (updated > 0) {
-            return true;
-        } else {
             return false;
         }
     }
 
-    public void deleteCourse(int courseId) {
+    public boolean deleteCourse(int courseId) {
         String delete = "DELETE FROM Curso WHERE id = ?";
 
         try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
                 PreparedStatement ps = connect.prepareStatement(delete)) {
 
             ps.setInt(1, courseId);
-            ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                return false;
+            }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

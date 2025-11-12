@@ -79,7 +79,7 @@ public class chef {
         return chefs;
     }
 
-    public void updateChef(chef chef) {
+    public boolean updateChef(chef chef) {
         String update = "UPDATE Chef SET nombre = ?, especialidad = ? WHERE id = ?";
 
         try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
@@ -88,22 +88,32 @@ public class chef {
             ps.setString(1, chef.getName());
             ps.setString(2, chef.getSpeciality());
             ps.setInt(3, chef.getId());
-            ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                return false;
+            }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
-    public void deleteChef(int chefId) {
+    public boolean deleteChef(int chefId) {
         String delete = "DELETE FROM Chef WHERE id = ?";
 
         try (Connection connect = DriverManager.getConnection("jdbc:sqlite:cookschool.db");
                 PreparedStatement ps = connect.prepareStatement(delete)) {
 
             ps.setInt(1, chefId);
-            ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                return false;
+            }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }
