@@ -1,6 +1,6 @@
 package com.example;
 
-public class Main {
+public class p {
     public static void main(String[] args) {
         long pid = ProcessHandle.current().pid();
         System.out.println("Id of the process (PID): " + pid);
