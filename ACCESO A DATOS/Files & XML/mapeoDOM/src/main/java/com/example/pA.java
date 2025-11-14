@@ -4,7 +4,7 @@ import java.io.*;//Import libraries
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 
-public class Main {
+public class pA {
     public static void main(String[] args) {
         File file = new File("players.xml");//Create a file object for xml
         open_XML_DOM(file);//Call method to open and parse the XML file
