@@ -16,6 +16,8 @@ public class pC {
 
             OutputStreamWriter writer = new OutputStreamWriter(process.getOutputStream());
             writer.write(input);
+            writer.flush();
+            writer.close();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
