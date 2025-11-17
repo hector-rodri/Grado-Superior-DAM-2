@@ -4,8 +4,9 @@
     <class>com.example.Persona</class>
     <class>com.example.Empresa</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="objectdb:objectdb_example.odb"/>
-      <property name="javax.persistence.jdbc.driver" value="com.objectdb.Driver"/>
+      <property name="javax.persistence.jdbc.url"
+        value="objectdb:C:/Users/hector/Desktop/proyectos/Grado-Superior-DAM-2/recursos/objectdb_example.odb" />
+      <property name="javax.persistence.jdbc.driver" value="com.objectdb.Driver" />
     </properties>
   </persistence-unit>
 </persistence>
