@@ -1,7 +1,7 @@
 package com.example;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class Chef {
@@ -21,6 +21,7 @@ public class Chef {
     public Chef(String name, String specialty) {
         this.name = name;
         this.specialty = specialty;
+        this.courses = new ArrayList<>();
     }
 
     public int getId() {
@@ -53,5 +54,10 @@ public class Chef {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+    
+    public void addCourse(Course course) {
+        this.courses.add(course);
+        course.setChef(this);
     }
 }
