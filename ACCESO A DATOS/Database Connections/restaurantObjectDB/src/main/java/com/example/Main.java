@@ -2,10 +2,41 @@ package com.example;
 
 import javax.persistence.*;
 
+import java.util.List;
+import java.util.Scanner;
+
 public class Main {
+    private static final Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("objectdb_restaurant");
         EntityManager em = emf.createEntityManager();
+
+        // while (true) {}
+        System.out.println("Welcome to the Cooking School Management System!");
+        System.out.println("Choose an option:");
+        System.out.println("1 - Manage chefs");
+        System.out.println("2 - Manage courses");
+        System.out.println("3 - Manage students");
+        System.out.println("4 - Manage recipes");
+        System.out.println("5 - Exit");
+        int choice = sc.nextInt();
+
+        switch (choice) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                System.out.println("Exiting the system...");
+                return;
+            default:
+                System.out.println("Invalid option");
+        }
 
         try {
             em.getTransaction().begin();
@@ -30,12 +61,42 @@ public class Main {
             em.persist(chef2);
 
             em.getTransaction().commit();
-        
-
 
         } finally {
             em.close();
             emf.close();
+        }
+    }
+
+    private static void manageChefs() {
+        while (true) {
+            System.out.println("--Manage Chefs--");
+            System.out.println("1 - Add chef");
+            System.out.println("2 - View chefs");
+            System.out.println("3 - Update chef");
+            System.out.println("4 - Delete chef");
+            System.out.println("5 - Back");
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+
+                    break;
+                case 5:
+                    return;
+                default:
+                    System.out.println("Invalid option");
+
+            }
         }
     }
 }
