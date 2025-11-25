@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.widget.PopupMenu
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,18 +18,7 @@ class MainActivity : AppCompatActivity() {
         val editTxt = findViewById<EditText>(R.id.editTextText)
         val editTxt2 = findViewById<EditText>(R.id.editTextText2)
         val btnCreate = findViewById<Button>(R.id.button)
-        val textResult = findViewById<TextView>(R.id.textView)
-
-        val launcher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val resum = result.data?.getStringExtra("resum")
-                textResult.text = resum
-            } else {
-                textResult.text = "Operació cancel·lada"
-            }
-        }
+        val fabOptions = findViewById<FloatingActionButton>(R.id.fabID);
 
         btnCreate.setOnClickListener {
             val txt1 = editTxt.text.toString()
@@ -42,7 +31,12 @@ class MainActivity : AppCompatActivity() {
 
             intent.putExtra("value1", txt1.toInt())
             intent.putExtra("value2", txt2.toInt())
-            launcher.launch(intent)
+            startActivity(intent);
+        }
+
+        fabOptions.setOnClickListener { view ->
+            val popup = PopupMenu(this, view)
+
         }
     }
 }
