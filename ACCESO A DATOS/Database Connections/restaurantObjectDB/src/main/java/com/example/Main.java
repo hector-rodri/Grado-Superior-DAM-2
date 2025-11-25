@@ -63,14 +63,13 @@ public class Main {
                     Chef chef = new Chef(name, specialty);
                     em.persist(chef);
                     em.getTransaction().commit();
-                    if (chef.getId() != 0) {
-                        System.out.println("Chef added");
-                    } else {
-                        System.out.println("Error adding chef");
-                    }
+                    System.out.println("Chef added");
                     break;
                 case 2:
                     List<Chef> chefs = em.createQuery("SELECT c FROM Chef c", Chef.class).getResultList();
+                    if (chefs.isEmpty()) {
+                        System.out.println("Chefs not found");
+                    }
                     for (Chef c : chefs) {
                         System.out.println(
                                 "ID: " + c.getId() + ", Name: " + c.getName() + ", Speciality: " + c.getSpecialty());
@@ -86,7 +85,6 @@ public class Main {
                         String newName = sc.nextLine();
                         System.out.print("Enter new specialty: ");
                         String newSpecialty = sc.nextLine();
-
                         em.getTransaction().begin();
                         chefToUpdate.setName(newName);
                         chefToUpdate.setSpecialty(newSpecialty);
@@ -100,7 +98,6 @@ public class Main {
                     System.out.print("Enter chef ID to delete: ");
                     long idDelete = sc.nextLong();
                     sc.nextLine();
-
                     Chef chefToDelete = em.find(Chef.class, idDelete);
                     if (chefToDelete != null) {
                         em.getTransaction().begin();
@@ -137,12 +134,10 @@ public class Main {
                     System.out.print("Enter duration: ");
                     int duration = sc.nextInt();
                     sc.nextLine();
-
                     System.out.print("Enter chef ID for this course: ");
                     long chefId = sc.nextLong();
                     sc.nextLine();
                     Chef chef = em.find(Chef.class, chefId);
-
                     if (chef != null) {
                         em.getTransaction().begin();
                         Course course = new Course(courseName, duration);
@@ -156,10 +151,13 @@ public class Main {
                     break;
                 case 2:
                     List<Course> courses = em.createQuery("SELECT c FROM Course c", Course.class).getResultList();
+                    if (courses.isEmpty()) {
+                        System.out.println("Courses not found");
+                    }
                     for (Course c : courses) {
-                        System.out.println("ID: " + c.getId() + ", Name: " + c.getName() +
-                                ", Duration: " + c.getDuration() +
-                                ", Chef: " + (c.getChef() != null ? c.getChef().getName() : "None"));
+                        System.out.println(
+                                "ID: " + c.getId() + ", Name: " + c.getName() + ", Duration: " + c.getDuration() +
+                                        ", Chef: " + (c.getChef() != null ? c.getChef().getName() : "None"));
                     }
                     break;
                 case 3:
@@ -167,19 +165,16 @@ public class Main {
                     int idUpdate = sc.nextInt();
                     sc.nextLine();
                     Course courseToUpdate = em.find(Course.class, idUpdate);
-
                     if (courseToUpdate != null) {
                         System.out.print("Enter new name: ");
                         String newName = sc.nextLine();
                         System.out.print("Enter new duration: ");
                         int newDuration = sc.nextInt();
                         sc.nextLine();
-
                         System.out.print("Enter new chef ID: ");
                         long newChefId = sc.nextLong();
                         sc.nextLine();
                         Chef newChef = em.find(Chef.class, newChefId);
-
                         em.getTransaction().begin();
                         courseToUpdate.setName(newName);
                         courseToUpdate.setDuration(newDuration);
@@ -197,7 +192,6 @@ public class Main {
                     int idDelete = sc.nextInt();
                     sc.nextLine();
                     Course courseToDelete = em.find(Course.class, idDelete);
-
                     if (courseToDelete != null) {
                         em.getTransaction().begin();
                         em.remove(courseToDelete);
@@ -232,12 +226,10 @@ public class Main {
                     String recipeName = sc.nextLine();
                     System.out.print("Enter difficulty: ");
                     String difficulty = sc.nextLine();
-
                     System.out.print("Enter course ID for this recipe: ");
                     int courseId = sc.nextInt();
                     sc.nextLine();
                     Course course = em.find(Course.class, courseId);
-
                     if (course != null) {
                         em.getTransaction().begin();
                         Recipe recipe = new Recipe(recipeName, difficulty);
@@ -251,6 +243,9 @@ public class Main {
                     break;
                 case 2:
                     List<Recipe> recipes = em.createQuery("SELECT r FROM Recipe r", Recipe.class).getResultList();
+                    if (recipes.isEmpty()) {
+                        System.out.println("Recipes not found");
+                    }
                     for (Recipe r : recipes) {
                         System.out.println("ID: " + r.getId() + ", Name: " + r.getName() +
                                 ", Difficulty: " + r.getDifficulty() +
@@ -262,18 +257,15 @@ public class Main {
                     int idUpdate = sc.nextInt();
                     sc.nextLine();
                     Recipe recipeToUpdate = em.find(Recipe.class, idUpdate);
-
                     if (recipeToUpdate != null) {
                         System.out.print("Enter new name: ");
                         String newName = sc.nextLine();
                         System.out.print("Enter new difficulty: ");
                         String newDifficulty = sc.nextLine();
-
                         System.out.print("Enter new course ID: ");
                         int newCourseId = sc.nextInt();
                         sc.nextLine();
                         Course newCourse = em.find(Course.class, newCourseId);
-
                         em.getTransaction().begin();
                         recipeToUpdate.setName(newName);
                         recipeToUpdate.setDifficulty(newDifficulty);
@@ -291,7 +283,6 @@ public class Main {
                     int idDelete = sc.nextInt();
                     sc.nextLine();
                     Recipe recipeToDelete = em.find(Recipe.class, idDelete);
-
                     if (recipeToDelete != null) {
                         em.getTransaction().begin();
                         em.remove(recipeToDelete);
@@ -324,12 +315,10 @@ public class Main {
                 case 1:
                     System.out.print("Enter student name: ");
                     String studentName = sc.nextLine();
-
                     System.out.print("Enter course ID for this student: ");
                     int courseId = sc.nextInt();
                     sc.nextLine();
                     Course course = em.find(Course.class, courseId);
-
                     if (course != null) {
                         em.getTransaction().begin();
                         Student student = new Student(studentName);
@@ -343,6 +332,9 @@ public class Main {
                     break;
                 case 2:
                     List<Student> students = em.createQuery("SELECT s FROM Student s", Student.class).getResultList();
+                    if (students.isEmpty()) {
+                        System.out.println("Students not found");
+                    }
                     for (Student s : students) {
                         System.out.println("ID: " + s.getId() + ", Name: " + s.getName() +
                                 ", Course: " + (s.getCourse() != null ? s.getCourse().getName() : "None"));
@@ -353,16 +345,13 @@ public class Main {
                     int idUpdate = sc.nextInt();
                     sc.nextLine();
                     Student studentToUpdate = em.find(Student.class, idUpdate);
-
                     if (studentToUpdate != null) {
                         System.out.print("Enter new name: ");
                         String newName = sc.nextLine();
-
                         System.out.print("Enter new course ID: ");
                         int newCourseId = sc.nextInt();
                         sc.nextLine();
                         Course newCourse = em.find(Course.class, newCourseId);
-
                         em.getTransaction().begin();
                         studentToUpdate.setName(newName);
                         if (newCourse != null) {
@@ -379,7 +368,6 @@ public class Main {
                     int idDelete = sc.nextInt();
                     sc.nextLine();
                     Student studentToDelete = em.find(Student.class, idDelete);
-
                     if (studentToDelete != null) {
                         em.getTransaction().begin();
                         em.remove(studentToDelete);
