@@ -72,7 +72,7 @@ public class Main {
                     }
                     for (Chef c : chefs) {
                         System.out.println(
-                                "ID: " + c.getId() + ", Name: " + c.getName() + ", Speciality: " + c.getSpecialty());
+                                "ID: " + c.getId() + ", Name: " + c.getName() + ", Specialty: " + c.getSpecialty());
                     }
                     break;
                 case 3:
@@ -156,8 +156,7 @@ public class Main {
                     }
                     for (Course c : courses) {
                         System.out.println(
-                                "ID: " + c.getId() + ", Name: " + c.getName() + ", Duration: " + c.getDuration() +
-                                        ", Chef: " + (c.getChef() != null ? c.getChef().getName() : "None"));
+                                "ID: " + c.getId() + ", Name: " + c.getName() + ", Duration: " + c.getDuration() +", Chef: " + c.getChef().getName());
                     }
                     break;
                 case 3:
@@ -236,9 +235,9 @@ public class Main {
                         recipe.setCourse(course);
                         em.persist(recipe);
                         em.getTransaction().commit();
-                        System.out.println("Recipe added successfully!");
+                        System.out.println("Recipe added");
                     } else {
-                        System.out.println("Course not found. Cannot assign recipe.");
+                        System.out.println("Course not found");
                     }
                     break;
                 case 2:
@@ -247,9 +246,7 @@ public class Main {
                         System.out.println("Recipes not found");
                     }
                     for (Recipe r : recipes) {
-                        System.out.println("ID: " + r.getId() + ", Name: " + r.getName() +
-                                ", Difficulty: " + r.getDifficulty() +
-                                ", Course: " + (r.getCourse() != null ? r.getCourse().getName() : "None"));
+                        System.out.println("ID: " + r.getId() + ", Name: " + r.getName() +", Difficulty: " + r.getDifficulty() +", Course: " + r.getCourse().getName());
                     }
                     break;
                 case 3:
@@ -273,9 +270,9 @@ public class Main {
                             recipeToUpdate.setCourse(newCourse);
                         }
                         em.getTransaction().commit();
-                        System.out.println("Recipe updated successfully!");
+                        System.out.println("Recipe updated");
                     } else {
-                        System.out.println("Recipe not found.");
+                        System.out.println("Recipe not found");
                     }
                     break;
                 case 4:
@@ -287,9 +284,9 @@ public class Main {
                         em.getTransaction().begin();
                         em.remove(recipeToDelete);
                         em.getTransaction().commit();
-                        System.out.println("Recipe deleted successfully!");
+                        System.out.println("Recipe deleted");
                     } else {
-                        System.out.println("Recipe not found.");
+                        System.out.println("Recipe not found");
                     }
                     break;
                 case 5:
@@ -325,9 +322,9 @@ public class Main {
                         student.setCourse(course);
                         em.persist(student);
                         em.getTransaction().commit();
-                        System.out.println("Student added successfully!");
+                        System.out.println("Student added");
                     } else {
-                        System.out.println("Course not found. Cannot assign student.");
+                        System.out.println("Course not found");
                     }
                     break;
                 case 2:
@@ -336,8 +333,7 @@ public class Main {
                         System.out.println("Students not found");
                     }
                     for (Student s : students) {
-                        System.out.println("ID: " + s.getId() + ", Name: " + s.getName() +
-                                ", Course: " + (s.getCourse() != null ? s.getCourse().getName() : "None"));
+                        System.out.println("ID: " + s.getId() + ", Name: " + s.getName() +", Course: " + s.getCourse().getName());
                     }
                     break;
                 case 3:
@@ -358,9 +354,9 @@ public class Main {
                             studentToUpdate.setCourse(newCourse);
                         }
                         em.getTransaction().commit();
-                        System.out.println("Student updated successfully!");
+                        System.out.println("Student updated");
                     } else {
-                        System.out.println("Student not found.");
+                        System.out.println("Student not found");
                     }
                     break;
                 case 4:
@@ -372,9 +368,9 @@ public class Main {
                         em.getTransaction().begin();
                         em.remove(studentToDelete);
                         em.getTransaction().commit();
-                        System.out.println("Student deleted successfully!");
+                        System.out.println("Student deleted");
                     } else {
-                        System.out.println("Student not found.");
+                        System.out.println("Student not found");
                     }
                     break;
                 case 5:
