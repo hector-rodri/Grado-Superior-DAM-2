@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         val btnCreate = findViewById<Button>(R.id.button)
         val fabOptions = findViewById<FloatingActionButton>(R.id.fabID);
 
-        btnCreate.setOnClickListener {
+        fun goToMainActivity2(){
             val txt1 = editTxt.text.toString()
             val txt2 = editTxt2.text.toString()
             val intent = Intent(this, MainActivity2::class.java)
@@ -34,9 +34,27 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent);
         }
 
+        btnCreate.setOnClickListener {
+            goToMainActivity2()
+        }
+
         fabOptions.setOnClickListener { view ->
             val popup = PopupMenu(this, view)
-
+            popup.menuInflater.inflate(R.menu.fabmenu, popup.menu)
+            popup.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.fab_setmanesiguals -> {
+                        goToMainActivity2()
+                        true
+                    }
+                    R.id.fab_setmanesdiferents -> {
+                        goToMainActivity2()
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
         }
     }
 }
