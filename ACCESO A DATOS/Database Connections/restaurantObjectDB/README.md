@@ -22,6 +22,19 @@ The system uses **ObjectDB** as an embedded database and provides a **console-ba
 4. Run Main.java.  
 5. Use the console menu to navigate through the options
 
+## Project Structure Overview
+
+The system manages four interconnected entities:
+
+- **Chef** has many courses  
+- **Course** belongs to one chef and has many recipes & students  
+- **Recipe** belongs to one course  
+- **Student** enrolled in one course  
+
+## Example Database
+
+![example](../../../recursos/restaurantDB.drawio.png)
+
 ## Database Schema 
 
 ObjectDB does not require SQL table creation,  
