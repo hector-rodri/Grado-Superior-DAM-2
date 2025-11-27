@@ -1,30 +1,30 @@
 package com.example;
 
-import javax.persistence.*;
+import javax.persistence.*;//Import libraries
 import java.util.*;
 
-@Entity
+@Entity//Marks this class as a JPA entity, meaning it will be mapped to a database table
 public class Chef {
-    @Id
-    @GeneratedValue
+    @Id//Specifies that this field is the primary key of the entity
+    @GeneratedValue//Indicates that the primary key value will be automatically generated
     private int id;
 
     private String name;
     private String specialty;
 
-    @OneToMany(mappedBy = "chef", cascade = CascadeType.ALL)
-    private List<Course> courses;
+    @OneToMany(mappedBy = "chef", cascade = CascadeType.ALL)//One-to-many relationship: one chef can have many courses
+    private List<Course> courses;//List of courses
 
-    public Chef() {
+    public Chef() {//Default constructor
     }
     
-    public Chef(String name, String specialty) {
+    public Chef(String name, String specialty) {//Constructor initializing a chef with name and specialty
         this.name = name;
         this.specialty = specialty;
-        this.courses = new ArrayList<>();
+        this.courses = new ArrayList<>();//Initializes courses list
     }
 
-    public int getId() {
+    public int getId() {//Getters and setters
         return id;
     }
 
@@ -56,7 +56,7 @@ public class Chef {
         this.courses = courses;
     }
     
-    public void addCourse(Course course) {
+    public void addCourse(Course course) {//Adds a course and associates it with this chef
         this.courses.add(course);
         course.setChef(this);
     }

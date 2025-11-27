@@ -1,28 +1,28 @@
 package com.example;
 
-import javax.persistence.*;
+import javax.persistence.*;//Import libraries
 
-@Entity
+@Entity//Marks this class as a JPA entity, meaning it will be mapped to a database table
 public class Recipe {
-    @Id
-    @GeneratedValue
+    @Id//Specifies that this field is the primary key of the entity
+    @GeneratedValue//Indicates that the primary key value will be automatically generated
     private int id;
 
     private String name;
     private String difficulty;
 
-    @ManyToOne
+    @ManyToOne//Many recipes can belong to one course
     private Course course;
 
-    public Recipe() {
+    public Recipe() {//Default constructor
     }
 
-    public Recipe(String name, String difficulty) {
+    public Recipe(String name, String difficulty) {//Constructor initializing recipe with name and difficulty
         this.name = name;
         this.difficulty = difficulty;
     }
 
-    public int getId() {
+    public int getId() {//Getters and setters
         return id;
     }
 
