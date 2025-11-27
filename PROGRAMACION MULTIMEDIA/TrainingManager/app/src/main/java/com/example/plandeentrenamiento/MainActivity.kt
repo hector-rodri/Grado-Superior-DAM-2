@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.widget.PopupMenu
+import android.widget.Toast
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +45,12 @@ class MainActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.fab_setmanesiguals -> {
+                        Toast.makeText(this, "Setmantes iguals", Toast.LENGTH_SHORT).show()
                         goToMainActivity2()
                         true
                     }
                     R.id.fab_setmanesdiferents -> {
+                        Toast.makeText(this, "Setmanes diferents", Toast.LENGTH_SHORT).show()
                         goToMainActivity2()
                         true
                     }
@@ -58,3 +61,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
