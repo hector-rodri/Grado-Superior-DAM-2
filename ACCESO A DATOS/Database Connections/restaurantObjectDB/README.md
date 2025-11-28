@@ -33,7 +33,7 @@ The system manages four interconnected entities:
 
 ## Example Database
 
-![example](../../../recursos/restaurantDB.drawio.png)
+![example](../../../recursos\objectdb_schema_example.png)
 
 ## Database Schema 
 
