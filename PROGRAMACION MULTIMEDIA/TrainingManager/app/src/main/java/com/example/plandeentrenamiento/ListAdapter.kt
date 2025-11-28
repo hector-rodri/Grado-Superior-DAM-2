@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 class ListAdapter(
     private val items: List<ElementLlista>,
     private val onClick: (ElementLlista) -> Unit = {}
-) : RecyclerView.Adapter<LlistaAdapter.ItemViewHolder>() {
+) : RecyclerView.Adapter<ListAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titol: TextView = view.findViewById(R.id.tvTitol)
@@ -17,7 +17,7 @@ class ListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_llista, parent, false)
+            .inflate(R.layout.item_list, parent, false)
         return ItemViewHolder(v)
     }
 
