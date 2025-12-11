@@ -24,8 +24,7 @@ public class emissor {
                 e.printStackTrace();
             }
 
-            ProcessBuilder p1 = new ProcessBuilder("kill", "-USR1 ", pidHijo);
-            System.out.println("hola");
+            ProcessBuilder p1 = new ProcessBuilder("kill", "-USR1 ", (pidHijo));
             p1.start();
 
             BufferedReader reader2 = new BufferedReader(new InputStreamReader(p2.getInputStream()));
