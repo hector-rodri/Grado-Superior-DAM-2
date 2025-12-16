@@ -1,0 +1,3 @@
+com.example.plandeentrenamiento.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme

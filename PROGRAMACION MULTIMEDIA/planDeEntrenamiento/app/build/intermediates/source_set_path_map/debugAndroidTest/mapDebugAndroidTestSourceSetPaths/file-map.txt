@@ -1,0 +1,7 @@
+com.example.plandeentrenamiento.test.app-core-1.7.0-0 C:\Users\alumne-DAM\.gradle\caches\8.13\transforms\4c9a2a5354e15ca4aac47eb785db7a25\transformed\core-1.7.0\res
+com.example.plandeentrenamiento.test.app-tracing-1.2.0-1 C:\Users\alumne-DAM\.gradle\caches\8.13\transforms\d1d4a8f6389c50016ca4df8691e67287\transformed\tracing-1.2.0\res
+com.example.plandeentrenamiento.test.app-androidTest-2 C:\Users\alumne-DAM\Desktop\Grado-Superior-DAM-2\PROGRAMACION MULTIMEDIA\planDeEntrenamiento\app\build\generated\res\resValues\androidTest\debug
+com.example.plandeentrenamiento.test.app-updated_navigation_xml-3 C:\Users\alumne-DAM\Desktop\Grado-Superior-DAM-2\PROGRAMACION MULTIMEDIA\planDeEntrenamiento\app\build\generated\updated_navigation_xml\debugAndroidTest
+com.example.plandeentrenamiento.test.app-mergeDebugAndroidTestResources-4 C:\Users\alumne-DAM\Desktop\Grado-Superior-DAM-2\PROGRAMACION MULTIMEDIA\planDeEntrenamiento\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.example.plandeentrenamiento.test.app-mergeDebugAndroidTestResources-5 C:\Users\alumne-DAM\Desktop\Grado-Superior-DAM-2\PROGRAMACION MULTIMEDIA\planDeEntrenamiento\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.example.plandeentrenamiento.test.app-debugAndroidTest-6 C:\Users\alumne-DAM\Desktop\Grado-Superior-DAM-2\PROGRAMACION MULTIMEDIA\planDeEntrenamiento\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources
