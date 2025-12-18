@@ -14,7 +14,7 @@ public class Main {
         emp.setNombre("Juan");
         emp.setPuesto("IT");
 
-        session.persist(emp);   // INSERT
+        session.persist(emp); 
 
         tx.commit();
         session.close();
