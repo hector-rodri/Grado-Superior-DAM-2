@@ -1,36 +1,33 @@
 package org.example;
 
-import jakarta.persistence.*;
+import jakarta.persistence.*;//Import libraries
 import java.util.*;
 
-@Entity
-@Table(name="director")
-public class Director {
+@Entity//Define entity
+@Table(name="director")//Define table name
+public class Director {//Director class
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id//Define primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//Auto-generate ID
     private int id;
 
     private String name;
     private String nationality;
 
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
+    @OneToMany(mappedBy="director", cascade = CascadeType.ALL, orphanRemoval = true)//One-to-many relationship with Movie
+    private List<Movie> movies = new ArrayList<>();//List of movies
 
-    @OneToMany(mappedBy="director", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Movie> movies = new ArrayList<>();
-
-    public void addMovie(Movie m){
+    public void addMovie(Movie m){//Method to add a movie
         movies.add(m);
         m.setDirector(this);
     }
 
-    public void removeMovie(Movie m){
+    public void removeMovie(Movie m){//Method to remove a movie
         movies.remove(m);
         m.setDirector(null);
     }
 
-    public int getId() {
+    public int getId() {//Getter and setter methods
         return id;
     }
 
@@ -52,14 +49,6 @@ public class Director {
 
     public void setNationality(String nationality) {
         this.nationality = nationality;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
     }
 
     public List<Movie> getMovies() {

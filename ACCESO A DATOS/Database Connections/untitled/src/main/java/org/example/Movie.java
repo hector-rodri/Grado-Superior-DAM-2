@@ -1,24 +1,24 @@
 package org.example;
 
-import jakarta.persistence.*;
+import jakarta.persistence.*;//Import libraries
 
-@Entity
-@Table(name="movie")
-public class Movie {
+@Entity//Define entity
+@Table(name="movie")//Define table name
+public class Movie {//Movie class
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id//Define primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//Auto-generate ID
     private int id;
 
     private String title;
     private int releaseYear;
     private String genre;
 
-    @ManyToOne
-    @JoinColumn(name="director_id")
+    @ManyToOne//Many-to-one relationship with Director
+    @JoinColumn(name="director_id")//Join column
     private Director director;
 
-    public int getId() {
+    public int getId() {//Getter and setter methods
         return id;
     }
 
