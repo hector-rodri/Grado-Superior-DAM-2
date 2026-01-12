@@ -1,0 +1,3 @@
+jdbc:mysql://localhost:3306/cinema?createDatabaseIfNotExist=true&serverTimezone=UTC
+root
+1234
