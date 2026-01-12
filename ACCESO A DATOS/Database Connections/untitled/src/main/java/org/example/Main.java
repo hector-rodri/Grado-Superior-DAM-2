@@ -8,6 +8,7 @@ public class Main {//Main class
 
     public static void main(String[] args) {//Main method
         while (true) {//Main menu loop
+            HibernateUtil.buildSessionFactory();
             System.out.println("CINEMA DATABASE");//Menu options
             System.out.println("1 - Menu Directors");
             System.out.println("2 - Menu Movies");
