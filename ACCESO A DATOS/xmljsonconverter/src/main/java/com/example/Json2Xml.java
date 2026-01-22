@@ -6,8 +6,8 @@ public class Json2Xml {
     public String convertirJsonAXml(JSONObject json) throws Exception {
         try {
             return XML.toString(json);
-        } catch (Exception e) {
-            throw new Exception("Invalid JSON" + e.getMessage());
+        } catch (Exception ex) {
+            throw new Exception("Invalid JSON" + ex.getMessage());
         }
     }
 }
