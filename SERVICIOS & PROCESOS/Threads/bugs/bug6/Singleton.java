@@ -8,7 +8,7 @@ package bug6;
  */
 
 public class Singleton {
-    private static Singleton instance;
+    private static volatile Singleton instance;
     private static int numberOfInstances = 0;
 
     private Singleton() {
