@@ -1,46 +1,47 @@
 package com.example;
 
+import org.json.JSONObject;
 import java.io.*;
-import org.json.*;
 
 public class Main {
+
     public static void main(String[] args) {
-        Xml2Json xml2Json = new Xml2Json();
-        Json2Xml json2Xml = new Json2Xml();
+
+        FormatConverter converter = new FormatConverter();
 
         File fileXml = new File("src/main/resources/messi.xml");
-        File fileNewJson = new File("src/main/resources/messi.json");
-        File fileJson = new File("src/main/resources/neymar.json");
-        File fileNewXml = new File("src/main/resources/neymar.xml");
+        File fileJson = new File("src/main/resources/messi.json");
+        File fileBson = new File("src/main/resources/messi.bson");
+        File fileJsonFromBson = new File("src/main/resources/messi_from_bson.json");
 
         try {
-            //XML to JSON
-            FileReader fileReader = new FileReader(fileXml);
-            int c;
-            String xmlContent = "";
-            while ((c = fileReader.read()) != -1) {
-                xmlContent += (char) c;
-            }
-            fileReader.close();
+            // XML -> JSON
+            FileInputStream fis = new FileInputStream(fileXml);
+            String xmlContent = new String(fis.readAllBytes());
+            fis.close();
 
-            JSONObject json = xml2Json.convertirXmlAJson(xmlContent);
-            FileWriter fileWriter = new FileWriter(fileNewJson);
-            fileWriter.write(json.toString(4));
-            fileWriter.close();
+            JSONObject json = converter.convertirXmlAJson(xmlContent);
 
-            //JSON to XML
-            fileReader = new FileReader(fileJson);
-            String jsonContent = "";
-            while ((c = fileReader.read()) != -1) {
-                jsonContent += (char) c;
-            }
-            fileReader.close();
+            FileWriter fw = new FileWriter(fileJson);
+            fw.write(json.toString(4));
+            fw.close();
 
-            JSONObject jsonObject = new JSONObject(jsonContent);
-            String xml = json2Xml.convertirJsonAXml(jsonObject);
-            fileWriter = new FileWriter(fileNewXml);
-            fileWriter.write(xml);
-            fileWriter.close();
+            // JSON -> BSON
+            byte[] bsonData = converter.jsonToBson(json);
+            FileOutputStream fos = new FileOutputStream(fileBson);
+            fos.write(bsonData);
+            fos.close();
+
+            // BSON -> JSON
+            fis = new FileInputStream(fileBson);
+            byte[] bsonRead = fis.readAllBytes();
+            fis.close();
+
+            JSONObject jsonRecovered = converter.bsonToJson(bsonRead);
+
+            fw = new FileWriter(fileJsonFromBson);
+            fw.write(jsonRecovered.toString(4));
+            fw.close();
 
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
