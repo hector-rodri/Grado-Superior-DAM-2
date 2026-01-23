@@ -15,7 +15,7 @@ public class Main {
 			MyThread.value = 0;
 			for (int i = 0; i < 2; i++) {
 				threads[i] = new Thread(new MyThread());
-				threads[i].start();
+				threads[i].start();//The change is here because before putted run() instead of start()
 			}
 			for (int i = 0; i < 2; i++) {
 				try {

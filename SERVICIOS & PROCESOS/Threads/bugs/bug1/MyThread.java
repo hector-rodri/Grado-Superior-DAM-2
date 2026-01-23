@@ -3,6 +3,7 @@ package bug1;
 /**
  * Why is value set correct even though we do not use
  * locks/synchronized?
+ * Because both threads are not started correctly.
  * Do NOT modify this file.
  */
 public class MyThread implements Runnable {

@@ -2,10 +2,12 @@ package bug4;
 
 /**
  * Why doesn't this program end? (Hint: volatile)
+ * The JVM may optimize the code by keeping the value of keepRunning in a register,
+ * so the thread may never see the updated value when another thread modifies it.
  * Fix the problem changing a single line of code.
  */
 public class Main extends Thread {
-    volatile boolean keepRunning = true;
+    volatile boolean keepRunning = true;//The change is here, we put volatile to avoid optimization issues
 
     public void run() {
         long count = 0;

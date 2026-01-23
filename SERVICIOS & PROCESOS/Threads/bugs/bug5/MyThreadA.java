@@ -12,7 +12,7 @@ public class MyThreadA implements Runnable {
 
     @Override
     public void run() {
-        synchronized (Main.lockA) {
+        synchronized (Main.lockA) {//The change is here, we put the synchronized blocks separately to avoid deadlock
             for (int i = 0; i < Main.N; i++) {
                 Main.valueA++;
             }
