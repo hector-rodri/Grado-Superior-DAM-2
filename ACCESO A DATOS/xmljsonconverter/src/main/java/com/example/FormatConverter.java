@@ -5,7 +5,7 @@ import org.bson.*;
 
 public class FormatConverter {//Class FormatConverter
 
-    public JSONObject convertirXmlAJson(String xml) throws Exception {// XML to JSON
+    public JSONObject convertirXmlAJson(String xml) throws Exception {//XML to JSON
         try {
             return XML.toJSONObject(xml);//Convert XML to JSON
         } catch (Exception ex) {
@@ -13,7 +13,7 @@ public class FormatConverter {//Class FormatConverter
         }
     }
 
-    public String convertirJsonAXml(JSONObject json) throws Exception {// JSON to XML
+    public String convertirJsonAXml(JSONObject json) throws Exception {//JSON to XML
         try {
             return XML.toString(json);//Convert JSON to XML
         } catch (Exception ex) {
@@ -21,7 +21,7 @@ public class FormatConverter {//Class FormatConverter
         }
     }
 
-    public byte[] jsonToBson(JSONObject json) throws Exception {// JSON to BSON
+    public byte[] jsonToBson(JSONObject json) throws Exception {//JSON to BSON
         try {
             Document doc = Document.parse(json.toString());//Parse JSON to Document
             return doc.toJson().getBytes();//Convert Document to byte array
@@ -30,7 +30,7 @@ public class FormatConverter {//Class FormatConverter
         }
     }
 
-    public JSONObject bsonToJson(byte[] bson) throws Exception {// BSON to JSON
+    public JSONObject bsonToJson(byte[] bson) throws Exception {//BSON to JSON
         try {
             String jsonString = new String(bson);//Convert byte array to String
             Document doc = Document.parse(jsonString);//Parse String to Document

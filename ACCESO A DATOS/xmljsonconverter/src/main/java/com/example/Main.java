@@ -15,61 +15,55 @@ public class Main {
         FormatConverter converter = new FormatConverter();//Create FormatConverter object
 
         try {
-            //XML to JSON
+            //XML to JSON (using messi.xml as input and messi.json as output)
             FileReader fileReader = new FileReader(fileXml);//Read XML file
             int c;
             String xmlContent = "";
             while ((c = fileReader.read()) != -1) {//Read each character of the file
                 xmlContent += (char) c;//Append character to string
             }
-            fileReader.close();
-
             JSONObject json = converter.convertirXmlAJson(xmlContent);//Convert XML to JSON
             FileWriter fileWriter = new FileWriter(fileNewJson);//Write JSON to file
             fileWriter.write(json.toString(4));//Write JSON content
             fileWriter.close();
+            fileReader.close();
 
-            //JSON to XML
-            fileReader = new FileReader(fileJson);//Read JSON file (neymar.json)
+            //JSON to XML (using neymar.json as input and neymar.xml as output)
+            fileReader = new FileReader(fileJson);//Read JSON file 
             String jsonContent = "";
             while ((c = fileReader.read()) != -1) {//Read each character of the file
                 jsonContent += (char) c;//Append character to string
             }
-            fileReader.close();
-
             JSONObject jsonObject = new JSONObject(jsonContent);//Convert string to JSON object
             String xml = converter.convertirJsonAXml(jsonObject);//Convert JSON to XML
             fileWriter = new FileWriter(fileNewXml);//Write XML to file
             fileWriter.write(xml);//Write XML content
             fileWriter.close();
-
-            //JSON to BSON (using neymar.json as input and neymar.bson as output)
-            fileReader = new FileReader(fileJson);//Read JSON file (neymar.json)
-            String jsonContentForBson = "";
-            while ((c = fileReader.read()) != -1) {
-                jsonContentForBson += (char) c;
-            }
             fileReader.close();
 
-            JSONObject jsonForBson = new JSONObject(jsonContentForBson);
+            //JSON to BSON (using neymar.json as input and neymar.bson as output)
+            fileReader = new FileReader(fileJson);//Read JSON file
+            String jsonContentForBson = "";
+            while ((c = fileReader.read()) != -1) {//Read each character of the file
+                jsonContentForBson += (char) c;//Append character to string
+            }
+            JSONObject jsonForBson = new JSONObject(jsonContentForBson);//Convert string to JSON object
             byte[] bsonData = converter.jsonToBson(jsonForBson);//Convert JSON to BSON
-            FileOutputStream fos = new FileOutputStream(fileNewBson);//Write BSON file (neymar.bson)
-            fos.write(bsonData);
-            fos.close();
+            FileOutputStream fileOutputStream = new FileOutputStream(fileNewBson);//Write BSON file 
+            fileOutputStream.write(bsonData);//Write BSON content
+            fileOutputStream.close();
+            fileReader.close();
 
             //BSON to JSON (using messi.bson as input and messi.json as output)
-            FileInputStream fis = new FileInputStream(fileBson);//Read BSON file (messi.bson)
-            byte[] bsonRead = fis.readAllBytes();
-            fis.close();
-
+            FileInputStream fileInputStream = new FileInputStream(fileBson);//Read BSON file 
+            byte[] bsonRead = fileInputStream.readAllBytes();//Read all bytes
             JSONObject jsonFromBson = converter.bsonToJson(bsonRead);//Convert BSON to JSON
-
-            // Write recovered JSON to messi.json (overwriting or new)
-            fileWriter = new FileWriter(fileNewJson);//Write JSON to file (messi.json)
+            fileWriter = new FileWriter(fileNewJson);//Write JSON to file 
             fileWriter.write(jsonFromBson.toString(4));//Write JSON content
             fileWriter.close();
+            fileInputStream.close();
 
-        } catch (Exception e) {
+        } catch (Exception e) {//Handle exceptions
             System.err.println("Error: " + e.getMessage());
         }
     }
