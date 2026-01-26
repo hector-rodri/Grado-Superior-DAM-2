@@ -1,4 +1,4 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.ListsAndMenus
 
 class ListController {
     fun carregarDies(setmanes: Int, diesPerSetmana: Int): List<ElementLlista> {

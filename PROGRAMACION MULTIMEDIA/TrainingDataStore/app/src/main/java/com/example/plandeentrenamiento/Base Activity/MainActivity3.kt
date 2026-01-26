@@ -1,4 +1,4 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.`Base Activity`
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,6 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.plandeentrenamiento.R
+import com.example.plandeentrenamiento.ListsAndMenus.RegisteredExercise
+import com.example.plandeentrenamiento.ListsAndMenus.RegisteredExercisesAdapter
 import com.google.android.material.appbar.MaterialToolbar
 
 class MainActivity3 : AppCompatActivity() {

@@ -1,15 +1,16 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.`Base Activity`
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import com.example.plandeentrenamiento.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,4 +62,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
