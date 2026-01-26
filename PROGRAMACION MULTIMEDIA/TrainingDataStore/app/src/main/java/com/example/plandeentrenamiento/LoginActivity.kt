@@ -1,4 +1,3 @@
-/*
 package com.example.plandeentrenamiento
 
 import android.content.Intent
@@ -64,4 +63,3 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 }
-*/
