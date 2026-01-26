@@ -33,7 +33,7 @@ class DataStoreActivity : AppCompatActivity() {
             val savedUser = preferences[usernameKey]
 
             if (!savedUser.isNullOrEmpty()) {
-                startActivity(Intent(this@DataStoreActivity, com.example.plandeentrenamiento.`Base Activity`.MainActivity::class.java))
+                startActivity(Intent(this@DataStoreActivity, MainActivity::class.java))
             }
         }
 
@@ -47,7 +47,7 @@ class DataStoreActivity : AppCompatActivity() {
 
                 if (inputUser == savedUser) {
                     startActivity(
-                        Intent(this@DataStoreActivity, com.example.plandeentrenamiento.`Base Activity`.MainActivity::class.java)
+                        Intent(this@DataStoreActivity, MainActivity::class.java)
                     )
                 } else {
                     Toast.makeText(
@@ -69,7 +69,7 @@ class DataStoreActivity : AppCompatActivity() {
                 }
 
                 startActivity(
-                    Intent(this@DataStoreActivity, com.example.plandeentrenamiento.`Base Activity`.MainActivity::class.java)
+                    Intent(this@DataStoreActivity, MainActivity::class.java)
                 )
             }
         }

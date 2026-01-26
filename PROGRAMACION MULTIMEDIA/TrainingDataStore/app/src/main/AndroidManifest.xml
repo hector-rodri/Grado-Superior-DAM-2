@@ -12,13 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlanDeEntrenamiento">
         <activity
-            android:name=".Base Activity.MainActivity3"
+            android:name=".MainActivity3"
             android:exported="false" />
         <activity
-            android:name=".Base Activity.MainActivity2"
+            android:name=".MainActivity2"
             android:exported="false" />
         <activity
-            android:name=".Base Activity.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

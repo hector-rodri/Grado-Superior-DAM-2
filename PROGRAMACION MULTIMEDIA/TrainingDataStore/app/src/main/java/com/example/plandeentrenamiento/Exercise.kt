@@ -1,4 +1,4 @@
-package com.example.plandeentrenamiento.ListsAndMenus
+package com.example.plandeentrenamiento
 
 data class RegisteredExercise(
     val nom: String,

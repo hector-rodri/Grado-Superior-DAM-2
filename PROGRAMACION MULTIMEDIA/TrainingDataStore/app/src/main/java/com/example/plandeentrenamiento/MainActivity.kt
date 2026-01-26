@@ -1,4 +1,4 @@
-package com.example.plandeentrenamiento.`Base Activity`
+package com.example.plandeentrenamiento
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,6 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.plandeentrenamiento.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
@@ -27,13 +26,13 @@ class MainActivity : AppCompatActivity() {
             val txt2 = editTxt2.text.toString()
             val intent = Intent(this, MainActivity2::class.java)
 
-            if (txt1.isEmpty() || txt2.isEmpty()) {
-                Error( "Els camps no poden estar buits")
+            if (txt1.isNotEmpty() || txt2.isNotEmpty()) {
+                intent.putExtra("value1", txt1.toInt())
+                intent.putExtra("value2", txt2.toInt())
+                startActivity(intent);
+            }else{
+                Toast.makeText(this, "Els camps no poden estar buits", Toast.LENGTH_SHORT).show()
             }
-
-            intent.putExtra("value1", txt1.toInt())
-            intent.putExtra("value2", txt2.toInt())
-            startActivity(intent);
         }
 
         btnCreate.setOnClickListener {
