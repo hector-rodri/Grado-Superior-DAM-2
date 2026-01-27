@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.preferences.core.edit
@@ -24,7 +23,7 @@ class DataStoreActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setContentView(R.layout.activity_login)
         val logout = intent.getBooleanExtra("LOGOUT", false)
 
         lifecycleScope.launch {
@@ -38,8 +37,6 @@ class DataStoreActivity : AppCompatActivity() {
                 finish()
             }
         }
-        setContentView(R.layout.activity_login)
-
 
         val etUser = findViewById<EditText>(R.id.etUsername)
         val etPass = findViewById<EditText>(R.id.etPassword)
@@ -63,9 +60,15 @@ class DataStoreActivity : AppCompatActivity() {
             }
         }
 
-
         btnLogin.setOnClickListener {
             val inputUser = etUser.text.toString().trim()
+            val pass = etPass.text.toString().trim()
+
+            if (inputUser.isEmpty() || pass.isEmpty()) {
+                Toast.makeText(this, "Rellena tots els camps", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             lifecycleScope.launch {
                 val preferences = dataStore.data.first()
                 val storedUser = preferences[userKey]

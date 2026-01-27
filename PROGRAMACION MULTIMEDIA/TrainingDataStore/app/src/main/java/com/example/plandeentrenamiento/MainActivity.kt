@@ -9,31 +9,74 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import androidx.datastore.preferences.core.edit
+
+
+private val AppCompatActivity.dataStore by preferencesDataStore(
+    name = "MyPreferences"
+)
 
 class MainActivity : AppCompatActivity() {
+    private val daysKey = intPreferencesKey("DAYS")
+    private val weeksKey = intPreferencesKey("WEEKS")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-
         val editTxt = findViewById<EditText>(R.id.editTextText)
         val editTxt2 = findViewById<EditText>(R.id.editTextText2)
         val btnCreate = findViewById<Button>(R.id.button)
         val fabOptions = findViewById<FloatingActionButton>(R.id.fabID);
 
-        fun goToMainActivity2(){
-            val txt1 = editTxt.text.toString()
-            val txt2 = editTxt2.text.toString()
-            val intent = Intent(this, MainActivity2::class.java)
+        lifecycleScope.launch {
+            val preferences = dataStore.data.first()
+            val savedDays = preferences[daysKey]
+            val savedWeeks = preferences[weeksKey]
 
-            if (txt1.isNotEmpty() || txt2.isNotEmpty()) {
-                intent.putExtra("value1", txt1.toInt())
-                intent.putExtra("value2", txt2.toInt())
-                startActivity(intent);
-            }else{
-                Toast.makeText(this, "Els camps no poden estar buits", Toast.LENGTH_SHORT).show()
+            if (savedDays != null) {
+                editTxt.setText(savedDays.toString())
+            }
+            if (savedWeeks != null) {
+                editTxt2.setText(savedWeeks.toString())
             }
         }
+
+        fun goToMainActivity2() {
+            val txt1 = editTxt.text.toString().trim()
+            val txt2 = editTxt2.text.toString().trim()
+
+            val days = txt1.toIntOrNull()
+            val weeks = txt2.toIntOrNull()
+
+            if (days == null || weeks == null) {
+                Toast.makeText(
+                    this,
+                    "Introdueix només números vàlids",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return
+            }
+
+            lifecycleScope.launch {
+                dataStore.edit { preferences ->
+                    preferences[daysKey] = days
+                    preferences[weeksKey] = weeks
+                }
+            }
+
+            val intent = Intent(this, MainActivity2::class.java)
+            intent.putExtra("value1", days)
+            intent.putExtra("value2", weeks)
+            startActivity(intent)
+        }
+
+
 
         btnCreate.setOnClickListener {
             goToMainActivity2()
