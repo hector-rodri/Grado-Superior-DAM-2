@@ -6,4 +6,7 @@
     <item
         android:id="@+id/fab_setmanesdiferents"
         android:title="Setmanes diferents" />
+    <item
+        android:id="@+id/fab_logout"
+        android:title="Tancar Sessió" />
 </menu>
