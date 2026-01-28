@@ -1,40 +1,35 @@
 package com.example;
 
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-import org.json.JSONObject;
-import org.json.JSONException;
+import com.mongodb.client.*;//Import all libraries
+import org.bson.*;
+import org.json.*;
 
 public class Main {
     public static void main(String[] args) {
-        String uri = "mongodb://localhost:27017/practica_java";
-        FormatConverter converter = new FormatConverter();
+        String uri = "mongodb://localhost:27017/practica_java";//MongoDB connection URI
+        FormatConverter converter = new FormatConverter();//Instance of FormatConverter
 
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("practica_java");
-            MongoCollection<Document> collection = database.getCollection("elements");
+        try (MongoClient mongoClient = MongoClients.create(uri)) {//Create MongoClient
+            MongoDatabase database = mongoClient.getDatabase("practica_java");//Get database
+            MongoCollection<Document> collection = database.getCollection("elements");//Get collection
 
-            try (MongoCursor<Document> cursor = collection.find().cursor()) {
-                while (cursor.hasNext()) {
-                    Document document = cursor.next();
-                    String jsonString = document.toJson();
+            try (MongoCursor<Document> cursor = collection.find().cursor()) {//Create cursor to iterate over documents
+                while (cursor.hasNext()) {//Iterate through documents
+                    Document document = cursor.next();//Get next document
+                    String jsonString = document.toJson();//Get JSON string from document
 
                     try {
-                        JSONObject jsonObject = new JSONObject(jsonString);
-                        String xml = converter.convertirJsonAXml(jsonObject);
-                        System.out.println(xml); 
-                    } catch (JSONException e) {
-                        System.err.println("Error en parsear JSON: " + e.getMessage());
+                        JSONObject jsonObject = new JSONObject(jsonString);//Get JSONObject from string
+                        String xml = converter.convertirJsonAXml(jsonObject);//Convert JSON to XML
+                        System.out.println(xml);//Print XML
+                    } catch (JSONException e) {//Handle JSON parsing exceptions
+                        System.err.println("Error parsing JSON: " + e.getMessage());
                     }
                 }
             }
 
-        } catch (Exception e) {
-            System.err.println("Error de conexión: " + e.getMessage());
+        } catch (Exception e) {//Handle MongoDB connection exceptions
+            System.err.println("Error connecting to MongoDB: " + e.getMessage());
         }
     }
 }
