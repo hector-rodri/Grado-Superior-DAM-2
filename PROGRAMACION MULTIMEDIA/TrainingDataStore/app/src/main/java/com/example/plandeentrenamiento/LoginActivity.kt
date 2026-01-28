@@ -6,34 +6,28 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-private val AppCompatActivity.dataStore by preferencesDataStore(
-    name = "MyPreferences"
-)
+class LoginActivity : AppCompatActivity() {
 
-class DataStoreActivity : AppCompatActivity() {
-    private val userKey = stringPreferencesKey("User")
-    private val passKey = stringPreferencesKey("Pass")
+    private lateinit var dataStoreManager: DataStoreManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        dataStoreManager = DataStoreManager(this)
+
         val logout = intent.getBooleanExtra("LOGOUT", false)
 
+        // AUTOLOGIN
         lifecycleScope.launch {
-            val preferences = dataStore.data.first()
-            val user = preferences[userKey]
+            val user = dataStoreManager.getUser().first()
 
             if (user != null && !logout) {
-                startActivity(
-                    Intent(this@DataStoreActivity, MainActivity::class.java)
-                )
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 finish()
             }
         }
@@ -43,49 +37,47 @@ class DataStoreActivity : AppCompatActivity() {
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
 
+        // REGISTRO
         btnRegister.setOnClickListener {
             val user = etUser.text.toString().trim()
             val pass = etPass.text.toString().trim()
+
             if (user.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Rellena tots els camps", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             lifecycleScope.launch {
-                dataStore.edit { preferences ->
-                    preferences[userKey] = user
-                    preferences[passKey] = pass
-                }
-                Toast.makeText(this@DataStoreActivity, "Usuari guardat", Toast.LENGTH_SHORT).show()
+                dataStoreManager.saveUser(user, pass)
+                Toast.makeText(this@LoginActivity, "Usuari guardat", Toast.LENGTH_SHORT).show()
             }
         }
 
+        // LOGIN
         btnLogin.setOnClickListener {
             val inputUser = etUser.text.toString().trim()
-            val pass = etPass.text.toString().trim()
+            val inputPass = etPass.text.toString().trim()
 
-            if (inputUser.isEmpty() || pass.isEmpty()) {
+            if (inputUser.isEmpty() || inputPass.isEmpty()) {
                 Toast.makeText(this, "Rellena tots els camps", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             lifecycleScope.launch {
-                val preferences = dataStore.data.first()
-                val storedUser = preferences[userKey]
-                if (storedUser == inputUser) {
-                    startActivity(
-                        Intent(this@DataStoreActivity, MainActivity::class.java)
-                    )
+                val storedUser = dataStoreManager.getUser().first()
+                val storedPass = dataStoreManager.getPass().first()
+
+                if (storedUser == inputUser && storedPass == inputPass) {
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     finish()
                 } else {
                     Toast.makeText(
-                        this@DataStoreActivity,
-                        "L’usuari no és correcte",
+                        this@LoginActivity,
+                        "L’usuari o la contrasenya no és correcte",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
         }
-
     }
 }

@@ -9,65 +9,45 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import androidx.datastore.preferences.core.edit
-
-
-private val AppCompatActivity.dataStore by preferencesDataStore(
-    name = "MyPreferences"
-)
 
 class MainActivity : AppCompatActivity() {
-    private val daysKey = intPreferencesKey("DAYS")
-    private val weeksKey = intPreferencesKey("WEEKS")
+
+    private lateinit var dataStoreManager: DataStoreManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        dataStoreManager = DataStoreManager(this)
+
         val editTxt = findViewById<EditText>(R.id.editTextText)
         val editTxt2 = findViewById<EditText>(R.id.editTextText2)
         val btnCreate = findViewById<Button>(R.id.button)
-        val fabOptions = findViewById<FloatingActionButton>(R.id.fabID);
+        val fabOptions = findViewById<FloatingActionButton>(R.id.fabID)
 
         lifecycleScope.launch {
-            val preferences = dataStore.data.first()
-            val savedDays = preferences[daysKey]
-            val savedWeeks = preferences[weeksKey]
+            val savedDays = dataStoreManager.getDays().first()
+            val savedWeeks = dataStoreManager.getWeeks().first()
 
-            if (savedDays != null) {
-                editTxt.setText(savedDays.toString())
-            }
-            if (savedWeeks != null) {
-                editTxt2.setText(savedWeeks.toString())
-            }
+            if (savedDays != null) editTxt.setText(savedDays.toString())
+            if (savedWeeks != null) editTxt2.setText(savedWeeks.toString())
         }
 
         fun goToMainActivity2() {
-            val txt1 = editTxt.text.toString().trim()
-            val txt2 = editTxt2.text.toString().trim()
-
-            val days = txt1.toIntOrNull()
-            val weeks = txt2.toIntOrNull()
+            val days = editTxt.text.toString().trim().toIntOrNull()
+            val weeks = editTxt2.text.toString().trim().toIntOrNull()
 
             if (days == null || weeks == null) {
-                Toast.makeText(
-                    this,
-                    "Introdueix només números vàlids",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "Introdueix només números vàlids", Toast.LENGTH_SHORT).show()
                 return
             }
 
             lifecycleScope.launch {
-                dataStore.edit { preferences ->
-                    preferences[daysKey] = days
-                    preferences[weeksKey] = weeks
-                }
+                dataStoreManager.saveDaysWeeks(days, weeks)
             }
 
             val intent = Intent(this, MainActivity2::class.java)
@@ -76,29 +56,24 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-
-        btnCreate.setOnClickListener {
-            goToMainActivity2()
-        }
+        btnCreate.setOnClickListener { goToMainActivity2() }
 
         fabOptions.setOnClickListener { view ->
             val popup = PopupMenu(this, view)
             popup.menuInflater.inflate(R.menu.fabmenu, popup.menu)
+
             popup.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.fab_setmanesiguals -> {
-                        Toast.makeText(this, "Setmantes iguals", Toast.LENGTH_SHORT).show()
                         goToMainActivity2()
                         true
                     }
                     R.id.fab_setmanesdiferents -> {
-                        Toast.makeText(this, "Setmanes diferents", Toast.LENGTH_SHORT).show()
                         goToMainActivity2()
                         true
                     }
                     R.id.fab_logout -> {
-                        val intent = Intent(this, DataStoreActivity::class.java)
+                        val intent = Intent(this, LoginActivity::class.java)
                         intent.putExtra("LOGOUT", true)
                         startActivity(intent)
                         finish()
