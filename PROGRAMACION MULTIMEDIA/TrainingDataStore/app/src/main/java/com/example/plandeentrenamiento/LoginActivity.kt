@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
-
     private lateinit var dataStoreManager: DataStoreManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +21,6 @@ class LoginActivity : AppCompatActivity() {
 
         val logout = intent.getBooleanExtra("LOGOUT", false)
 
-        // AUTOLOGIN
         lifecycleScope.launch {
             val user = dataStoreManager.getUser().first()
 
@@ -37,7 +35,6 @@ class LoginActivity : AppCompatActivity() {
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
 
-        // REGISTRO
         btnRegister.setOnClickListener {
             val user = etUser.text.toString().trim()
             val pass = etPass.text.toString().trim()
@@ -53,7 +50,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // LOGIN
         btnLogin.setOnClickListener {
             val inputUser = etUser.text.toString().trim()
             val inputPass = etPass.text.toString().trim()
@@ -65,9 +61,8 @@ class LoginActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 val storedUser = dataStoreManager.getUser().first()
-                val storedPass = dataStoreManager.getPass().first()
 
-                if (storedUser == inputUser && storedPass == inputPass) {
+                if (storedUser == inputUser) {
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     finish()
                 } else {

@@ -14,14 +14,12 @@ private val Context.dataStore by preferencesDataStore(
 
 class DataStoreManager(private val context: Context) {
     private val userKey = stringPreferencesKey("User")
-    private val passKey = stringPreferencesKey("Pass")
     private val daysKey = intPreferencesKey("DAYS")
     private val weeksKey = intPreferencesKey("WEEKS")
 
     suspend fun saveUser(user: String, pass: String) {
         context.dataStore.edit { prefs ->
             prefs[userKey] = user
-            prefs[passKey] = pass
         }
     }
 
@@ -31,11 +29,6 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    fun getPass(): Flow<String?> {
-        return context.dataStore.data.map { prefs ->
-            prefs[passKey]
-        }
-    }
 
     suspend fun saveDaysWeeks(days: Int, weeks: Int) {
         context.dataStore.edit { prefs ->
