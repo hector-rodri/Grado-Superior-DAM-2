@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
+import android.widget.TextView
 
 class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +20,10 @@ class MainActivity2 : AppCompatActivity() {
 
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        val planName = intent.getStringExtra("plan_name")
+        val toolbarTitle = findViewById<TextView>(R.id.toolbar_title)
+        toolbarTitle.text = planName
         val days = intent.getIntExtra("value1", 0)
         val weeks = intent.getIntExtra("value2", 0)
         val controller = ListController()

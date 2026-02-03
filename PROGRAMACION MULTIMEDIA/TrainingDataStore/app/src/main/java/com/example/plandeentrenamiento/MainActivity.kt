@@ -12,9 +12,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
     private lateinit var dataStoreManager: DataStoreManager
+    private var isPlanActive: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         val editTxt = findViewById<EditText>(R.id.editTextText)
         val editTxt2 = findViewById<EditText>(R.id.editTextText2)
+        val editTxtName= findViewById<EditText>(R.id.editTextPlanName)
         val btnCreate = findViewById<Button>(R.id.button)
         val fabOptions = findViewById<FloatingActionButton>(R.id.fabID)
 
@@ -39,9 +42,10 @@ class MainActivity : AppCompatActivity() {
         fun goToMainActivity2() {
             val days = editTxt.text.toString().trim().toIntOrNull()
             val weeks = editTxt2.text.toString().trim().toIntOrNull()
+            val name = editTxtName.text.toString()
 
-            if (days == null || weeks == null) {
-                Toast.makeText(this, "Introdueix només números vàlids", Toast.LENGTH_SHORT).show()
+            if (days == null || weeks == null || name.isEmpty()) {
+                Toast.makeText(this, "No fields can be empty", Toast.LENGTH_SHORT).show()
                 return
             }
 
@@ -52,10 +56,32 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity2::class.java)
             intent.putExtra("value1", days)
             intent.putExtra("value2", weeks)
+            intent.putExtra("plan_name", name)
             startActivity(intent)
         }
 
-        btnCreate.setOnClickListener { goToMainActivity2() }
+        fun showActivatePlanDialog(onResult: () -> Unit) {
+            AlertDialog.Builder(this)
+                .setTitle("Activate training plan")
+                .setMessage("Do you want to activate this plan?")
+                .setPositiveButton("Yes") { _, _ ->
+                    isPlanActive = true
+                    onResult()
+                }
+                .setNegativeButton("No") { _, _ ->
+                    isPlanActive = false
+                    onResult()
+                }
+                .show()
+        }
+
+
+        btnCreate.setOnClickListener {
+            showActivatePlanDialog {
+                goToMainActivity2()
+            }
+        }
+
 
         fabOptions.setOnClickListener { view ->
             val popup = PopupMenu(this, view)
