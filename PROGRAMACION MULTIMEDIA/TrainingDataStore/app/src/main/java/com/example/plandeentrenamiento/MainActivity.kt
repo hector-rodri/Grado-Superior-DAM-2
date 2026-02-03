@@ -97,13 +97,6 @@ class MainActivity : AppCompatActivity() {
                         goToMainActivity2()
                         true
                     }
-                    R.id.fab_logout -> {
-                        val intent = Intent(this, LoginActivity::class.java)
-                        intent.putExtra("LOGOUT", true)
-                        startActivity(intent)
-                        finish()
-                        true
-                    }
                     else -> false
                 }
             }

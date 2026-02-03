@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
             val user = dataStoreManager.getUser().first()
 
             if (user != null && !logout) {
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                startActivity(Intent(this@LoginActivity, Home::class.java))
                 finish()
             }
         }

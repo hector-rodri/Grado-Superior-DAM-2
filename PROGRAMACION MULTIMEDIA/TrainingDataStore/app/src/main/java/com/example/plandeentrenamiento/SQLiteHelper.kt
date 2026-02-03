@@ -19,6 +19,7 @@ class SQLiteHelper(context: Context) :
         private const val COL_PLAN_ID = "id"
         private const val COL_PLAN_NOMBRE = "nombre"
         private const val COL_PLAN_DIAS = "dias"
+        private const val COL_PLAN_ACTIVO = "activo"
 
         // --- Ejercicio ---
         private const val TABLE_EJERCICIO = "Ejercicio"
@@ -34,7 +35,8 @@ class SQLiteHelper(context: Context) :
             CREATE TABLE $TABLE_PLAN (
                 $COL_PLAN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COL_PLAN_NOMBRE TEXT NOT NULL,
-                $COL_PLAN_DIAS INTEGER NOT NULL
+                $COL_PLAN_DIAS INTEGER NOT NULL,
+                $COL_PLAN_ACTIVO INTEGER NOT NULL
             )
         """
 
@@ -69,11 +71,13 @@ class SQLiteHelper(context: Context) :
         val values = ContentValues().apply {
             put(COL_PLAN_NOMBRE, plan.nombre.trim())
             put(COL_PLAN_DIAS, plan.dias)
+            put("activo", if (plan.activo) 1 else 0)
         }
         val id = db.insert(TABLE_PLAN, null, values)
         db.close()
         return id
     }
+
 
     fun getAllPlanes(): List<PlanEntrenamiento> {
         val db = readableDatabase
@@ -89,7 +93,8 @@ class SQLiteHelper(context: Context) :
                     PlanEntrenamiento(
                         id = c.getLong(c.getColumnIndexOrThrow(COL_PLAN_ID)),
                         nombre = c.getString(c.getColumnIndexOrThrow(COL_PLAN_NOMBRE)),
-                        dias = c.getInt(c.getColumnIndexOrThrow(COL_PLAN_DIAS))
+                        dias = c.getInt(c.getColumnIndexOrThrow(COL_PLAN_DIAS)),
+                        activo = c.getInt(c.getColumnIndexOrThrow("activo")) == 1
                     )
                 )
             }
