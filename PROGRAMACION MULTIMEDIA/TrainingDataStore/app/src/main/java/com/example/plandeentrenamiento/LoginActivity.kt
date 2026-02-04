@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
                 val storedUser = dataStoreManager.getUser().first()
 
                 if (storedUser == inputUser) {
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    startActivity(Intent(this@LoginActivity, Home::class.java))
                     finish()
                 } else {
                     Toast.makeText(

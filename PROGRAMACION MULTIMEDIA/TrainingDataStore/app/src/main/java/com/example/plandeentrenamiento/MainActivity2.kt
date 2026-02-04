@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import android.widget.TextView
 
+
 class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,11 +28,20 @@ class MainActivity2 : AppCompatActivity() {
         val days = intent.getIntExtra("value1", 0)
         val weeks = intent.getIntExtra("value2", 0)
         val controller = ListController()
-        val llista = controller.carregarDies(weeks, days)
+        val planId = intent.getIntExtra("plan_id", 0)
+        val llista = controller.carregarDies(weeks, days, planId)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerDays)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = ListAdapter(llista)
+        recyclerView.adapter = ListAdapter(llista) { diaSeleccionado ->
+
+            val intent = Intent(this, RegisterExerciseActivity::class.java)
+            intent.putExtra("dia_id", diaSeleccionado.idDia)
+            intent.putExtra("plan_id", diaSeleccionado.planId)
+
+            startActivity(intent)
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
