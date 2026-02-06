@@ -5,24 +5,19 @@ import java.util.concurrent.Semaphore;
 public class Main {
     public final static int TOTAL_CHAIRS = 3;
     public final static int TOTAL_CLIENTS = 7;
-
-    // a client can leave the shop served
     public final static int SERVED_CLIENT = 1;
-    // a client can leave the shop unserved, as the barber was too busy and there no seats available
     public final static int UNSERVED_CLIENT = 2;
-
     public static int[] leftClients = new int[TOTAL_CLIENTS];
-
-    // TODO: add semaphores
-
-    public static int clients = TOTAL_CLIENTS;
-    public static int chairs = TOTAL_CHAIRS;
+    public static Semaphore clients = new Semaphore(0);  
+    public static Semaphore barberReady = new Semaphore(0);   
+    public static Semaphore chairs = new Semaphore(TOTAL_CHAIRS); 
+    public static int clientsCount = TOTAL_CLIENTS;
 
     public static void main(String[] args) throws InterruptedException {
         Thread barberThread = new Barber();
-        Thread[] clientThreads = new Client[clients];
+        Thread[] clientThreads = new Client[clientsCount];
 
-        for (int i = 0; i < clients; i++) {
+        for (int i = 0; i < clientsCount; i++) {
             clientThreads[i] = new Client(i);
         }
 
@@ -43,7 +38,6 @@ public class Main {
                 unservedClients++;
             }
         }
-
         System.out.println("There were " + unservedClients + " unserved clients");
     }
 }
