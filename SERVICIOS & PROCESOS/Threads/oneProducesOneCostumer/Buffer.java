@@ -9,7 +9,7 @@ public class Buffer {
             try {
                 wait();
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                e.printStackTrace();
             }
         }
         a = value;
@@ -22,7 +22,7 @@ public class Buffer {
             try {
                 wait();
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                e.printStackTrace();
             }
         }
         isFull = false;
