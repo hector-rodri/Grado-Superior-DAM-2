@@ -5,13 +5,13 @@ public class Philosopher implements Runnable {
     private final Object rightFork;
     private final int id;
 
-    public Philosopher(int id, Object leftFork, Object rightFork) {
+    public Philosopher(int id, Object leftFork, Object rightFork) {//Cada filósofo tiene un ID y dos tenedores a su izquierda y derecha
         this.leftFork = leftFork;
         this.rightFork = rightFork;
         this.id = id;
     }
 
-    private void sleep() {
+    private void sleep() {//El tiempo que tarda 
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -20,8 +20,8 @@ public class Philosopher implements Runnable {
     }
 
     @Override
-    public void run() {
-        if (id % 2 == 0) {
+    public void run() {//Evita el deadlock al coger los tenedores en orden diferente según el ID del filósofo
+        if (id % 2 == 0) {//Filósofos pares cogen el tenedor izquierdo primero
             synchronized (leftFork) {
                 sleep();
                 synchronized (rightFork) {
@@ -29,7 +29,7 @@ public class Philosopher implements Runnable {
                 }
             }
         } else {
-            synchronized (rightFork) {
+            synchronized (rightFork) {//Filósofos impares cogen el tenedor derecho primero
                 sleep();
                 synchronized (leftFork) {
                     System.out.println("Philosopher " + id + " is eating");
