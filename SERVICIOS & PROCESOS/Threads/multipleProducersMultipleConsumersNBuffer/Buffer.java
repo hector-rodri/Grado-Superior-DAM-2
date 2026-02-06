@@ -1,25 +1,38 @@
 package multipleProducersMultipleConsumersNBuffer;
 
-import java.util.Queue;
+import java.util.*;
 
 public class Buffer {
-    
-    Queue<Integer> queue;
-    
+    private final Queue<Integer> bufferQueue;
+    private final int maxCapacity;
+
     public Buffer(int size) {
-        queue = new LimitedQueue<>(size);
+        this.bufferQueue = new LinkedList<>();
+        this.maxCapacity = size;
     }
 
-	public void put(int value) {
-        queue.add(value);        
-	}
-
-	public int get() {
-        int a = -1;
-        Integer result = queue.poll();
-        if (result != null) {
-            a = result;
+    public synchronized void put(int item) {
+        while (bufferQueue.size() == maxCapacity) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        return a;
-	}
+        bufferQueue.add(item);
+        notifyAll();
+    }
+
+    public synchronized int get() {
+        while (bufferQueue.isEmpty()) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        int item = bufferQueue.poll();
+        notifyAll();
+        return item;
+    }
 }
