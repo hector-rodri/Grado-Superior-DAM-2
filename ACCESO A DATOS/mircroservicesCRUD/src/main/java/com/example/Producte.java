@@ -11,15 +11,15 @@ public class Producte {
     private Integer id;
 
     @Column(nullable = false)
-    private String nom;
+    private String name;
 
-    private String descripcio;
-
-    @Column(nullable = false)
-    private Double preu;
+    private String description;
 
     @Column(nullable = false)
-    private Integer quantitat;
+    private Double price;
+
+    @Column(nullable = false)
+    private Integer quantity;
 
     public Producte() {
     }
@@ -32,35 +32,35 @@ public class Producte {
         this.id = id;
     }
 
-    public String getNom() {
-        return nom;
+    public String getName() {
+        return name;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setName(String nom) {
+        this.name = nom;
     }
 
-    public String getDescripcio() {
-        return descripcio;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripcio(String descripcio) {
-        this.descripcio = descripcio;
+    public void setDescription(String descripcio) {
+        this.description = descripcio;
     }
 
-    public Double getPreu() {
-        return preu;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setPreu(Double preu) {
-        this.preu = preu;
+    public void setPrice(Double preu) {
+        this.price = preu;
     }
 
-    public Integer getQuantitat() {
-        return quantitat;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setQuantitat(Integer quantitat) {
-        this.quantitat = quantitat;
+    public void setQuantity(Integer quantitat) {
+        this.quantity = quantitat;
     }
 }
