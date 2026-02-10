@@ -22,7 +22,8 @@ class Home : AppCompatActivity() {
         }
 
         buttonViewPlans.setOnClickListener {
-
+            val intent = Intent(this, ListPlanesActivity::class.java)
+            startActivity(intent)
         }
 
         buttonLogout.setOnClickListener {

@@ -12,18 +12,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlanDeEntrenamiento">
         <activity
+            android:name=".ListPlanesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity4"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity3"
             android:exported="false" />
         <activity
             android:name=".MainActivity2"
             android:exported="false" />
-        <activity android:name=".Home"
-            android:exported="false"/>
+        <activity
+            android:name=".Home"
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
