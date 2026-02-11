@@ -12,13 +12,17 @@ class SQLiteHelper(context: Context) :
 
     companion object {
         private const val DATABASE_NAME = "gimnasio.db"
-        private const val DATABASE_VERSION = 3
+        private const val DATABASE_VERSION = 4
+
+        // Tabla PlanEntrenamiento
         private const val TABLE_PLAN = "PlanEntrenamiento"
         private const val COL_PLAN_ID = "id"
         private const val COL_PLAN_NOMBRE = "nombre"
         private const val COL_PLAN_DIAS = "dias"
         private const val COL_PLAN_SEMANAS = "semanas"
         private const val COL_PLAN_ACTIVO = "activo"
+
+        // Tabla Ejercicio (única tabla de ejercicios)
         private const val TABLE_EJERCICIO = "Ejercicio"
         private const val COL_EJ_ID = "id"
         private const val COL_EJ_PLAN_ID = "plan_id"
@@ -26,15 +30,6 @@ class SQLiteHelper(context: Context) :
         private const val COL_EJ_NOMBRE = "nombre"
         private const val COL_EJ_PESO = "peso"
         private const val COL_EJ_REPES = "repes"
-        private const val TABLE_EJERCICIO_REGISTRADO = "EjercicioRegistrado"
-        private const val COL_REG_ID = "id"
-        private const val COL_REG_PLAN_ID = "plan_id"
-        private const val COL_REG_DIA = "dia"
-        private const val COL_REG_NOMBRE = "nombre"
-        private const val COL_REG_FECHA = "fecha"
-        private const val COL_REG_PESO = "peso"
-        private const val COL_REG_REPES = "repes"
-        private const val COL_REG_TIPO = "tipo"
 
         private const val SQL_CREATE_PLAN = """
             CREATE TABLE $TABLE_PLAN (
@@ -59,36 +54,20 @@ class SQLiteHelper(context: Context) :
                     ON DELETE CASCADE
             )
         """
-
-        private const val SQL_CREATE_EJERCICIO_REGISTRADO = """
-            CREATE TABLE $TABLE_EJERCICIO_REGISTRADO (
-                $COL_REG_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                $COL_REG_PLAN_ID INTEGER NOT NULL,
-                $COL_REG_DIA INTEGER NOT NULL,
-                $COL_REG_NOMBRE TEXT NOT NULL,
-                $COL_REG_FECHA TEXT NOT NULL,
-                $COL_REG_PESO REAL,
-                $COL_REG_REPES INTEGER,
-                $COL_REG_TIPO TEXT,
-                FOREIGN KEY($COL_REG_PLAN_ID) 
-                    REFERENCES $TABLE_PLAN($COL_PLAN_ID) 
-                    ON DELETE CASCADE
-            )
-        """
     }
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_PLAN)
         db.execSQL(SQL_CREATE_EJERCICIO)
-        db.execSQL(SQL_CREATE_EJERCICIO_REGISTRADO)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_EJERCICIO_REGISTRADO")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_EJERCICIO")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_PLAN")
         onCreate(db)
     }
+
+    // ==================== MÉTODOS PARA PLANES ====================
 
     fun insertPlan(plan: PlanEntrenamiento): Long {
         val db = writableDatabase
@@ -140,15 +119,51 @@ class SQLiteHelper(context: Context) :
         return list
     }
 
-    fun insertEjercicioBase(e: EjercicioRegistrado): Long {
+    // NUEVO MÉTODO: Actualizar estado activo/inactivo de un plan
+    fun updatePlanActivo(planId: Long, activo: Boolean): Boolean {
         val db = writableDatabase
 
         val values = ContentValues().apply {
-            put(COL_EJ_PLAN_ID, e.planId)
-            put(COL_EJ_DIA, e.dia)
-            put(COL_EJ_NOMBRE, e.nombre)
-            put(COL_EJ_PESO, e.peso)
-            put(COL_EJ_REPES, e.repes)
+            put(COL_PLAN_ACTIVO, if (activo) 1 else 0)
+        }
+
+        val rowsAffected = db.update(
+            TABLE_PLAN,
+            values,
+            "$COL_PLAN_ID = ?",
+            arrayOf(planId.toString())
+        )
+
+        db.close()
+        return rowsAffected > 0
+    }
+
+    // NUEVO MÉTODO: Eliminar un plan
+    fun deletePlan(planId: Long): Boolean {
+        val db = writableDatabase
+
+        // Al tener ON DELETE CASCADE, los ejercicios se eliminan automáticamente
+        val rowsDeleted = db.delete(
+            TABLE_PLAN,
+            "$COL_PLAN_ID = ?",
+            arrayOf(planId.toString())
+        )
+
+        db.close()
+        return rowsDeleted > 0
+    }
+
+    // ==================== MÉTODOS PARA EJERCICIOS ====================
+
+    fun insertEjercicio(ejercicio: EjercicioRegistrado): Long {
+        val db = writableDatabase
+
+        val values = ContentValues().apply {
+            put(COL_EJ_PLAN_ID, ejercicio.planId)
+            put(COL_EJ_DIA, ejercicio.dia)
+            put(COL_EJ_NOMBRE, ejercicio.nombre)
+            put(COL_EJ_PESO, ejercicio.peso)
+            put(COL_EJ_REPES, ejercicio.repes)
         }
 
         val id = db.insert(TABLE_EJERCICIO, null, values)
@@ -185,114 +200,46 @@ class SQLiteHelper(context: Context) :
                         dia = c.getInt(c.getColumnIndexOrThrow(COL_EJ_DIA)),
                         nombre = c.getString(c.getColumnIndexOrThrow(COL_EJ_NOMBRE)),
                         peso = c.getDouble(c.getColumnIndexOrThrow(COL_EJ_PESO)),
-                        repes = c.getInt(c.getColumnIndexOrThrow(COL_EJ_REPES)),
-                        fecha = "",       // Por defecto vacío
-                        tipo = ""         // Por defecto vacío
+                        repes = c.getInt(c.getColumnIndexOrThrow(COL_EJ_REPES))
                     )
                 )
             }
         }
 
-
         db.close()
         return list
     }
 
-    fun insertEjercicioRegistrado(e: EjercicioRegistrado): Long {
-        val db = writableDatabase
-
-        val values = ContentValues().apply {
-            put(COL_REG_PLAN_ID, e.planId)
-            put(COL_REG_DIA, e.dia)
-            put(COL_REG_NOMBRE, e.nombre)
-            put(COL_REG_FECHA, e.fecha)
-            put(COL_REG_PESO, e.peso)
-            put(COL_REG_REPES, e.repes)
-            put(COL_REG_TIPO, e.tipo)
-        }
-
-        val id = db.insert(TABLE_EJERCICIO_REGISTRADO, null, values)
-        db.close()
-        return id
-    }
-
-    fun getEjerciciosRegistradosByPlan(planId: Long): List<EjercicioRegistrado> {
+    fun getEjerciciosByPlan(planId: Long): List<EjercicioRegistrado> {
         val db = readableDatabase
         val list = mutableListOf<EjercicioRegistrado>()
 
         val cursor = db.query(
-            TABLE_EJERCICIO_REGISTRADO,
+            TABLE_EJERCICIO,
             arrayOf(
-                COL_REG_ID,
-                COL_REG_PLAN_ID,
-                COL_REG_DIA,
-                COL_REG_NOMBRE,
-                COL_REG_FECHA,
-                COL_REG_PESO,
-                COL_REG_REPES,
-                COL_REG_TIPO
+                COL_EJ_ID,
+                COL_EJ_PLAN_ID,
+                COL_EJ_DIA,
+                COL_EJ_NOMBRE,
+                COL_EJ_PESO,
+                COL_EJ_REPES
             ),
-            "$COL_REG_PLAN_ID = ?",
+            "$COL_EJ_PLAN_ID = ?",
             arrayOf(planId.toString()),
             null, null,
-            "$COL_REG_FECHA DESC"
+            "$COL_EJ_DIA ASC, $COL_EJ_ID ASC"
         )
 
         cursor.use { c ->
             while (c.moveToNext()) {
                 list.add(
                     EjercicioRegistrado(
-                        id = c.getLong(c.getColumnIndexOrThrow(COL_REG_ID)),
-                        planId = c.getLong(c.getColumnIndexOrThrow(COL_REG_PLAN_ID)),
-                        dia = c.getInt(c.getColumnIndexOrThrow(COL_REG_DIA)),
-                        nombre = c.getString(c.getColumnIndexOrThrow(COL_REG_NOMBRE)),
-                        fecha = c.getString(c.getColumnIndexOrThrow(COL_REG_FECHA)),
-                        peso = c.getDouble(c.getColumnIndexOrThrow(COL_REG_PESO)),
-                        repes = c.getInt(c.getColumnIndexOrThrow(COL_REG_REPES)),
-                        tipo = c.getString(c.getColumnIndexOrThrow(COL_REG_TIPO))
-                    )
-                )
-            }
-        }
-
-        db.close()
-        return list
-    }
-
-    fun getEjerciciosRegistradosByPlanAndDay(planId: Long, dia: Int): List<EjercicioRegistrado> {
-        val db = readableDatabase
-        val list = mutableListOf<EjercicioRegistrado>()
-
-        val cursor = db.query(
-            TABLE_EJERCICIO_REGISTRADO,
-            arrayOf(
-                COL_REG_ID,
-                COL_REG_PLAN_ID,
-                COL_REG_DIA,
-                COL_REG_NOMBRE,
-                COL_REG_FECHA,
-                COL_REG_PESO,
-                COL_REG_REPES,
-                COL_REG_TIPO
-            ),
-            "$COL_REG_PLAN_ID = ? AND $COL_REG_DIA = ?",
-            arrayOf(planId.toString(), dia.toString()),
-            null, null,
-            "$COL_REG_FECHA DESC"
-        )
-
-        cursor.use { c ->
-            while (c.moveToNext()) {
-                list.add(
-                    EjercicioRegistrado(
-                        id = c.getLong(c.getColumnIndexOrThrow(COL_REG_ID)),
-                        planId = c.getLong(c.getColumnIndexOrThrow(COL_REG_PLAN_ID)),
-                        dia = c.getInt(c.getColumnIndexOrThrow(COL_REG_DIA)),
-                        nombre = c.getString(c.getColumnIndexOrThrow(COL_REG_NOMBRE)),
-                        fecha = c.getString(c.getColumnIndexOrThrow(COL_REG_FECHA)),
-                        peso = c.getDouble(c.getColumnIndexOrThrow(COL_REG_PESO)),
-                        repes = c.getInt(c.getColumnIndexOrThrow(COL_REG_REPES)),
-                        tipo = c.getString(c.getColumnIndexOrThrow(COL_REG_TIPO))
+                        id = c.getLong(c.getColumnIndexOrThrow(COL_EJ_ID)),
+                        planId = c.getLong(c.getColumnIndexOrThrow(COL_EJ_PLAN_ID)),
+                        dia = c.getInt(c.getColumnIndexOrThrow(COL_EJ_DIA)),
+                        nombre = c.getString(c.getColumnIndexOrThrow(COL_EJ_NOMBRE)),
+                        peso = c.getDouble(c.getColumnIndexOrThrow(COL_EJ_PESO)),
+                        repes = c.getInt(c.getColumnIndexOrThrow(COL_EJ_REPES))
                     )
                 )
             }

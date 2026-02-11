@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plandeentrenamiento.R
 import com.example.plandeentrenamiento.data.EjercicioRegistrado
 
-class EjercicioAdapter(private val ejercicios: MutableList<EjercicioRegistrado>) :
-    RecyclerView.Adapter<EjercicioAdapter.EjercicioViewHolder>() {
+class EjercicioAdapter(
+    private var ejercicios: MutableList<EjercicioRegistrado>
+) : RecyclerView.Adapter<EjercicioAdapter.EjercicioViewHolder>() {
 
-    class EjercicioViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvNombre: TextView = view.findViewById(R.id.tvEjercicioNombre)
-        val tvPeso: TextView = view.findViewById(R.id.tvEjercicioPeso)
-        val tvRepes: TextView = view.findViewById(R.id.tvEjercicioRepes)
-        val tvDia: TextView = view.findViewById(R.id.tvEjercicioDia)
+    inner class EjercicioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvNombre: TextView = itemView.findViewById(R.id.tvEjercicioNombre)
+        val tvPeso: TextView = itemView.findViewById(R.id.tvEjercicioPeso)
+        val tvRepes: TextView = itemView.findViewById(R.id.tvEjercicioRepes)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EjercicioViewHolder {
@@ -26,18 +26,24 @@ class EjercicioAdapter(private val ejercicios: MutableList<EjercicioRegistrado>)
 
     override fun onBindViewHolder(holder: EjercicioViewHolder, position: Int) {
         val ejercicio = ejercicios[position]
+
         holder.tvNombre.text = ejercicio.nombre
         holder.tvPeso.text = "${ejercicio.peso} kg"
         holder.tvRepes.text = "${ejercicio.repes} reps"
-        holder.tvDia.text = "Day ${ejercicio.dia}"
     }
 
     override fun getItemCount(): Int = ejercicios.size
 
+    // Método para añadir un ejercicio
     fun addEjercicio(ejercicio: EjercicioRegistrado) {
         ejercicios.add(ejercicio)
         notifyItemInserted(ejercicios.size - 1)
     }
 
-    fun getEjercicios(): List<EjercicioRegistrado> = ejercicios
+    // Método para actualizar toda la lista
+    fun updateEjercicios(newEjercicios: List<EjercicioRegistrado>) {
+        ejercicios.clear()
+        ejercicios.addAll(newEjercicios)
+        notifyDataSetChanged()
+    }
 }

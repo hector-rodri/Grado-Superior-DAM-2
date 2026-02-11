@@ -62,11 +62,6 @@ class MainActivity2 : AppCompatActivity() {
                 Toast.makeText(this, "Registrar exercici seleccionat", Toast.LENGTH_SHORT).show()
                 true
             }
-            R.id.viewregisteredexerc -> {
-                val intent = Intent(this, MainActivity3::class.java)
-                startActivity(intent)
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }

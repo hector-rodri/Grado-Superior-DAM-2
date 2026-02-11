@@ -142,15 +142,13 @@ class MainActivity4 : AppCompatActivity() {
             planId = planId,
             dia = currentSelectedDay,
             nombre = exerciseName,
-            fecha = currentDate,
             peso = weight,
-            repes = reps,
-            tipo = "Fuerza"
+            repes = reps
         )
 
 
         // Guardar directamente en la base de datos
-        val ejercicioId = dbHelper.insertEjercicioBase(ejercicio)
+        val ejercicioId = dbHelper.insertEjercicio(ejercicio)
 
         if (ejercicioId != -1L) {
             // Añadir al RecyclerView con el ID real
