@@ -1,4 +1,4 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import android.widget.TextView
+import com.example.plandeentrenamiento.R
+import com.example.plandeentrenamiento.ui.resources.ListAdapter
+import com.example.plandeentrenamiento.ui.resources.ListController
 
 
 class MainActivity2 : AppCompatActivity() {
@@ -35,7 +38,7 @@ class MainActivity2 : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ListAdapter(llista) { diaSeleccionado ->
 
-            val intent = Intent(this, RegisterExerciseActivity::class.java)
+            val intent = Intent(this, MainActivity4::class.java)
             intent.putExtra("dia_id", diaSeleccionado.idDia)
             intent.putExtra("plan_id", diaSeleccionado.planId)
 

@@ -1,4 +1,4 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.data
 
 data class PlanEntrenamiento(
     val id: Long = 0,

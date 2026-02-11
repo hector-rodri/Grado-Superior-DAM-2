@@ -1,4 +1,6 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.ui.resources
+
+import com.example.plandeentrenamiento.data.ElementLlista
 
 class ListController {
     fun carregarDies(setmanes: Int, diesPerSetmana: Int, planId: Int): List<ElementLlista> {

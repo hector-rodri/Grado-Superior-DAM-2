@@ -4,6 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.plandeentrenamiento.data.EjercicioRegistrado
+import com.example.plandeentrenamiento.data.PlanEntrenamiento
 
 class SQLiteHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -11,16 +13,12 @@ class SQLiteHelper(context: Context) :
     companion object {
         private const val DATABASE_NAME = "gimnasio.db"
         private const val DATABASE_VERSION = 3
-
-        // --- Plan ---
         private const val TABLE_PLAN = "PlanEntrenamiento"
         private const val COL_PLAN_ID = "id"
         private const val COL_PLAN_NOMBRE = "nombre"
         private const val COL_PLAN_DIAS = "dias"
         private const val COL_PLAN_SEMANAS = "semanas"
         private const val COL_PLAN_ACTIVO = "activo"
-
-        // --- Ejercicio BASE (para crear plan) ---
         private const val TABLE_EJERCICIO = "Ejercicio"
         private const val COL_EJ_ID = "id"
         private const val COL_EJ_PLAN_ID = "plan_id"
@@ -28,8 +26,6 @@ class SQLiteHelper(context: Context) :
         private const val COL_EJ_NOMBRE = "nombre"
         private const val COL_EJ_PESO = "peso"
         private const val COL_EJ_REPES = "repes"
-
-        // --- Ejercicio REGISTRADO (cuando el usuario entrena) ---
         private const val TABLE_EJERCICIO_REGISTRADO = "EjercicioRegistrado"
         private const val COL_REG_ID = "id"
         private const val COL_REG_PLAN_ID = "plan_id"
@@ -94,8 +90,6 @@ class SQLiteHelper(context: Context) :
         onCreate(db)
     }
 
-    // ------------------ CRUD Plan ------------------
-
     fun insertPlan(plan: PlanEntrenamiento): Long {
         val db = writableDatabase
 
@@ -145,8 +139,6 @@ class SQLiteHelper(context: Context) :
         db.close()
         return list
     }
-
-    // ------------------ CRUD Ejercicio BASE ------------------
 
     fun insertEjercicioBase(e: EjercicioRegistrado): Long {
         val db = writableDatabase
@@ -205,8 +197,6 @@ class SQLiteHelper(context: Context) :
         db.close()
         return list
     }
-
-    // ------------------ CRUD Ejercicio REGISTRADO ------------------
 
     fun insertEjercicioRegistrado(e: EjercicioRegistrado): Long {
         val db = writableDatabase

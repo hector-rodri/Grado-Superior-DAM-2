@@ -1,12 +1,13 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.ui
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.plandeentrenamiento.R
+import android.content.Intent
+import android.widget.Button
 
-class Home : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -17,12 +18,12 @@ class Home : AppCompatActivity() {
         val buttonLogout = findViewById<Button>(R.id.buttonLogout)
 
         buttonCreatePlan.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, CreatePlanActivity::class.java)
             startActivity(intent)
         }
 
         buttonViewPlans.setOnClickListener {
-            val intent = Intent(this, ListPlanesActivity::class.java)
+            val intent = Intent(this, ListPlansActivity::class.java)
             startActivity(intent)
         }
 

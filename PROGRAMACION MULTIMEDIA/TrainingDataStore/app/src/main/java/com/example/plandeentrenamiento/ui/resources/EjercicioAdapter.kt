@@ -1,10 +1,12 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.ui.resources
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.plandeentrenamiento.R
+import com.example.plandeentrenamiento.data.EjercicioRegistrado
 
 class EjercicioAdapter(private val ejercicios: MutableList<EjercicioRegistrado>) :
     RecyclerView.Adapter<EjercicioAdapter.EjercicioViewHolder>() {

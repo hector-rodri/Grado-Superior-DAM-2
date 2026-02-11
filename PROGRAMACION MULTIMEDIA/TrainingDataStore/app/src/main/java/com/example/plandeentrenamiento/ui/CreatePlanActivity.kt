@@ -1,4 +1,4 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,14 +7,18 @@ import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.lifecycle.lifecycleScope
+import com.example.plandeentrenamiento.DataStoreManager
+import com.example.plandeentrenamiento.data.PlanEntrenamiento
+import com.example.plandeentrenamiento.R
+import com.example.plandeentrenamiento.SQLiteHelper
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import androidx.appcompat.app.AlertDialog
 
-class MainActivity : AppCompatActivity() {
+class CreatePlanActivity : AppCompatActivity() {
     private lateinit var dataStoreManager: DataStoreManager
     private lateinit var dbHelper: SQLiteHelper
     private var isPlanActive: Boolean = false
@@ -22,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_create_plan)
 
         dataStoreManager = DataStoreManager(this)
         dbHelper = SQLiteHelper(this)
@@ -33,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         val btnCreate = findViewById<Button>(R.id.button)
         val fabOptions = findViewById<FloatingActionButton>(R.id.fabID)
 
-        // Precargar valores de DataStore
         lifecycleScope.launch {
             val savedDays = dataStoreManager.getDays().first()
             val savedWeeks = dataStoreManager.getWeeks().first()

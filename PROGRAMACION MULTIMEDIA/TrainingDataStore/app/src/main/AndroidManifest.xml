@@ -12,22 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlanDeEntrenamiento">
         <activity
-            android:name=".ListPlanesActivity"
+            android:name=".ui.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity4"
+            android:name=".ui.ListPlansActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity3"
+            android:name=".ui.MainActivity4"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
+            android:name=".ui.MainActivity3"
             android:exported="false" />
         <activity
-            android:name=".Home"
+            android:name=".ui.MainActivity2"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.CreatePlanActivity"
             android:exported="false" />
     </application>
 

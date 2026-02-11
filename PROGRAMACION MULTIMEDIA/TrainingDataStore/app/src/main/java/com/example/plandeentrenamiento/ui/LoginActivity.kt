@@ -1,4 +1,4 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.plandeentrenamiento.DataStoreManager
+import com.example.plandeentrenamiento.R
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -25,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
             val user = dataStoreManager.getUser().first()
 
             if (user != null && !logout) {
-                startActivity(Intent(this@LoginActivity, Home::class.java))
+                startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                 finish()
             }
         }
@@ -63,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
                 val storedUser = dataStoreManager.getUser().first()
 
                 if (storedUser == inputUser) {
-                    startActivity(Intent(this@LoginActivity, Home::class.java))
+                    startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                     finish()
                 } else {
                     Toast.makeText(

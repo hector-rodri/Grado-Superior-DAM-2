@@ -1,12 +1,15 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.ui
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.plandeentrenamiento.ui.resources.PlanAdapter
+import com.example.plandeentrenamiento.R
+import com.example.plandeentrenamiento.SQLiteHelper
 
-class ListPlanesActivity : AppCompatActivity() {
+class ListPlansActivity : AppCompatActivity() {
 
     private lateinit var dbHelper: SQLiteHelper
     private lateinit var recyclerView: RecyclerView

@@ -1,9 +1,9 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.data
 
 data class EjercicioRegistrado(
     val id: Long = 0,
     val planId: Long,
-    val dia: Int,           // Día del plan al que corresponde
+    val dia: Int,
     val nombre: String,
     val fecha: String,
     val peso: Double,

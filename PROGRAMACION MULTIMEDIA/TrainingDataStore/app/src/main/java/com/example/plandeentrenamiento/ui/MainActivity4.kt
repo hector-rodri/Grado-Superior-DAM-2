@@ -1,10 +1,18 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.ui
 
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.plandeentrenamiento.R
+import com.example.plandeentrenamiento.SQLiteHelper
+import com.example.plandeentrenamiento.data.EjercicioRegistrado
+import com.example.plandeentrenamiento.ui.resources.EjercicioAdapter
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MainActivity4 : AppCompatActivity() {
 
@@ -27,7 +35,6 @@ class MainActivity4 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main4)
 
-        // Inicializar BD
         dbHelper = SQLiteHelper(this)
 
         // Obtener datos del plan desde el Intent
@@ -84,7 +91,7 @@ class MainActivity4 : AppCompatActivity() {
         spinnerDays.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
-                view: android.view.View?,
+                view: View?,
                 position: Int,
                 id: Long
             ) {
@@ -129,7 +136,7 @@ class MainActivity4 : AppCompatActivity() {
         }
 
         // Crear ejercicio temporal (sin ID aún porque no está en BD)
-        val currentDate = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(java.util.Date())
+        val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val ejercicio = EjercicioRegistrado(
             id = 0,
             planId = planId,
