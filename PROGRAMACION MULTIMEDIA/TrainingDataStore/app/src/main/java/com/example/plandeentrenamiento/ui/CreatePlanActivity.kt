@@ -45,21 +45,6 @@ class CreatePlanActivity : AppCompatActivity() {
             if (savedWeeks != null) editTxt2.setText(savedWeeks.toString())
         }
 
-        fun showActivatePlanDialog(onResult: () -> Unit) {
-            AlertDialog.Builder(this)
-                .setTitle("Activate training plan")
-                .setMessage("Do you want to activate this plan?")
-                .setPositiveButton("Yes") { _, _ ->
-                    isPlanActive = true
-                    onResult()
-                }
-                .setNegativeButton("No") { _, _ ->
-                    isPlanActive = false
-                    onResult()
-                }
-                .show()
-        }
-
         fun createPlanAndGoToAddExercises() {
             val days = editTxt.text.toString().trim().toIntOrNull()
             val weeks = editTxt2.text.toString().trim().toIntOrNull()
@@ -93,23 +78,21 @@ class CreatePlanActivity : AppCompatActivity() {
             if (planId != -1L) {
                 Toast.makeText(this, "Plan created successfully", Toast.LENGTH_SHORT).show()
 
-                // Ir a MainActivity4 para añadir ejercicios
-                val intent = Intent(this, MainActivity4::class.java)
+                val intent = Intent(this, AddExerciseActivity::class.java)
                 intent.putExtra("PLAN_ID", planId)
                 intent.putExtra("PLAN_NAME", name)
                 intent.putExtra("PLAN_DAYS", days)
                 intent.putExtra("PLAN_WEEKS", weeks)
+                intent.putExtra("PLAN_STATUS",isPlanActive)
                 startActivity(intent)
-                finish() // Opcional: cerrar MainActivity
+                finish()
             } else {
                 Toast.makeText(this, "Error creating plan", Toast.LENGTH_SHORT).show()
             }
         }
 
         btnCreate.setOnClickListener {
-            showActivatePlanDialog {
                 createPlanAndGoToAddExercises()
-            }
         }
 
         fabOptions.setOnClickListener { view ->
@@ -119,15 +102,9 @@ class CreatePlanActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.fab_setmanesiguals -> {
-                        showActivatePlanDialog {
-                            createPlanAndGoToAddExercises()
-                        }
                         true
                     }
                     R.id.fab_setmanesdiferents -> {
-                        showActivatePlanDialog {
-                            createPlanAndGoToAddExercises()
-                        }
                         true
                     }
                     else -> false

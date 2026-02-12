@@ -38,7 +38,7 @@ class MainActivity2 : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ListAdapter(llista) { diaSeleccionado ->
 
-            val intent = Intent(this, MainActivity4::class.java)
+            val intent = Intent(this, AddExerciseActivity::class.java)
             intent.putExtra("dia_id", diaSeleccionado.idDia)
             intent.putExtra("plan_id", diaSeleccionado.planId)
 

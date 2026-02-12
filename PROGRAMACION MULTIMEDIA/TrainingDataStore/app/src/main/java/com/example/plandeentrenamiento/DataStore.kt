@@ -29,7 +29,6 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-
     suspend fun saveDaysWeeks(days: Int, weeks: Int) {
         context.dataStore.edit { prefs ->
             prefs[daysKey] = days

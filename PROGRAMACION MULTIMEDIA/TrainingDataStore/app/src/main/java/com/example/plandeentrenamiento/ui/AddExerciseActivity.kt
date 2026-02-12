@@ -1,8 +1,10 @@
 package com.example.plandeentrenamiento.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class MainActivity4 : AppCompatActivity() {
+class AddExerciseActivity : AppCompatActivity() {
 
     private lateinit var dbHelper: SQLiteHelper
     private lateinit var adapter: EjercicioAdapter
@@ -23,17 +25,18 @@ class MainActivity4 : AppCompatActivity() {
     private lateinit var editWeight: EditText
     private lateinit var editReps: EditText
     private lateinit var btnAddExercise: Button
+    private lateinit var btnClosePlan: Button
     private lateinit var recyclerExercises: RecyclerView
-
     private var planId: Long = -1
     private var planDays: Int = 0
     private var planWeeks: Int = 0
     private var currentSelectedDay: Int = 1
     private val ejerciciosTemporales = mutableListOf<EjercicioRegistrado>()
+    private var isPlanActive: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main4)
+        setContentView(R.layout.activity_add_exercise)
 
         dbHelper = SQLiteHelper(this)
 
@@ -42,6 +45,7 @@ class MainActivity4 : AppCompatActivity() {
         val planName = intent.getStringExtra("PLAN_NAME") ?: "Unknown Plan"
         planDays = intent.getIntExtra("PLAN_DAYS", 0)
         planWeeks = intent.getIntExtra("PLAN_WEEKS", 0)  // número de semanas
+        isPlanActive = intent.getBooleanExtra("PLAN_STATUS",false)
 
         if (planId == -1L || planDays == 0 || planWeeks == 0) {
             Toast.makeText(this, "Error: Plan data not received", Toast.LENGTH_SHORT).show()
@@ -59,17 +63,36 @@ class MainActivity4 : AppCompatActivity() {
         editReps = findViewById(R.id.editReps)
         btnAddExercise = findViewById(R.id.btnAddExercise)
         recyclerExercises = findViewById(R.id.recyclerExercises)
+        btnClosePlan = findViewById(R.id.btnClosePlan)
 
-        // Configurar Spinner con los días del plan
         setupDaysSpinner()
-
-        // Configurar RecyclerView
         setupRecyclerView()
 
-        // Configurar botón de añadir ejercicio
+        btnClosePlan.setOnClickListener {
+            showActivatePlanDialog {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
         btnAddExercise.setOnClickListener {
             addExercise()
         }
+    }
+
+    fun showActivatePlanDialog(onResult: () -> Unit) {
+        AlertDialog.Builder(this)
+            .setTitle("Activate training plan")
+            .setMessage("Do you want to activate this plan?")
+            .setPositiveButton("Yes") { _, _ ->
+                isPlanActive = true
+                onResult()
+            }
+            .setNegativeButton("No") { _, _ ->
+                isPlanActive = false
+                onResult()
+            }
+            .show()
     }
 
     private fun setupDaysSpinner() {
@@ -148,7 +171,7 @@ class MainActivity4 : AppCompatActivity() {
 
 
         // Guardar directamente en la base de datos
-        val ejercicioId = dbHelper.insertEjercicio(ejercicio)
+        val ejercicioId = dbHelper.insertExercise(ejercicio)
 
         if (ejercicioId != -1L) {
             // Añadir al RecyclerView con el ID real
@@ -162,6 +185,9 @@ class MainActivity4 : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Error adding exercise", Toast.LENGTH_SHORT).show()
         }
+
+
+
     }
 
     private fun clearInputFields() {

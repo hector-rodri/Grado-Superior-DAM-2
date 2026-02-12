@@ -1,11 +1,13 @@
-package com.example.plandeentrenamiento
+package com.example.plandeentrenamiento.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.plandeentrenamiento.R
+import com.example.plandeentrenamiento.SQLiteHelper
 import com.example.plandeentrenamiento.ui.resources.EjercicioAdapter
 import com.google.android.material.tabs.TabLayout
 
@@ -20,6 +22,7 @@ class ExercisesActivity : AppCompatActivity() {
     private var planNombre: String = ""
     private var planDias: Int = 0
     private var currentDay: Int = 1
+    private var isPlanActive: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +83,7 @@ class ExercisesActivity : AppCompatActivity() {
     }
 
     private fun loadEjercicios(dia: Int) {
-        val ejercicios = dbHelper.getEjerciciosByPlanAndDay(planId, dia)
+        val ejercicios = dbHelper.getExercises(planId, dia)
 
         if (ejercicios.isEmpty()) {
             // No mostrar Toast, solo dejar la lista vacía

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.plandeentrenamiento.ExercisesActivity
+import com.example.plandeentrenamiento.ui.ExercisesActivity
 import com.example.plandeentrenamiento.ui.resources.PlanAdapter
 import com.example.plandeentrenamiento.R
 import com.example.plandeentrenamiento.SQLiteHelper
@@ -35,7 +35,7 @@ class ListPlansActivity : AppCompatActivity() {
     }
 
     private fun loadPlanes() {
-        val planes = dbHelper.getAllPlanes()
+        val planes = dbHelper.getAllPlans()
 
         if (planes.isEmpty()) {
             Toast.makeText(this, "No training plans found", Toast.LENGTH_SHORT).show()
@@ -80,7 +80,7 @@ class ListPlansActivity : AppCompatActivity() {
      */
     private fun togglePlanActivo(plan: PlanEntrenamiento, position: Int, nuevoEstado: Boolean) {
         // Actualizamos en la base de datos
-        val success = dbHelper.updatePlanActivo(plan.id, nuevoEstado)
+        val success = dbHelper.updatePlan(plan.id, nuevoEstado)
 
         if (success) {
             // Creamos el plan actualizado
