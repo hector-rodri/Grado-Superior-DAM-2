@@ -20,8 +20,11 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         dataStoreManager = DataStoreManager(this)
-
         val logout = intent.getBooleanExtra("LOGOUT", false)
+        val etUser = findViewById<EditText>(R.id.etUsername)
+        val etPass = findViewById<EditText>(R.id.etPassword)
+        val btnRegister = findViewById<Button>(R.id.btnRegister)
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
 
         lifecycleScope.launch {
             val user = dataStoreManager.getUser().first()
@@ -32,46 +35,43 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        val etUser = findViewById<EditText>(R.id.etUsername)
-        val etPass = findViewById<EditText>(R.id.etPassword)
-        val btnRegister = findViewById<Button>(R.id.btnRegister)
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
 
         btnRegister.setOnClickListener {
             val user = etUser.text.toString().trim()
-            val pass = etPass.text.toString().trim()
+            val psswd = etPass.text.toString().trim()
 
-            if (user.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(this, "Rellena tots els camps", Toast.LENGTH_SHORT).show()
+
+            if (user.isEmpty() || psswd.isEmpty()) {
+                Toast.makeText(this, "Please enter all required information", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
             lifecycleScope.launch {
-                dataStoreManager.saveUser(user, pass)
-                Toast.makeText(this@LoginActivity, "Usuari guardat", Toast.LENGTH_SHORT).show()
+                dataStoreManager.saveUser(user, "")
+                Toast.makeText(this@LoginActivity, "Saved user", Toast.LENGTH_SHORT).show()
             }
         }
 
         btnLogin.setOnClickListener {
-            val inputUser = etUser.text.toString().trim()
-            val inputPass = etPass.text.toString().trim()
+            val user2 = etUser.text.toString().trim()
+            val psswd2 = etPass.text.toString().trim()
 
-            if (inputUser.isEmpty() || inputPass.isEmpty()) {
-                Toast.makeText(this, "Rellena tots els camps", Toast.LENGTH_SHORT).show()
+            if (user2.isEmpty() || psswd2.isEmpty()) {
+                Toast.makeText(this, "Please enter all required information", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
             lifecycleScope.launch {
                 val storedUser = dataStoreManager.getUser().first()
 
-                if (storedUser == inputUser) {
+                if (storedUser == user2) {
                     startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                     finish()
                 } else {
                     Toast.makeText(
-                        this@LoginActivity,
-                        "L’usuari o la contrasenya no és correcte",
-                        Toast.LENGTH_SHORT
+                        this@LoginActivity, "The user is incorrect", Toast.LENGTH_SHORT
                     ).show()
                 }
             }

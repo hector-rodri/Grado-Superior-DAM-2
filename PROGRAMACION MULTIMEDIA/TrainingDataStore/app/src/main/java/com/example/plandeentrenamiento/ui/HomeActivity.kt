@@ -31,7 +31,6 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             intent.putExtra("LOGOUT", true)
             startActivity(intent)
-            finish()
         }
     }
 }

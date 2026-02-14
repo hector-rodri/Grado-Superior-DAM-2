@@ -30,9 +30,8 @@ class CreatePlanActivity : AppCompatActivity() {
 
         dataStoreManager = DataStoreManager(this)
         dbHelper = SQLiteHelper(this)
-
-        val editTxt = findViewById<EditText>(R.id.editTextText)
-        val editTxt2 = findViewById<EditText>(R.id.editTextText2)
+        val editTxt = findViewById<EditText>(R.id.editText)
+        val editTxt2 = findViewById<EditText>(R.id.editText2)
         val editTxtName = findViewById<EditText>(R.id.editTextPlanName)
         val btnCreate = findViewById<Button>(R.id.button)
         val fabOptions = findViewById<FloatingActionButton>(R.id.fabID)
@@ -41,8 +40,12 @@ class CreatePlanActivity : AppCompatActivity() {
             val savedDays = dataStoreManager.getDays().first()
             val savedWeeks = dataStoreManager.getWeeks().first()
 
-            if (savedDays != null) editTxt.setText(savedDays.toString())
-            if (savedWeeks != null) editTxt2.setText(savedWeeks.toString())
+            if (savedDays != null) {
+                editTxt.setText(savedDays.toString());
+            }
+            if (savedWeeks != null) {
+                editTxt2.setText(savedWeeks.toString());
+            }
         }
 
         fun createPlanAndGoToAddExercises() {
@@ -56,21 +59,17 @@ class CreatePlanActivity : AppCompatActivity() {
             }
 
             if (days <= 0 || weeks <= 0) {
-                Toast.makeText(this, "Days and weeks must be greater than 0", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Days and weeks must be greater than 0", Toast.LENGTH_SHORT)
+                    .show()
                 return
             }
 
-            // Guardar días y semanas en DataStore
             lifecycleScope.launch {
                 dataStoreManager.saveDaysWeeks(days, weeks)
             }
 
-            // Crear el plan en la base de datos
             val plan = PlanEntrenamiento(
-                nombre = name,
-                dias = days,
-                semanas = weeks,
-                activo = isPlanActive
+                nombre = name, dias = days, semanas = weeks, activo = isPlanActive
             )
 
             val planId = dbHelper.insertPlan(plan)
@@ -83,7 +82,7 @@ class CreatePlanActivity : AppCompatActivity() {
                 intent.putExtra("PLAN_NAME", name)
                 intent.putExtra("PLAN_DAYS", days)
                 intent.putExtra("PLAN_WEEKS", weeks)
-                intent.putExtra("PLAN_STATUS",isPlanActive)
+                intent.putExtra("PLAN_STATUS", isPlanActive)
                 startActivity(intent)
                 finish()
             } else {
@@ -92,7 +91,7 @@ class CreatePlanActivity : AppCompatActivity() {
         }
 
         btnCreate.setOnClickListener {
-                createPlanAndGoToAddExercises()
+            createPlanAndGoToAddExercises()
         }
 
         fabOptions.setOnClickListener { view ->
@@ -102,9 +101,11 @@ class CreatePlanActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.fab_setmanesiguals -> {
+                        Toast.makeText(this, "Same Weeks", Toast.LENGTH_SHORT).show()
                         true
                     }
                     R.id.fab_setmanesdiferents -> {
+                        Toast.makeText(this, "Different Weeks", Toast.LENGTH_SHORT).show()
                         true
                     }
                     else -> false

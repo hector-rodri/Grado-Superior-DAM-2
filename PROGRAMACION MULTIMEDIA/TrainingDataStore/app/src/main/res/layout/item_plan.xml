@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,86 +8,79 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Nombre del Plan -->
         <TextView
             android:id="@+id/tvPlanNombre"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="h"
+            android:text="My Training Plan"
+            android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#000000"
-            android:layout_marginBottom="8dp" />
-
-        <!-- Días y Semanas -->
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/tvPlanDias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Days: 9"
+            android:layout_marginTop="8dp"
+            android:text="gjjgjggj"
+            android:textColor="#666666"
             android:textSize="14sp"
-            android:textColor="#666666" />
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPlanNombre" />
         <TextView
             android:id="@+id/tvPlanSemanas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Weeks: 4"
-            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:text="gjgjgjg"
             android:textColor="#666666"
-            android:layout_marginBottom="12dp" />
-
-        <!-- Contenedor de botones -->
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPlanDias" />
+        <Button
+            android:id="@+id/btnVerEjercicios"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/softblue"
+            android:text="VIEW"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/btnDeletePlan"
+            app:layout_constraintTop_toBottomOf="@id/tvPlanSemanas" />
+        <Button
+            android:id="@+id/btnDeletePlan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#F44336"
+            android:text="DELETE"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/tvPlanActivo"
+            app:layout_constraintTop_toBottomOf="@id/tvPlanSemanas" />
 
-            <!-- Botón Ver Ejercicios -->
-            <ImageButton
-                android:id="@+id/btnVerEjercicios"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@android:drawable/ic_menu_view"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:contentDescription="View exercises"
-                android:tint="#2196F3"
-                android:layout_marginEnd="8dp" />
-
-            <!-- Botón Eliminar -->
-            <ImageButton
-                android:id="@+id/btnDeletePlan"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@android:drawable/ic_menu_delete"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Delete plan"
-                android:tint="#F44336"
-                android:layout_marginEnd="8dp" />
-
-            <!-- Estado Activo/Inactivo (clickeable) -->
-            <TextView
-                android:id="@+id/tvPlanActivo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ACTIVE"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/holo_green_dark"
-                android:padding="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?android:attr/selectableItemBackground" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tvPlanActivo"
+            android:layout_width="82dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="12dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:text="ACTIVE"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPlanSemanas" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

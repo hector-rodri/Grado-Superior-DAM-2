@@ -17,21 +17,22 @@ class ExercisesActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: EjercicioAdapter
-
     private var planId: Long = -1
     private var planNombre: String = ""
     private var planDias: Int = 0
     private var currentDay: Int = 1
-    private var isPlanActive: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercises)
 
-        // Obtener datos del Intent
         planId = intent.getLongExtra("PLAN_ID", -1)
         planNombre = intent.getStringExtra("PLAN_NOMBRE") ?: ""
         planDias = intent.getIntExtra("PLAN_DIAS", 0)
+        dbHelper = SQLiteHelper(this)
+        tvPlanNombre = findViewById(R.id.tvEjerciciosPlanNombre)
+        tabLayout = findViewById(R.id.tabLayoutDias)
+        recyclerView = findViewById(R.id.recyclerEjercicios)
 
         if (planId == -1L) {
             Toast.makeText(this, "Error loading plan", Toast.LENGTH_SHORT).show()
@@ -39,36 +40,26 @@ class ExercisesActivity : AppCompatActivity() {
             return
         }
 
-        dbHelper = SQLiteHelper(this)
+        tvPlanNombre.text = planNombre//Nombre del plan en el txtView
+        supportActionBar?.title = "Exercises"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Inicializar vistas
-        tvPlanNombre = findViewById(R.id.tvEjerciciosPlanNombre)
-        tabLayout = findViewById(R.id.tabLayoutDias)
-        recyclerView = findViewById(R.id.recyclerEjercicios)
-
-        setupViews()
         setupTabs()
-        setupRecyclerView()
+        recyclerView.layoutManager = LinearLayoutManager(this)
         loadEjercicios(currentDay)
     }
 
-    private fun setupViews() {
-        tvPlanNombre.text = planNombre
-        supportActionBar?.title = "Exercises"
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
     private fun setupTabs() {
-        // Crear tabs para cada día
         for (day in 1..planDias) {
-            tabLayout.addTab(tabLayout.newTab().setText("Day $day"))
+            val tab = tabLayout.newTab()
+            tab.text = "Day $day"
+            tabLayout.addTab(tab)
         }
 
-        // Listener para cambio de tab
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.let {
-                    currentDay = it.position + 1
+                if (tab != null) {
+                    currentDay = tab.position + 1
                     loadEjercicios(currentDay)
                 }
             }
@@ -78,25 +69,9 @@ class ExercisesActivity : AppCompatActivity() {
         })
     }
 
-    private fun setupRecyclerView() {
-        recyclerView.layoutManager = LinearLayoutManager(this)
-    }
-
     private fun loadEjercicios(dia: Int) {
         val ejercicios = dbHelper.getExercises(planId, dia)
-
-        if (ejercicios.isEmpty()) {
-            // No mostrar Toast, solo dejar la lista vacía
-            adapter = EjercicioAdapter(mutableListOf())
-            recyclerView.adapter = adapter
-        } else {
-            adapter = EjercicioAdapter(ejercicios.toMutableList())
-            recyclerView.adapter = adapter
-        }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
+        adapter = EjercicioAdapter(ejercicios.toMutableList())
+        recyclerView.adapter = adapter
     }
 }

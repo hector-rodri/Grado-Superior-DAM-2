@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/activateplan"
-        android:title="Activar Pla"
+        android:title="Modify exercise"
         app:showAsAction="never" />
     <item
         android:id="@+id/registerexercise"
-        android:title="Registrar exercici"
+        android:title="Register exercise"
         app:showAsAction="never" />
     <item
         android:id="@+id/viewregisteredexerc"
-        android:title="Visualitzar exercicis registrats"
+        android:title="View registered exercises"
         app:showAsAction="never" />
 </menu>
