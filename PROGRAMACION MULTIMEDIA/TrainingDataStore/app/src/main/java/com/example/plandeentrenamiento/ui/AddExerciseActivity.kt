@@ -57,12 +57,14 @@ class AddExerciseActivity : AppCompatActivity() {
 
         dialogo.setPositiveButton("Yes") { dialog, which ->
             isPlanActive = true
+            dbHelper.updatePlan(planId, isPlanActive)
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
 
         dialogo.setNegativeButton("No") { dialog, which ->
             isPlanActive = false
+            dbHelper.updatePlan(planId, isPlanActive)
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }

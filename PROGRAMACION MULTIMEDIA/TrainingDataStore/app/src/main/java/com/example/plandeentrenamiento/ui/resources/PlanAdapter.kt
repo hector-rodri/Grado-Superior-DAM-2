@@ -3,12 +3,12 @@ package com.example.plandeentrenamiento.ui.resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plandeentrenamiento.R
 import com.example.plandeentrenamiento.data.PlanEntrenamiento
+import com.google.android.material.button.MaterialButton  // ← AÑADE ESTE IMPORT
 
 class PlanAdapter(
     private var planes: List<PlanEntrenamiento>,
@@ -22,8 +22,8 @@ class PlanAdapter(
         val tvDias: TextView = itemView.findViewById(R.id.tvPlanDias)
         val tvSemanas: TextView = itemView.findViewById(R.id.tvPlanSemanas)
         val tvActivo: TextView = itemView.findViewById(R.id.tvPlanActivo)
-        val btnDelete: ImageButton = itemView.findViewById(R.id.btnDeletePlan)
-        val btnVerEjercicios: ImageButton = itemView.findViewById(R.id.btnVerEjercicios)
+        val btnDelete: MaterialButton = itemView.findViewById(R.id.btnDeletePlan)
+        val btnVerEjercicios: MaterialButton = itemView.findViewById(R.id.btnVerEjercicios)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanViewHolder {
@@ -39,7 +39,6 @@ class PlanAdapter(
         holder.tvDias.text = "Days: ${plan.dias}"
         holder.tvSemanas.text = "Weeks: ${plan.semanas}"
 
-        // Configurar el texto y color del estado
         if (plan.activo) {
             holder.tvActivo.text = "ACTIVE"
             holder.tvActivo.setTextColor(
@@ -52,17 +51,14 @@ class PlanAdapter(
             )
         }
 
-        // Click listener para cambiar el estado
         holder.tvActivo.setOnClickListener {
             onActivoClick(plan, position)
         }
 
-        // Click listener para eliminar
         holder.btnDelete.setOnClickListener {
             onDeleteClick(plan, position)
         }
 
-        // Click listener para ver ejercicios
         holder.btnVerEjercicios.setOnClickListener {
             onVerEjerciciosClick(plan)
         }
@@ -70,13 +66,6 @@ class PlanAdapter(
 
     override fun getItemCount(): Int = planes.size
 
-    // Método para actualizar la lista de planes
-    fun updatePlanes(newPlanes: List<PlanEntrenamiento>) {
-        planes = newPlanes
-        notifyDataSetChanged()
-    }
-
-    // Método para actualizar un solo item
     fun updatePlan(position: Int, updatedPlan: PlanEntrenamiento) {
         val mutableList = planes.toMutableList()
         mutableList[position] = updatedPlan
@@ -84,7 +73,6 @@ class PlanAdapter(
         notifyItemChanged(position)
     }
 
-    // Método para eliminar un item
     fun removePlan(position: Int) {
         val mutableList = planes.toMutableList()
         mutableList.removeAt(position)

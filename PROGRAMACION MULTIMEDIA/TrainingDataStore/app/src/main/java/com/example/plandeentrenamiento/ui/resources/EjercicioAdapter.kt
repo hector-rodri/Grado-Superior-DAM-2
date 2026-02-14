@@ -34,16 +34,9 @@ class EjercicioAdapter(
 
     override fun getItemCount(): Int = ejercicios.size
 
-    // Método para añadir un ejercicio
     fun addEjercicio(ejercicio: EjercicioRegistrado) {
         ejercicios.add(ejercicio)
         notifyItemInserted(ejercicios.size - 1)
     }
 
-    // Método para actualizar toda la lista
-    fun updateEjercicios(newEjercicios: List<EjercicioRegistrado>) {
-        ejercicios.clear()
-        ejercicios.addAll(newEjercicios)
-        notifyDataSetChanged()
-    }
 }

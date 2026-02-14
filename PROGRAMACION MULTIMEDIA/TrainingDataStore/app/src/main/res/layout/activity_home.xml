@@ -53,6 +53,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonCreatePlan" />
     <Button
+        android:id="@+id/buttonViewStattss"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/softblue"
+        android:text="VIEW STATS"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonViewPlans" />
+    <Button
         android:id="@+id/buttonLogout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -64,5 +77,5 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonViewPlans" />
+        app:layout_constraintTop_toBottomOf="@id/buttonViewStattss" />
 </androidx.constraintlayout.widget.ConstraintLayout>

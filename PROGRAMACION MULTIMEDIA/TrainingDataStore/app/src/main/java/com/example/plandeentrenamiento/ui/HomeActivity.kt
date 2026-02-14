@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.plandeentrenamiento.R
 import android.content.Intent
 import android.widget.Button
+import android.widget.Toast
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,6 +17,7 @@ class HomeActivity : AppCompatActivity() {
         val buttonCreatePlan = findViewById<Button>(R.id.buttonCreatePlan)
         val buttonViewPlans = findViewById<Button>(R.id.buttonViewPlans)
         val buttonLogout = findViewById<Button>(R.id.buttonLogout)
+        val buttonStats = findViewById<Button>(R.id.buttonViewStattss)
 
         buttonCreatePlan.setOnClickListener {
             val intent = Intent(this, CreatePlanActivity::class.java)
@@ -31,6 +33,10 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             intent.putExtra("LOGOUT", true)
             startActivity(intent)
+        }
+
+        buttonStats.setOnClickListener {
+            Toast.makeText(this, "View Stats", Toast.LENGTH_SHORT).show()
         }
     }
 }

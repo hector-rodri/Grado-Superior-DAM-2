@@ -11,11 +11,13 @@ import com.example.plandeentrenamiento.ui.resources.PlanAdapter
 import com.example.plandeentrenamiento.R
 import com.example.plandeentrenamiento.SQLiteHelper
 import com.example.plandeentrenamiento.data.PlanEntrenamiento
+import kotlinx.coroutines.*
 
 class ListPlansActivity : AppCompatActivity() {
     private lateinit var dbHelper: SQLiteHelper
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PlanAdapter
+    private val scope = CoroutineScope(Dispatchers.Main + Job())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,24 +26,34 @@ class ListPlansActivity : AppCompatActivity() {
         dbHelper = SQLiteHelper(this)
         recyclerView = findViewById(R.id.recyclerPlanes)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val planes = dbHelper.getAllPlans()
 
-        if (planes.isEmpty()) {
-            Toast.makeText(this, "No training plans found", Toast.LENGTH_SHORT).show()
+        loadPlans()
+    }
+
+    private fun loadPlans() {
+        scope.launch {
+            val planes = withContext(Dispatchers.IO) {
+                dbHelper.getAllPlans()
+            }
+
+            if (planes.isEmpty()) {
+                Toast.makeText(this@ListPlansActivity, "No training plans found", Toast.LENGTH_SHORT).show()
+            }
+
+            adapter = PlanAdapter(
+                planes,
+                onActivoClick = { plan, position -> showToggleDialog(plan, position) },
+                onDeleteClick = { plan, position -> showDeleteDialog(plan, position) },
+                onVerEjerciciosClick = { plan ->
+                    val intent = Intent(this@ListPlansActivity, ExercisesActivity::class.java)
+                    intent.putExtra("PLAN_ID", plan.id)
+                    intent.putExtra("PLAN_NOMBRE", plan.nombre)
+                    intent.putExtra("PLAN_DIAS", plan.dias)
+                    intent.putExtra("PLAN_SEMANAS", plan.semanas)
+                    startActivity(intent)
+                })
+            recyclerView.adapter = adapter
         }
-
-        adapter = PlanAdapter(
-            planes,
-            onActivoClick = { plan, position -> showToggleDialog(plan, position) },
-            onDeleteClick = { plan, position -> showDeleteDialog(plan, position) },
-            onVerEjerciciosClick = { plan ->
-                val intent = Intent(this, ExercisesActivity::class.java)
-                intent.putExtra("PLAN_ID", plan.id)
-                intent.putExtra("PLAN_NOMBRE", plan.nombre)
-                intent.putExtra("PLAN_DIAS", plan.dias)
-                startActivity(intent)
-            })
-        recyclerView.adapter = adapter
     }
 
     private fun showToggleDialog(plan: PlanEntrenamiento, position: Int) {
@@ -68,20 +80,24 @@ class ListPlansActivity : AppCompatActivity() {
     }
 
     private fun togglePlanActivo(plan: PlanEntrenamiento, position: Int, nuevoEstado: Boolean) {
-        val success = dbHelper.updatePlan(plan.id, nuevoEstado)
-
-        if (success) {
-            val planActualizado = plan.copy(activo = nuevoEstado)
-            adapter.updatePlan(position, planActualizado)
-
-            val mensaje = if (nuevoEstado) {
-                "${plan.nombre} is now ACTIVE"
-            } else {
-                "${plan.nombre} is now INACTIVE"
+        scope.launch {
+            val success = withContext(Dispatchers.IO) {
+                dbHelper.updatePlan(plan.id, nuevoEstado)
             }
-            Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Error updating plan status", Toast.LENGTH_SHORT).show()
+
+            if (success) {
+                val planActualizado = plan.copy(activo = nuevoEstado)
+                adapter.updatePlan(position, planActualizado)
+
+                val mensaje = if (nuevoEstado) {
+                    "${plan.nombre} is now ACTIVE"
+                } else {
+                    "${plan.nombre} is now INACTIVE"
+                }
+                Toast.makeText(this@ListPlansActivity, mensaje, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@ListPlansActivity, "Error updating plan status", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -91,19 +107,32 @@ class ListPlansActivity : AppCompatActivity() {
         dialogo.setMessage("Are you sure you want to delete '${plan.nombre}'?")
 
         dialogo.setPositiveButton("Yes, Delete") { dialog, _ ->
-            val success = dbHelper.deletePlan(plan.id)
-
-            if (success) {
-                adapter.removePlan(position)
-                Toast.makeText(this, "'${plan.nombre}' deleted successfully", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Error deleting plan", Toast.LENGTH_SHORT).show()
-            }
+            deletePlan(plan, position)
             dialog.dismiss()
         }
         dialogo.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
         dialogo.show()
+    }
+
+    private fun deletePlan(plan: PlanEntrenamiento, position: Int) {
+        scope.launch {
+            val success = withContext(Dispatchers.IO) {
+                dbHelper.deletePlan(plan.id)
+            }
+
+            if (success) {
+                adapter.removePlan(position)
+                Toast.makeText(this@ListPlansActivity, "'${plan.nombre}' deleted successfully", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@ListPlansActivity, "Error deleting plan", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
     }
 }
