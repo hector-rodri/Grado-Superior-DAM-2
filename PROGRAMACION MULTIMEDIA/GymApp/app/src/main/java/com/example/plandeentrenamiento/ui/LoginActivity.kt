@@ -11,13 +11,35 @@ import com.example.plandeentrenamiento.DataStoreManager
 import com.example.plandeentrenamiento.R
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import androidx.activity.result.contract.ActivityResultContracts
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var dataStoreManager: DataStoreManager
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
 
         dataStoreManager = DataStoreManager(this)
         val logout = intent.getBooleanExtra("LOGOUT", false)

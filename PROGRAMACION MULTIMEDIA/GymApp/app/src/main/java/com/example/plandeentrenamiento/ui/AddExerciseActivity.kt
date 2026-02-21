@@ -2,7 +2,6 @@ package com.example.plandeentrenamiento.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +11,14 @@ import com.example.plandeentrenamiento.R
 import com.example.plandeentrenamiento.SQLiteHelper
 import com.example.plandeentrenamiento.data.EjercicioRegistrado
 import com.example.plandeentrenamiento.ui.resources.EjercicioAdapter
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.NotificationCompat
 
 class AddExerciseActivity : AppCompatActivity() {
     private lateinit var dbHelper: SQLiteHelper
@@ -20,6 +27,7 @@ class AddExerciseActivity : AppCompatActivity() {
     private var planDays: Int = 0
     private var planWeeks: Int = 0
     private var isPlanActive: Boolean = false
+    private var planName: String = ""
     private lateinit var spinnerDays: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +39,7 @@ class AddExerciseActivity : AppCompatActivity() {
         planDays = intent.getIntExtra("PLAN_DAYS", 0)
         planWeeks = intent.getIntExtra("PLAN_WEEKS", 0)
         isPlanActive = intent.getBooleanExtra("PLAN_STATUS", false)
+        planName = intent.getStringExtra("PLAN_NAME") ?: "Training Plan"
 
         spinnerDays = findViewById(R.id.spinnerDays)
         val btnAddExercise = findViewById<Button>(R.id.btnAddExercise)
@@ -58,6 +67,7 @@ class AddExerciseActivity : AppCompatActivity() {
         dialogo.setPositiveButton("Yes") { dialog, which ->
             isPlanActive = true
             dbHelper.updatePlan(planId, isPlanActive)
+            sendPlanActivatedNotification(planName)
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
@@ -70,6 +80,37 @@ class AddExerciseActivity : AppCompatActivity() {
         }
 
         dialogo.show()
+    }
+
+    private fun sendPlanActivatedNotification(planName: String) {
+        val channelId = "training_channel"
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Training Plans",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("Training Plan Activated")
+            .setContentText("'$planName' has been activated successfully")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .build()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+                notificationManager.notify(1, notification)
+            }
+        } else {
+            notificationManager.notify(1, notification)
+        }
     }
 
     fun setupDaysSpinner(spinnerDays: Spinner) {

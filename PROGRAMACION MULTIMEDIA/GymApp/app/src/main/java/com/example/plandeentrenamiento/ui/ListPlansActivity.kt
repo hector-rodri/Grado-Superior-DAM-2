@@ -12,6 +12,13 @@ import com.example.plandeentrenamiento.R
 import com.example.plandeentrenamiento.SQLiteHelper
 import com.example.plandeentrenamiento.data.PlanEntrenamiento
 import kotlinx.coroutines.*
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.app.NotificationCompat
 
 class ListPlansActivity : AppCompatActivity() {
     private lateinit var dbHelper: SQLiteHelper
@@ -28,6 +35,37 @@ class ListPlansActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         loadPlans()
+    }
+
+    private fun sendPlanActivatedNotification(planName: String) {
+        val channelId = "training_channel"
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Training Plans",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("Training Plan Activated")
+            .setContentText("'$planName' has been activated successfully!")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .build()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+                notificationManager.notify(1, notification)
+            }
+        } else {
+            notificationManager.notify(1, notification)
+        }
     }
 
     private fun loadPlans() {
@@ -71,6 +109,10 @@ class ListPlansActivity : AppCompatActivity() {
 
         dialogo.setPositiveButton("Yes") { dialog, _ ->
             togglePlanActivo(plan, position, nuevoEstado)
+            if (nuevoEstado) {
+                sendPlanActivatedNotification(plan.nombre)
+            }
+            dialog.dismiss()
             dialog.dismiss()
         }
         dialogo.setNegativeButton("No") { dialog, _ ->
