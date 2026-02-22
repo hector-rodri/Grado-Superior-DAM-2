@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GymApp</string>
+    <string name="username">Usuari</string>
+    <string name="password">Contrasenya</string>
+    <string name="btn_login">Inicia sessió</string>
+    <string name="btn_register">Registrar-se</string>
+    <string name="msg_empty_fields">Si us plau introdueix tota la informació requerida</string>
+    <string name="msg_saved_user">Usuari guardat</string>
+    <string name="msg_incorrect_user">L\'usuari és incorrecte</string>
+</resources>

@@ -16,8 +16,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 
-
-
 class LoginActivity : AppCompatActivity() {
     private lateinit var dataStoreManager: DataStoreManager
 
@@ -50,28 +48,24 @@ class LoginActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             val user = dataStoreManager.getUser().first()
-
             if (user != null && !logout) {
                 startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                 finish()
             }
         }
 
-
         btnRegister.setOnClickListener {
             val user = etUser.text.toString().trim()
             val psswd = etPass.text.toString().trim()
 
-
             if (user.isEmpty() || psswd.isEmpty()) {
-                Toast.makeText(this, "Please enter all required information", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, getString(R.string.msg_empty_fields), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             lifecycleScope.launch {
                 dataStoreManager.saveUser(user, "")
-                Toast.makeText(this@LoginActivity, "Saved user", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, getString(R.string.msg_saved_user), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -80,21 +74,17 @@ class LoginActivity : AppCompatActivity() {
             val psswd2 = etPass.text.toString().trim()
 
             if (user2.isEmpty() || psswd2.isEmpty()) {
-                Toast.makeText(this, "Please enter all required information", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, getString(R.string.msg_empty_fields), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             lifecycleScope.launch {
                 val storedUser = dataStoreManager.getUser().first()
-
                 if (storedUser == user2) {
                     startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                     finish()
                 } else {
-                    Toast.makeText(
-                        this@LoginActivity, "The user is incorrect", Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@LoginActivity, getString(R.string.msg_incorrect_user), Toast.LENGTH_SHORT).show()
                 }
             }
         }

@@ -1,3 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="GymApp">GymApp</string>
+    <string name="app_name">GymApp</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_register">Register</string>
+    <string name="msg_empty_fields">Please enter all required information</string>
+    <string name="msg_saved_user">Saved user</string>
+    <string name="msg_incorrect_user">The user is incorrect</string>
 </resources>

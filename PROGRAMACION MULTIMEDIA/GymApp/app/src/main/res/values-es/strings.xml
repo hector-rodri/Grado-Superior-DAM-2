@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GymApp</string>
+    <string name="username">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="btn_login">Iniciar sesión</string>
+    <string name="btn_register">Registrarse</string>
+    <string name="msg_empty_fields">Por favor introduce toda la información requerida</string>
+    <string name="msg_saved_user">Usuario guardado</string>
+    <string name="msg_incorrect_user">El usuario es incorrecto</string>
+</resources>
