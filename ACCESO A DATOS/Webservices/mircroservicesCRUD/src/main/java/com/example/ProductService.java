@@ -1,47 +1,52 @@
 package com.example;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
 
-    @Autowired
     private ProductRepository productRepository;
 
-    public Product createProduct(Product product) {
-        Product saved = productRepository.save(product);
-        if (saved == null || saved.getId() == null) {
-            throw new RuntimeException("Product could not be saved.");
-        }
-        return saved;
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public Product create(Product product) {
+        return productRepository.save(product);
     }
 
     public List<Product> getAll() {
         return productRepository.findAll();
     }
 
-    public Optional<Product> getById(Integer id) {
-        return productRepository.findById(id);
+    public Product getById(Integer id) {
+        return productRepository.findById(id).orElse(null);
     }
 
-    public Optional<Product> updateProduct(Integer id, Product data) {
-        return productRepository.findById(id).map(p -> {
-            p.setName(data.getName());
-            p.setDescription(data.getDescription());
-            p.setPrice(data.getPrice());
-            p.setQuantity(data.getQuantity());
-            return productRepository.save(p);
-        });
-    }
+    public Product update(Integer id, Product productValue) {
+        Product product = productRepository.findById(id).orElse(null);
 
-    public boolean deleteProduct(Integer id) {
-        if (productRepository.existsById(id)) {
-            productRepository.deleteById(id);
-            return true;
+        if (product == null) {
+            return null;
         }
-        return false;
+
+        product.setName(productValue.getName());
+        product.setDescription(productValue.getDescription());
+        product.setPrice(productValue.getPrice());
+        product.setQuantity(productValue.getQuantity());
+
+        return productRepository.save(product);
+    }
+
+    public boolean delete(Integer id) {
+        Product product = productRepository.findById(id).orElse(null);
+
+        if (product == null) {
+            return false;
+        }
+
+        productRepository.delete(product);
+        return true;
     }
 }
