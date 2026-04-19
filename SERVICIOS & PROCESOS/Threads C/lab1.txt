@@ -1,0 +1,213 @@
+PREVIO LABORATORIO 1 - UNITAT 1 - Programació en C
+
+EJEMPLO_FORK1
+
+PREGUNTA: Escribe los mensajes que aparecen en pantalla y explica
+qué proceso muestra cada uno (padre o hijo) y por qué.
+
+SALIDA:
+  Soy el proceso 147   <- PADRE (o HIJO, el orden puede variar)
+  Soy el proceso 148   <- HIJO  (o PADRE, el orden puede variar)
+
+EXPLICACIÓN:
+  Después del fork() existen dos procesos: el padre conserva su PID
+  original y el hijo recibe un PID nuevo (el siguiente disponible).
+  Ambos continúan ejecutando el mismo código a partir de la línea
+  siguiente al fork(), por eso los dos llegan al write() y los dos
+  imprimen su PID. No hay switch/case ni exit(), así que NO se
+  diferencia quién es padre y quién es hijo: simplemente los dos
+  ejecutan exactamente el mismo código posterior al fork()
+  El orden de aparición de los dos mensajes no está garantizado,
+  depende del planificador del sistema operativo
+
+
+EJEMPLO_FORK2
+
+PREGUNTA: Escribe los mensajes que aparecen en pantalla y explica
+qué proceso muestra cada uno (padre o hijo) y por qué.
+
+SALIDA (ejemplo, el orden padre/hijo puede variar):
+  Antes del fork: Soy el proceso 149   <- PADRE (antes del fork solo hay 1 proceso)
+  PADRE: Soy el proceso 149            <- PADRE (case default, pid != 0)
+  Los DOS: Soy el proceso 149          <- PADRE (código tras el switch)
+  HIJO: Soy el proceso 150             <- HIJO  (case 0)
+  Los DOS: Soy el proceso 150          <- HIJO  (código tras el switch)
+
+EXPLICACIÓN:
+  - "Antes del fork" lo imprime solo el padre porque el fork aún no
+    ha creado al hijo
+  - Tras el fork(), el padre recibe el PID del hijo (valor != 0),
+    entra por el case default e imprime "PADRE"
+  - El hijo recibe 0, entra por el case 0 e imprime "HIJO"
+  - Ninguno de los dos hace exit() dentro del switch, así que los
+    DOS llegan a la línea final "Los DOS" y la imprimen
+  - El orden de "PADRE/Los DOS" vs "HIJO/Los DOS" puede intercalarse
+
+
+EJEMPLO_FORK3
+
+PREGUNTA: Escribe los mensajes que aparecen en pantalla y explica
+qué proceso muestra cada uno (padre o hijo) y por qué
+
+SALIDA (ejemplo):
+  Antes del fork: Soy el proceso 151   <- PADRE
+  PADRE: Soy el proceso 151            <- PADRE
+  Solo lo ejecuta el padre: Soy el proceso 151  <- PADRE
+  HIJO: Soy el proceso 152             <- HIJO
+
+EXPLICACIÓN:
+  - "Antes del fork" solo lo imprime el padre (un único proceso)
+  - Tras el fork(), el hijo entra por case 0, imprime "HIJO" y
+    ejecuta exit(0), terminando su ejecución ahí
+  - El padre entra por el case default, imprime "PADRE" y como no
+    hace exit() llega al mensaje final "Solo lo ejecuta el padre"
+  - El mensaje final YA NO lo imprime el hijo (a diferencia de
+    fork2) porque el hijo termina con exit(0) dentro del switch
+
+
+EJEMPLO_FORK4
+
+PREGUNTA: ¿En qué orden aparecen en pantalla los mensajes?
+¿Qué proceso acaba antes la ejecución?
+
+SALIDA (ejemplo):
+  Antes del fork: Soy el proceso 153   <- PADRE
+  PADRE: Soy el proceso 153            <- PADRE
+  Solo lo ejecuta el padre: Soy el proceso 153  <- PADRE
+  HIJO: Soy el proceso 154             <- HIJO
+  HIJO acaba: Soy el proceso 154       <- HIJO
+
+ORDEN Y PROCESO QUE ACABA ANTES:
+  El padre acaba ANTES que el hijo. El bucle vacío del hijo
+  (10.000 iteraciones) hace que el hijo tarde más en llegar a su
+  mensaje final. El padre, al no tener ningún bucle y no esperar
+  al hijo (no hay waitpid), termina su ejecución más rápido
+  El orden no está garantizado al 100% (depende del scheduler),
+  pero en la práctica suele verse primero todo lo del padre y
+  luego los mensajes del hijo
+
+MODIFICACIÓN (para que el padre espere al hijo antes del último mensaje):
+  Añadir waitpid(-1, NULL, 0) en el case default, justo antes del
+  cierre del switch o antes del último write():
+
+  default:
+      sprintf(buffer,"PADRE: Soy el proceso %d\n",getpid());
+      write(1, buffer, strlen(buffer));
+      waitpid(-1, NULL, 0);   /* <-- AÑADIR ESTA LÍNEA */
+
+  Con esto, el padre queda bloqueado hasta que el hijo termina, y
+  solo entonces imprime "Solo lo ejecuta el padre"
+
+
+EJEMPLO_FORK5
+
+PREGUNTA: Escribe los mensajes que aparecen en pantalla y explica
+qué proceso muestra cada uno (padre o hijo) y por qué.
+
+SALIDA:
+  Antes del fork: Soy el proceso 155             <- PADRE
+  PADRE: Soy el proceso 155                      <- PADRE
+  HIJO: Soy el proceso 156                       <- HIJO
+  HIJO:La variable_global vale A y la local a    <- HIJO
+  PADRE:La variable_global vale A y la local a   <- PADRE
+  Solo lo ejecuta el padre: Soy el proceso 155   <- PADRE
+
+EXPLICACIÓN:
+  - El hijo hereda copias de variable_global ('A') y variable_local
+    ('a') del padre en el momento del fork.
+  - El hijo imprime las variables SIN modificarlas, muestra 'A' y 'a'.
+  - El padre usa waitpid(-1, NULL, 0) para esperar a que el hijo
+    acabe antes de imprimir sus propias variables.
+  - El padre también muestra 'A' y 'a' porque el hijo no ha
+    modificado las variables del padre (cada proceso tiene su
+    propia copia del espacio de memoria)
+
+MODIFICACIÓN (hijo modifica las variables antes de imprimirlas):
+  En el case 0 del hijo, añadir antes del sprintf:
+      variable_global = 'Z';
+      variable_local  = 'z';
+  El hijo imprimirá 'Z' y 'z', pero el padre seguirá viendo 'A' y 'a'
+  porque el fork crea espacios de memoria independientes: los cambios
+  del hijo NO afectan al padre
+
+
+EJEMPLO_FORK6
+
+PREGUNTA: Describe el contenido del fichero de salida.
+¿Podemos asegurar que si ejecutamos varias veces el programa
+el contenido del fichero será exactamente el mismo? ¿Por qué?
+
+DESCRIPCIÓN DEL FICHERO DE SALIDA:
+  El fichero contiene ~200.000 líneas con mensajes mezclados de
+  dos procesos (padre e hijo). La estructura general es:
+    - Una línea inicial: "Antes del fork: Soy el proceso <PID>"
+    - Una línea: "PADRE: Soy el proceso <PID>"
+    - Una línea: "HIJO: Soy el proceso <PID_HIJO>"
+    - Bloques intercalados de:
+        "PADRE:La variable_global vale <letra_minuscula>"
+        "HIJO:La variable_global vale <letra_mayuscula>"
+    - Una línea final: "Solo lo ejecuta el padre: Soy el proceso <PID>"
+  Padre e hijo modifican variable_global de forma independiente:
+  el padre parte de 'a' y la incrementa; el hijo parte de 'A' y
+  la incrementa. Sus cambios son completamente independientes porque
+  cada proceso tiene su propia copia de la variable (memoria separada
+  tras el fork)
+
+¿EL CONTENIDO SERÁ SIEMPRE EL MISMO?
+  NO. No podemos asegurar que el contenido sea exactamente el mismo
+  en cada ejecución por las siguientes razones:
+  1. Los PIDs asignados por el SO son distintos en cada ejecución.
+  2. El orden de interleaving de los mensajes de padre e hijo depende
+     del planificador (scheduler) del sistema operativo, que no es
+     determinista: en cada ejecución el scheduler puede decidir
+     cuánto tiempo de CPU da a cada proceso en cada momento, por lo
+     que la mezcla de líneas "PADRE/HIJO" puede variar.
+  En resumen: los valores de las variables serán los mismos (mismo
+  rango de letras), pero el orden de aparición de las líneas de
+  padre e hijo será diferente en cada ejecución
+
+
+EJEMPLO_EXEC1
+
+PREGUNTA: Describe el comportamiento. ¿Qué ves en pantalla?
+¿Cuántas veces aparece el mensaje con el PID? ¿A qué se debe?
+
+SALIDA:
+  Soy el proceso: 157
+  (listado de ls -l del directorio actual)
+
+COMPORTAMIENTO:
+  El mensaje con el PID aparece UNA SOLA VEZ, aunque en el código
+  hay dos sprintf/write con ese mensaje. Esto se debe a que execlp()
+  reemplaza completamente la imagen del proceso (código, datos, pila)
+  por el ejecutable indicado ("ls -l"). Si execlp tiene éxito, las
+  instrucciones que venían después NUNCA se ejecutan, porque el
+  código original ya no existe en memoria. Por eso el segundo write
+  con el PID nunca llega a ejecutarse
+  En pantalla se ve: primero el PID del proceso, y a continuación
+  la salida de "ls -l"
+
+
+EJEMPLO_EXEC2
+
+PREGUNTA: Describe el comportamiento. ¿Qué mensajes aparecen
+en pantalla? ¿Cuántos procesos se ejecutan?
+
+SALIDA:
+  Soy el proceso: 159      <- exec2 antes del execlp
+  Soy el proceso 159       <- ejemplo_fork1 (mismo PID, mismo proceso)
+  Soy el proceso 160       <- ejemplo_fork1 (proceso hijo creado por fork1)
+
+COMPORTAMIENTO Y NÚMERO DE PROCESOS:
+  Se ejecutan 2 procesos en total.
+  - El proceso de exec2 imprime su PID y luego llama a
+    execlp("./ejemplo_fork1", ...), que reemplaza su imagen por
+    ejemplo_fork1. El mensaje "Después del exec" NUNCA aparece
+    porque execlp tuvo éxito y el código original desaparece.
+  - Ahora ese mismo proceso (mismo PID) ejecuta ejemplo_fork1,
+    que hace un fork(): el padre imprime su PID y el hijo imprime
+    su PID (uno nuevo)
+  - En total participan 2 procesos: el proceso original (que muta
+    a fork1 mediante exec) y el hijo que fork1 crea
+
+
