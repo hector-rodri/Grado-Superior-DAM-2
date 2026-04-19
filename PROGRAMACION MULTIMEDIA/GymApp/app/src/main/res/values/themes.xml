@@ -6,4 +6,10 @@
         <item name="android:windowBackground">@color/bgColor</item>
         <item name="android:fontFamily">sans-serif</item>
     </style>
+    <style name="Theme.GymApp.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/primaryColor</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/image1</item>
+        <item name="windowSplashScreenAnimationDuration">800</item>
+        <item name="postSplashScreenTheme">@style/Theme.GymApp</item>
+    </style>
 </resources>

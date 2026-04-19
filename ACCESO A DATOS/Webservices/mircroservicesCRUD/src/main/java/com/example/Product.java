@@ -1,37 +1,37 @@
 package com.example;
 
-import jakarta.persistence.*;
+import jakarta.persistence.*;//Import all libraries
 
-@Entity
-@Table(name = "productes")
-public class Producte {
+@Entity//Annotation to indicate that this class is an entity
+@Table(name = "productes")//Annotation to specify the table name in the database
+public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id//Annotation to indicate that this field is the primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//Annotation to specify that the primary key is auto-generated
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false)//Annotation to specify that this field cannot be null
     private String name;
 
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = false)//Annotation to specify that this field cannot be null
     private Double price;
 
-    @Column(nullable = false)
+    @Column(nullable = false)//Annotation to specify that this field cannot be null
     private Integer quantity;
 
-    public Producte() {
+    public Product() {
     }
 
-    public Producte(String nom, String descripcio, Double preu, Integer quantitat) {
+    public Product(String nom, String descripcio, Double preu, Integer quantitat) {//Constructor to initialize the fields
         this.name = nom;
         this.description = descripcio;
         this.price = preu;
         this.quantity = quantitat;
     }
 
-    public Integer getId() {
+    public Integer getId() {//Getters and setters
         return id;
     }
 
