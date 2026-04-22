@@ -1,0 +1,84 @@
+LABORATORIO 1 - FICHERO DE RESPUESTAS
+Curso 2025-2026
+
+Pregunta 1. ¿Cómo puede saber un proceso el pid de sus hijos? ¿Qué
+llamada pueden utilizar los procesos para consultar su propio PID?
+
+Un proceso padre sabe el PID de sus hijos gracias a fork, cuando se hace fork, al padre se le devuelve el PID del hijo  y al hijo se le devuelve 0. Para saber su propio PID, un proceso usa getpid y para saber el PID de su padre usa getppid
+
+Pregunta 2. ¿En qué casos se ejecutará cualquier código que aparezca
+justo después de la llamada execlp (En cualquier caso/ En caso que el
+execlp se ejecute de forma correcta/ En caso que el exclp falle)?
+
+El código después de execlp solo se ejecuta si execlp falla. Si execlp funciona, el proceso cambia completamente al nuevo programa y no vuelve al código original, pero si falla por ejemplo, si el ejecutable no existe, devuelve error y se ejecuta la línea siguiente
+
+Pregunta 3. ¿Qué directorios hay dentro de /proc/PID_PADRE? ¿Qué
+opción de ls has usado?
+
+Dentro de /proc/PID_PADRE aparecen muchos ficheros y carpetas como: attr/, fd/, net/, smaps, auxv, fdinfo/, ns/, stat, cgroup, io, oom_adj, statm, cmdline, maps, pagemap, syscall...
+La opción usada fue: ls -la /proc/PID_PADRE
+
+Pregunta 4. Para el proceso padre, apunta el contenido de los ficheros
+status y cmdline. Compara el contenido del fichero environ con el
+resultado del comando env (fíjate por ejemplo en la variable PATH y la
+variable PWD) ¿Qué relación hay? Busca en el contenido del fichero
+status el estado en el que se encuentra el proceso y apúntalo en el
+fichero de respuestas. Anota también el tiempo de CPU que ha
+consumido en modo usuario que puedes encontrarlo en el fichero stat
+del proceso (verás que stat contiene una serie de números, consulta en
+el manual el formato qué representa cada uno de esos números: man
+proc).
+
+cmdline muestra cómo se ejecutó el programa, por ejemplo ./myPS<NUL>usuario<NUL>
+status muestra datos como Name, State, Pid, PPid, memoria....
+environ contiene las variables de entorno del proceso, y env muestra las del shell. Deberían ser casi iguales porque el proceso hereda el entorno del shell
+El estado del proceso padre puede ser sleeping o running
+El tiempo de CPU en modo usuario utime aumenta porque está en un while(1). Se ve en el campo 14 de /proc/PID/stat
+
+Pregunta 5. En el caso del proceso hijo, ¿a qué ficheros “apuntan” los
+ficheros cwd y exe? ¿Cuál crees que es el significado de cwd y exe?
+
+cwd apunta al directorio desde el que se ejecutó el programa
+exe apunta al ejecutable que está corriendo el proceso. Como el hijo muta a ps, exe apunta a /bin/ps
+
+Pregunta 6. En el caso del proceso hijo, ¿puedes mostrar el contenido de
+los ficheros environ, status y cmdline del proceso hijo? ¿En qué estado
+se encuentra?
+
+cmdline muestra los argumentos de ps, por ejemplo ps<NUL>-u<NUL>username<NUL>
+environ es igual que el del padre porque execlp no cambia el entorno
+status muestra Name = ps, State = S o Z, y PPid = PID del padre
+El hijo suele estar en estado Z porque ps termina muy rápido
+
+Pregunta 7. En el caso del proceso hijo, ¿a qué ficheros “apuntan” los
+ficheros cwd y exe? ¿Cuál crees que es el significado de cwd y exe?
+¿Qué diferencias hay con la versión anterior? ¿A qué se deben?
+
+cwd es el mismo directorio de trabajo
+exe apunta al ejecutable original myPS_v0 porque no hay mutación
+La diferencia es que en myPS.c exe apuntaba a /bin/ps, pero aquí sigue apuntando al binario original
+
+Pregunta 8. En el caso del proceso hijo, ¿puedes mostrar el contenido de
+los ficheros environ, status y cmdline del proceso hijo? ¿En qué estado
+se encuentra? ¿Qué diferencias hay con la versión anterior? ¿A qué se
+deben?
+
+cmdline muestra la línea original, por ejemplo ./myPS_v0<NUL>username<NUL>
+environ es igual que el del padre, igual que en la versión con mutación
+status muestra Name = myPS_v0 y el proceso sigue vivo en el bucle 
+La diferencia es que en myPS.c el Name era ps y el proceso terminaba rápido
+
+Pregunta 9. Comprueba el fichero status de /proc/PID_PADRE. ¿En qué
+estado está el proceso padre?
+
+El padre está en estado sleeping porque está bloqueado esperando entrada del usuario en la llamada read, esto se ve en /proc/PID_PADRE/status
+
+Pregunta 10. ¿Qué has hecho para guardar la salida de las ejecuciones
+de myPS3?
+
+He usado redirección de salida:
+./myPS3 user1 user2 user3 > salida1.txt
+./myPS3 user1 user2 user3 > salida2.txt
+./myPS3 user1 user2 user3 > salida3.txt
+Así cada ejecución guarda su salida en un fichero distinto y luego se pueden comparar con diff
+
