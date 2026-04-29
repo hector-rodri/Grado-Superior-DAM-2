@@ -10,6 +10,7 @@ import android.view.View
 class TicTacToeView(context: Context) : View(context) {
     private val board = Array(3) { IntArray(3) { 0 } }
     private var currentTurn = 1
+    private var startTurn = 1
 
     private val paintGrid = Paint().apply {
         color = Color.BLACK
@@ -34,16 +35,13 @@ class TicTacToeView(context: Context) : View(context) {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
         val w = width.toFloat()
         val h = height.toFloat()
-
         val cellW = w / 3f
         val cellH = h / 3f
 
         canvas.drawLine(cellW, 0f, cellW, h, paintGrid)
         canvas.drawLine(cellW * 2f, 0f, cellW * 2f, h, paintGrid)
-
         canvas.drawLine(0f, cellH, w, cellH, paintGrid)
         canvas.drawLine(0f, cellH * 2f, w, cellH * 2f, paintGrid)
 
@@ -62,16 +60,8 @@ class TicTacToeView(context: Context) : View(context) {
     }
 
     private fun drawX(canvas: Canvas, left: Float, top: Float, cellW: Float, cellH: Float, margin: Float) {
-        canvas.drawLine(
-            left + margin, top + margin,
-            left + cellW - margin, top + cellH - margin,
-            paintX
-        )
-        canvas.drawLine(
-            left + cellW - margin, top + margin,
-            left + margin, top + cellH - margin,
-            paintX
-        )
+        canvas.drawLine(left + margin, top + margin, left + cellW - margin, top + cellH - margin, paintX)
+        canvas.drawLine(left + cellW - margin, top + margin, left + margin, top + cellH - margin, paintX)
     }
 
     private fun drawO(canvas: Canvas, left: Float, top: Float, cellW: Float, cellH: Float, margin: Float) {
@@ -85,17 +75,19 @@ class TicTacToeView(context: Context) : View(context) {
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
             val w = width.toFloat()
             val h = height.toFloat()
-
             val cellW = w / 3f
             val cellH = h / 3f
-
             val col = (event.x / cellW).toInt()
             val row = (event.y / cellH).toInt()
 
             if (row in 0..2 && col in 0..2 && board[row][col] == 0) {
-                board[row][col] = currentTurn
 
-                currentTurn = if (currentTurn == 1) 2 else 1
+                if (currentTurn % 2 == 1) {
+                    board[row][col] = 1//X
+                } else {
+                    board[row][col] = 2//O
+                }
+                currentTurn++
 
                 invalidate()
             }
@@ -109,7 +101,17 @@ class TicTacToeView(context: Context) : View(context) {
                 board[row][col] = 0
             }
         }
-        currentTurn = 1
+
+        if (startTurn == 1) {
+            startTurn = 2
+        } else {
+            startTurn = 1
+        }
+        currentTurn = startTurn
+
         invalidate()
     }
 }
+
+
+
