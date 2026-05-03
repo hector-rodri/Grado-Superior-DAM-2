@@ -1,0 +1,85 @@
+Laboratorio 2: El intérprete de comandos
+
+Héctor Rodríguez Lozano      2 DAM
+
+PREGUNTA 1. ¿Qué comandos habéis utilizado para crear los directorios S1..S5?
+
+He utilizado el comando mkdir para crear los directorios mkdir S1 S2 S3 S4 S5
+
+PREGUNTA 2. ¿Qué comando utilizas para listar el contenido de un directorio? ¿Qué opción hay que añadir para ver los ficheros ocultos?
+El comando para listar el contenido de un directorio es ls, para ver también los ficheros ocultos ls -a
+
+PREGUNTA 3. ¿Qué opción hay que añadir a ls para ver información extendida de los ficheros? ¿Qué campos se ven por defecto con esa opción?
+La opción es -l. Al ejecutar ls -l se muestran los permisos del fichero, enlaces, propietario, grupo, bytes, fecha de última modificación y nombre
+
+PREGUNTA 4. ¿Qué opciones de menú has activado para extender la información que muestra el File Browser?
+En el File Browser he activado la opción de mostrar los ficheros ocultos y también he cambiado la vista para que muestre la información en formato lista, de manera que aparezcan los detalles de cada fichero
+
+PREGUNTA 5. ¿Qué secuencia de comandos has ejecutado para borrar un directorio, comprobar que no está y volver a crearlo?
+Con rmdir borro el directorio, con ls compruebo que ya no aparece en el listado y con mkdir lo vuelvo a crear
+
+PREGUNTA 6. ¿Qué diferencia hay entre el comando cat y less?
+El comando cat muestra el contenido completo del fichero de golpe en la terminal. El comando less muestra el contenido de forma paginada, permitiendo avanzar y retroceder
+
+PREGUNTA 7. ¿Para qué sirve la opción -i del comando cp? ¿Cuál es la orden para hacer un alias del comando cp que incluya la opción -i?
+La opción -i hace que el comando cp pregunte antes de sobreescribir un fichero que ya exista en el destino. La orden para crear el alias es alias cp='cp -i'
+
+PREGUNTA 8. ¿Qué hace la opción -i del comando rm? ¿Y la opción -i del mv? Escribe la orden para hacer un alias del comando rm que incluya la opción -i.
+La opción -i del comando rm hace que pida confirmación antes de borrar cada fichero. La opción -i del mv hace que pida confirmación antes de sobreescribir un fichero destino que ya exista
+La orden para el alias es alias rm='rm -i'
+
+PREGUNTA 9. ¿Qué opciones de chmod has utilizado para dejar solamente los permisos de escritura? ¿Qué resultado ha devuelto cat al intentar ver el fichero test? ¿Qué opciones de chmod has utilizado para dejar solamente los permisos de lectura? ¿Has conseguido borrarlo?
+Para dejar solo permisos de escritura he usado chmod ugo=w test, al intentar hacer cat test el sistema ha devuelto un error de permiso denegado, ya que sin permiso de lectura no se puede ver el 
+Para dejar solo permisos de lectura he usad chmod ugo=r test, al intentar borrarlo con rm test el sistema también ha pedido confirmación, porque el permiso de borrado depende del directorio contenedor, no del fichero en sí. En este caso sí se ha podido borrar porque el directorio tenía permisos 
+
+PREGUNTA 10. ¿Qué línea de comandos has ejecutado para mostrar la información del inodo del fichero test?
+stat test
+
+PREGUNTA 11. ¿Cuántos enlaces (links) tiene el directorio S1?
+El directorio S1 tiene 2 enlaces uno es el propio nombre del directorio guardado en el directorio padre y el otro es la entrada . dentro del propio directorio S1
+
+PREGUNTA 12. ¿De qué tipo es cada uno de los links creados, sl_pr y hl_pr?
+sl_pr es un symbolic link, creado con ln -s y hl_pr es un hard link, creado con ln sin opciones
+
+PREGUNTA 13. ¿Cuál es el número de links que tiene cada fichero? ¿Qué significa ese valor? ¿Qué inodo tiene cada fichero?
+Tras ejecutar stat sobre los tres ficheros:
+pr.txt y hl_pr tienen 2 enlaces y comparten el mismo número de inodo, ya que son el mismo fichero con dos nombres distintos
+sl_pr tiene 1 enlace y un inodo diferente, porque el enlace simbólico es un fichero independiente que simplemente apunta al original
+
+PREGUNTA 14. ¿Observas alguna diferencia en el resultado de alguno de los comandos cuando se ejecutan sobre sl_pr y cuando se ejecutan sobre hl_pr? Si hay alguna diferencia, explica el motivo.
+Si el comando readlink sobre sl_pr devuelve el nombre del fichero al que apunta, mientras que sobre hl_pr no devuelve nada porque no es un enlace simbólico. El comando namei también muestra la flecha de resolución para sl_pr
+Los comandos cat y stat sin embargo muestran el mismo contenido e inodo para ambos en este punto, ya que pr.txt todavía existe
+
+PREGUNTA 15. ¿Observas alguna diferencia en el resultado de alguno de los comandos cuando se ejecutan sobre sl_pr y cuando se ejecutan sobre hl_pr? Si hay alguna diferencia, explica el motivo.
+Si después de borrar pr.txt hay diferencias. El comando cat sl_pr da error porque el enlace simbólico apunta a un fichero que ya no existe (enlace roto). En cambio cat hl_pr sigue funcionando correctamente, ya que el hard link mantiene el inodo vivo mientras haya al menos un enlace apuntando a él
+
+PREGUNTA 16. ¿Observas alguna diferencia respecto a la ejecución de estos comandos antes y después de borrar el fichero pr.txt? Si hay alguna diferencia, explica el motivo.
+Si antes de borrar pr.txt ambos funcionaban correctamente, después de borrarlo todos los comandos ejecutados sobre sl_pr fallan o muestran que el enlace está roto, porque el enlace simbólico depende de que exista el fichero original
+Los comandos sobre hl_pr siguen funcionando porque el hard link es simplemente otro nombre para el mismo inodo, que no se libera hasta que no quedan enlaces apuntando a el
+
+PREGUNTA 17. ¿Cómo podéis saber los sistemas de ficheros montados en vuestro sistema y de qué tipo son? Indica, además, en qué directorios están montados.
+Ejecutando el comando mount o df -h se pueden ver los sistemas de ficheros montados
+En la salida aparece el dispositivo, el tipo de sistema de ficheros y el directorio donde está montado
+
+PREGUNTA 18. ¿Cómo se puede saber el número de inodos libres de un sistema de ficheros? ¿Qué comando has utilizado y con qué opciones?
+Con el comando df -i se muestra información sobre los inodos de cada sistema de ficheros, incluyendo el total, los usados y los libres
+
+PREGUNTA 19. ¿Cómo se puede saber el espacio libre de un sistema de ficheros? ¿Qué comando has utilizado y con qué opciones?
+Con el comando df -h se muestra el espacio total, usado y disponible de cada sistema de ficheros, con los tamaños en formato legible 
+
+PREGUNTA 20. ¿Cuál es el significado de las variables de entorno PATH, HOME y PWD?
+
+PATH: lista de directorios donde la Shell busca los comandos cuando se escriben sin ruta completa
+HOME: ruta del directorio personal del usuario actual
+PWD: ruta del directorio de trabajo actual 
+
+PREGUNTA 21. La variable PATH es una lista de directorios, ¿Qué carácter hace de separador entre un directorio y otro?
+El carácter separador es los dos puntos :
+
+PREGUNTA 22. ¿Qué comando has usado para definir y consultar el valor de las nuevas variables que has definido?
+Para definir las variables he usado export y para consultar su valor he usado echo
+
+PREGUNTA 23. ¿Qué diferencia hay entre utilizar > y >>?
+> redirige la salida de un comando a un fichero, pero si el fichero ya existe borra su contenido antes de escribir y >> también redirige la salida a un fichero
+pero en vez de borrar lo que había añade el nuevo contenido al final
+
